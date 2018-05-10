@@ -251,6 +251,7 @@ class matrizAdj{
 		void insert(int linha, int coluna, int peso);
 		void insert(int linha, int coluna);
 		int* getLinha(int linha);
+		int* getColuna(int coluna);
 		int getTam();
 		int getPeso(int verticeA, int verticeB);
 		void printMat();
@@ -354,7 +355,29 @@ void matrizAdj::expand(int t){
 
 int* matrizAdj::getLinha(int linha){ //Retorna a linha da matriz
 	if(linha >= 0 and linha < tamanhoMat){
-		return &matriz[linha][0];
+		//~ return &matriz[linha][0];
+		int* vetor = new int[tamanhoMat];
+		for (int i = 0; i < tamanhoMat; i++)
+		{
+			vetor[i] = matriz[linha][i];
+		}
+		
+		return vetor;
+	}
+	
+	return NULL;
+}
+	
+int* matrizAdj::getColuna(int coluna){ //Retorna a coluna da matriz
+	if(coluna >= 0 and coluna < tamanhoMat){
+		//~ return &matriz[linha][0];
+		int* vetor = new int[tamanhoMat];
+		for (int i = 0; i < tamanhoMat; i++)
+		{
+			vetor[i] = matriz[i][coluna];
+		}
+		
+		return vetor;
 	}
 	
 	return NULL;
