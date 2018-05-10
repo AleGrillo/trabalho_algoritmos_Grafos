@@ -652,7 +652,7 @@ void matrizInc::removeVertice(int verticeA){
 		{
 			for (int j = 0; j < qntColunas; j++)
 			{
-				if(matriz[i][verticeA] != 0 and verticeA != j){
+				if(verticeA != j and matriz[i][verticeA] != 0){
 					matriz[i][verticeA] = 0;
 					matriz[i][j] = 0;
 				}
@@ -846,13 +846,13 @@ class vertices{
 		void expandVetor();
 		bool compare(dado A, dado B); 
 		bool compare(coord A, coord B);
-		void deletePos(int pos); 
 	public:
 		vertices(int qntVertices);
 		vertices();
 		~vertices();
 		int insertVertice(dado novo);
 		int insertVertice(coord novo);
+		void deletePos(int pos);
 		int deleteVertice(dado del);
 		int deleteVertice(coord del);
 		void print();
@@ -1013,11 +1013,13 @@ void vertices::deletePos(int pos){
 
 void vertices::printPos(int pos){
 	if(pos >= 0 and pos < qntVertices){
-		if(vetor[pos]->eucledian == false){
-			cout << vetor[pos]->dadosNoh << " ";
-		}
-		else{
-			cout << vetor[pos]->coordenadas.x << "/" << vetor[pos]->coordenadas.y << " ";
+		if(vetor[pos]){
+			if(vetor[pos]->eucledian == false){
+				cout << vetor[pos]->dadosNoh << " ";
+			}
+			else{
+				cout << vetor[pos]->coordenadas.x << "/" << vetor[pos]->coordenadas.y << " ";
+			}
 		}
 	}
 }
@@ -1045,8 +1047,7 @@ class grafo{
 		void insertAresta(dado dadosNohA, dado dadosNohB);//Para vertices com apenas um valor
 		void insertAresta(coord coordenadasNohA, coord coordenadasNohB);//Para vertices com coordenadas
 		void insertAresta(dado dadosNohA, dado dadosNohB, int peso);//Para grafos ponderados
-		void removeVertice(dado dadosNoh);
-		void removeVertice(coord coordenadasNoh);
+		void removeVertice(int pos);
 		int search(dado dadosNoh);
 		int search(coord coordenadas);
 		listasAdj* getLAdj();
@@ -1138,30 +1139,8 @@ void grafo::inserctIn(int idA, int idB, int peso){
 	}
 }
 
-void grafo::removeVertice(dado dadosNoh){
-	int pos = verticesDoGrafo->deleteVertice(dadosNoh);
-	if(qualEstrutura == 1){
-		lAdj->removeVertice(pos);
-	}
-	else if(qualEstrutura == 2){
-		mAdj->removeVertice(pos);
-	}
-	else if(qualEstrutura == 3){
-		mInc->removeVertice(pos);
-	}
-}
-
-void grafo::removeVertice(coord dadosNoh){
-	int pos = verticesDoGrafo->deleteVertice(dadosNoh);
-	if(qualEstrutura == 1){
-		lAdj->removeVertice(pos);
-	}
-	else if(qualEstrutura == 2){
-		mAdj->removeVertice(pos);
-	}
-	else if(qualEstrutura == 3){
-		mInc->removeVertice(pos);
-	}
+void grafo::removeVertice(int pos){
+	verticesDoGrafo->deletePos(pos);
 }
 
 int grafo::search(dado dadosNoh){
@@ -1341,7 +1320,6 @@ void matIncToMatAdj(grafo* G){
 }
 
 void obtemVizinho(grafo* G, int u){
-	//Implementar
 	//Recebe um vértice u como parâmetro e retorna um conjunto de vértices
 	//vizinhos a u;
 	if(G->getOrientation() == "UNDIRECTED"){
@@ -1403,11 +1381,38 @@ void ehSucessor(grafo* G, int u, int v){
 }
 
 void delVertice(grafo* G, int u){
-	//Implementar
+	//deleta um vértice do grafo e as arestas incidentes a ele (por consequência);
+	int qualEstrutura = G->getQualEstrutura();
+	G->removeVertice(u);
+	if(qualEstrutura == 1){
+		listasAdj* lAdj = G->getLAdj();
+		lAdj->removeVertice(u);
+	}
+	else if(qualEstrutura == 2){
+		matrizAdj* mAdj = G->getMAdj();
+		mAdj->removeVertice(u);
+	}
+	else if(qualEstrutura == 3){
+		matrizInc* mInc = G->getMInc();
+		mInc->removeVertice(u);
+	}
 }
 
 void delAresta(grafo* G, int u, int v){
-	//Implementar
+	//deleta a aresta (u; v) passada como parâmetro;
+	int qualEstrutura = G->getQualEstrutura();
+	if(qualEstrutura == 1){
+		listasAdj* lAdj = G->getLAdj();
+		lAdj->removeIn(u,v);
+	}
+	else if(qualEstrutura == 2){
+		matrizAdj* mAdj = G->getMAdj();
+		mAdj->remove(u,v);
+	}
+	else if(qualEstrutura == 3){
+		matrizInc* mInc = G->getMInc();
+		mInc->remove(u,v);
+	}
 }
 
 grafo* geraSubGrafoIV(grafo* G){
