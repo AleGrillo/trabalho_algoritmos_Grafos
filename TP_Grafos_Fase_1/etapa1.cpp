@@ -97,7 +97,7 @@ class lista{
 		void insert(int id);
 		void insert(int id, int peso);
 		bool remove(int id);
-		bool search(int valor);
+		bool search(int id);
 		bool deleteList();
 		verticeDeAdj* getFirst(); //Retorna uma copia do primeiro verticeDeAdj da lista
 		void print();
@@ -207,12 +207,12 @@ verticeDeAdj* lista::getFirst(){
 	return copy->primeiro;
 }
 
-bool lista::search(int valor){
+bool lista::search(int id){
 	verticeDeAdj* aux = primeiro;
 	bool achou = false;
 	
 	while(aux and achou == false){
-		if(aux->id == valor){
+		if(aux->id == id){
 			achou = true;
 		}
 		aux = aux->proximo;
@@ -703,6 +703,7 @@ class listasAdj{
 		bool removeVertice(int posVertice);
 		inline int getQnt();
 		verticeDeAdj* getListaPos(int pos);
+		bool searchIn(int posVertice, int procurar);
 		void print();
 };
 
@@ -832,8 +833,19 @@ bool listasAdj::removeVertice(int posVertice){
 void listasAdj::print(){
 	for (int i = 0; i < qntListas; i++)
 	{
-		listas[i]->print();
+		if(listas[i]){
+			listas[i]->print();
+		}
 	}
+}
+
+bool listasAdj::searchIn(int posVertice, int procurar){
+	if(posVertice >= 0 and posVertice < qntListas){
+		if(listas[posVertice]){
+			return listas[posVertice]->search(procurar);
+		}
+	}
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1207,6 +1219,7 @@ void listToMatAdj(grafo* G){
 			}
 		}
 	}
+	mAdj->printMat();
 }
 
 void listToMatInc(grafo* G){
@@ -1226,6 +1239,7 @@ void listToMatInc(grafo* G){
 			}
 		}
 	}
+	mInc->printMat();
 }
 
 void matAdjToList(grafo* G){
@@ -1248,6 +1262,7 @@ void matAdjToList(grafo* G){
 			}
 		}
 	}
+	lAdj->print();
 }
 
 void matAdjToMatInc(grafo* G){
@@ -1263,6 +1278,7 @@ void matAdjToMatInc(grafo* G){
 			}
 		}
 	}
+	mInc->printMat();
 }
 
 void matIncToListAdj(grafo* G){
@@ -1290,6 +1306,7 @@ void matIncToListAdj(grafo* G){
 			}
 		}
 	}
+	lAdj->print();
 }
 
 void matIncToMatAdj(grafo* G){
@@ -1317,6 +1334,7 @@ void matIncToMatAdj(grafo* G){
 			}
 		}
 	}
+	mAdj->printMat();
 }
 
 void obtemVizinho(grafo* G, int u){
@@ -1358,26 +1376,90 @@ void obtemVizinho(grafo* G, int u){
 			cout << endl;
 		}
 	}
+	else{
+		//Implementar
+	}
 }
 
 void obtemPred(grafo* G, int u){
-	//Implementar
+	//recebe um vértice u como parâmetro e retorna o conjunto de predecessores
+	//do vértice em questão (para grafos direcionados);
+	if(G->getOrientation() == "DIRECTED"){
+		//Implementar
+	}
+	else{
+		cerr << "Grafo não orientado!\n";
+		exit(EXIT_FAILURE);
+	}
 }
 
 void obtemSuc(grafo* G, int u){
-	//Implementar
+	//recebe um vértice u como parâmetro e retorna o conjunto de sucessores do
+	//vértice em questão (para grafos direcionados);
+	if(G->getOrientation() == "DIRECTED"){
+		//Implementar
+	}
+	else{
+		cerr << "Grafo não orientado!\n";
+		exit(EXIT_FAILURE);
+	}
 }
 
 void ehVizinho(grafo* G, int u, int v){
-	//Implementar
+	//recebe dois vértices u e v como parâmetros e retorna true se os mesmos são
+	//vizinhos;
+	if(G->getQualEstrutura() == 1){
+		listasAdj* lAdj = G->getLAdj();
+		if(lAdj->searchIn(u,v) == true){
+			G->printPos(u);
+			cout << " e vizinho de ";
+			G->printPos(v);
+			cout << endl;
+		}
+	}
+	else if(G->getQualEstrutura() == 2){
+		matrizAdj* mAdj = G->getMAdj();
+		if(mAdj->search(u,v) == true){
+			G->printPos(u);
+			cout << " e vizinho de ";
+			G->printPos(v);
+			cout << endl;
+		}
+	}
+	else if(G->getQualEstrutura() == 3){
+		matrizInc* mInc = G->getMInc();
+		int aux;
+		if(mInc->search(u,v,aux) == true){
+			G->printPos(u);
+			cout << " e vizinho de ";
+			G->printPos(v);
+			cout << endl;
+		}
+	}
 }
 
 void ehPredecessor(grafo* G, int u, int v){
-	//Implementar
+	//recebe dois vértices u e v como parâmetros e retorna true se v é predecessor
+	//de u (para grafos direcionados);
+	if(G->getOrientation() == "DIRECTED"){
+		//Implementar
+	}
+	else{
+		cerr << "Grafo não orientado!\n";
+		exit(EXIT_FAILURE);
+	}
 }
 
 void ehSucessor(grafo* G, int u, int v){
-	//Implementar
+	//recebe dois vértices u e v como parâmetros e retorna true se v é sucessor
+	//de u (para grafos direcionados);
+	if(G->getOrientation() == "DIRECTED"){
+		//Implementar
+	}
+	else{
+		cerr << "Grafo não orientado!\n";
+		exit(EXIT_FAILURE);
+	}
 }
 
 void delVertice(grafo* G, int u){
