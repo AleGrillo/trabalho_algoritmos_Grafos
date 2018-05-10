@@ -460,6 +460,7 @@ class matrizInc{
 		int getQntLinhas();
 		void remove(int verticeA, int verticeB);
 		void removeVertice(int verticeA);
+		bool* vizinhos(int vertice);
 };
 
 matrizInc::matrizInc(string orientation, int qntVertices){
@@ -660,6 +661,23 @@ void matrizInc::removeVertice(int verticeA){
 	}
 }
 
+bool* matrizInc::vizinhos(int vertice){
+	if(vertice >= 0 and vertice <= qntColunas){
+		bool* vizinhos = new bool[qntColunas];
+		int aux;
+		for (int i = 0; i < qntColunas; i++)
+		{
+			if(i != vertice){
+				vizinhos[i] = search(vertice,i,aux);
+			}
+			else vizinhos[i] = false;
+		}
+		
+		return vizinhos;
+	}
+	return NULL;
+}
+
 ////////////////////////////////////////////////////////////////////////
 //////////////////////Classe Listas de Adjacencia///////////////////////
 
@@ -838,6 +856,7 @@ class vertices{
 		int deleteVertice(dado del);
 		int deleteVertice(coord del);
 		void print();
+		void printPos(int pos);
 		int search(dado pos);
 		int search(coord pos);
 };
@@ -992,6 +1011,17 @@ void vertices::deletePos(int pos){
 	}
 }
 
+void vertices::printPos(int pos){
+	if(pos >= 0 and pos < qntVertices){
+		if(vetor[pos]->eucledian == false){
+			cout << vetor[pos]->dadosNoh << " ";
+		}
+		else{
+			cout << vetor[pos]->coordenadas.x << "/" << vetor[pos]->coordenadas.y << " ";
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////Classe Grafo/////////////////////////////////
 
@@ -1024,6 +1054,8 @@ class grafo{
 		matrizInc* getMInc();
 		bool getPonderado();
 		int getQualEstrutura();
+		string getOrientation();
+		void printPos(int pos);
 };
 
 grafo::grafo(string orientation, bool ponderado, int qualEstrutura){
@@ -1157,6 +1189,14 @@ bool grafo::getPonderado(){
 
 int grafo::getQualEstrutura(){
 	return qualEstrutura;
+}
+
+string grafo::getOrientation(){
+	return orientation;
+}
+
+void grafo::printPos(int pos){
+	verticesDoGrafo->printPos(pos);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1302,7 +1342,44 @@ void matIncToMatAdj(grafo* G){
 
 void obtemVizinho(grafo* G, int u){
 	//Implementar
-	
+	//Recebe um vértice u como parâmetro e retorna um conjunto de vértices
+	//vizinhos a u;
+	if(G->getOrientation() == "UNDIRECTED"){
+		if(G->getQualEstrutura() == 1){
+			listasAdj* lAdj = G->getLAdj();
+			verticeDeAdj* aux = lAdj->getListaPos(u);
+			while(aux){
+				G->printPos(aux->getId());
+				aux = aux->getProximo();
+			}
+			cout << endl;
+		}
+		else if(G->getQualEstrutura() == 2){
+			matrizAdj* mAdj = G->getMAdj();
+			int tam = mAdj->getTam();
+			int* vizinhos = mAdj->getLinha(u);
+			for (int i = 0; i < tam; i++)
+			{
+				if(vizinhos[i] != 0){
+					G->printPos(i);
+				}
+			}
+			cout << endl;
+		}
+		else if(G->getQualEstrutura() == 3){
+			matrizInc* mInc = G->getMInc();
+			int tam = mInc->getQntColunas();
+			bool* vizinhos = mInc->vizinhos(u);
+			for (int i = 0; i < tam; i++)
+			{
+				if(vizinhos[i] == true)
+				{
+					G->printPos(i);
+				}
+			}
+			cout << endl;
+		}
+	}
 }
 
 void obtemPred(grafo* G, int u){
