@@ -1019,6 +1019,11 @@ class grafo{
 		void removeVertice(coord coordenadasNoh);
 		int search(dado dadosNoh);
 		int search(coord coordenadas);
+		listasAdj* getLAdj();
+		matrizAdj* getMAdj();
+		matrizInc* getMInc();
+		bool getPonderado();
+		int getQualEstrutura();
 };
 
 grafo::grafo(string orientation, bool ponderado, int qualEstrutura){
@@ -1134,18 +1139,40 @@ int grafo::search(coord coordenadas){
 	return verticesDoGrafo->search(coordenadas);
 }
 
+listasAdj* grafo::getLAdj(){
+	return lAdj;
+}
+
+matrizAdj* grafo::getMAdj(){
+	return mAdj;
+}
+
+matrizInc* grafo::getMInc(){
+	return mInc;
+}
+
+bool grafo::getPonderado(){
+	return ponderado;
+}
+
+int grafo::getQualEstrutura(){
+	return qualEstrutura;
+}
+
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////Funções externas///////////////////////////////
 
-void listToMatAdj(listasAdj* listaAdj, matrizAdj* mAdj, bool ponderado){
-	int qnt = listaAdj->getQnt();
+void listToMatAdj(grafo* G){
+	matrizAdj* mAdj = G->getMAdj();
+	listasAdj* lAdj = G->getLAdj();
+	int qnt = lAdj->getQnt();
 	for (int i = 0; i < qnt; i++)
 	{
 		int id;
-		verticeDeAdj* aux = listaAdj->getListaPos(i);
+		verticeDeAdj* aux = lAdj->getListaPos(i);
 		if(aux){
 			id = aux->getId();
-			if(ponderado == false){
+			if(G->getPonderado() == false){
 				aux = aux->getProximo();
 				while(aux){
 					mAdj->insert(id, aux->getId());
@@ -1163,12 +1190,14 @@ void listToMatAdj(listasAdj* listaAdj, matrizAdj* mAdj, bool ponderado){
 	}
 }
 
-void listToMatInc(listasAdj* listaAdj, matrizInc* mInc){
-	int qnt = listaAdj->getQnt();
+void listToMatInc(grafo* G){
+	matrizInc* mInc = G->getMInc();
+	listasAdj* lAdj = G->getLAdj();
+	int qnt = lAdj->getQnt();
 	for (int i = 0; i < qnt; i++)
 	{
 		int id;
-		verticeDeAdj* aux = listaAdj->getListaPos(i);
+		verticeDeAdj* aux = lAdj->getListaPos(i);
 		if(aux){
 			id = aux->getId();
 			aux = aux->getProximo();
@@ -1180,7 +1209,9 @@ void listToMatInc(listasAdj* listaAdj, matrizInc* mInc){
 	}
 }
 
-void matAdjToList(matrizAdj* mAdj, listasAdj* listaAdj, bool ponderado){
+void matAdjToList(grafo* G){
+	matrizAdj* mAdj = G->getMAdj();
+	listasAdj* lAdj = G->getLAdj();
 	int tam = mAdj->getTam();
 	cout << tam << endl;
 	for (int i = 0; i < tam; i++)
@@ -1188,19 +1219,21 @@ void matAdjToList(matrizAdj* mAdj, listasAdj* listaAdj, bool ponderado){
 		for (int j = 0; j < tam; j++)
 		{
 			if(mAdj->search(i,j) == true){
-				if(ponderado == true){
+				if(G->getPonderado() == true){
 					int peso = mAdj->getPeso(i,j);
-					listaAdj->insertIn(i,j,peso);
+					lAdj->insertIn(i,j,peso);
 				}
 				else{
-					listaAdj->insertIn(i,j);
+					lAdj->insertIn(i,j);
 				}
 			}
 		}
 	}
 }
 
-void matAdjToMatInc(matrizAdj* mAdj, matrizInc* mInc){
+void matAdjToMatInc(grafo* G){
+	matrizInc* mInc = G->getMInc();
+	matrizAdj* mAdj = G->getMAdj();
 	int tam = mAdj->getTam();
 	for (int i = 0; i < tam; i++)
 	{
@@ -1213,7 +1246,9 @@ void matAdjToMatInc(matrizAdj* mAdj, matrizInc* mInc){
 	}
 }
 
-void matIncToListAdj(matrizInc* mInc, listasAdj* lAdj){
+void matIncToListAdj(grafo* G){
+	matrizInc* mInc = G->getMInc();
+	listasAdj* lAdj = G->getLAdj();
 	int linhas = mInc->getQntLinhas();
 	int colunas = mInc->getQntColunas();
 	for (int i = 0; i < linhas; i++)
@@ -1238,7 +1273,9 @@ void matIncToListAdj(matrizInc* mInc, listasAdj* lAdj){
 	}
 }
 
-void matIncToMatAdj(matrizInc* mInc, matrizAdj* mAdj){
+void matIncToMatAdj(grafo* G){
+	matrizInc* mInc = G->getMInc();
+	matrizAdj* mAdj = G->getMAdj();
 	int linhas = mInc->getQntLinhas();
 	int colunas = mInc->getQntColunas();
 	for (int i = 0; i < linhas; i++)
@@ -1265,6 +1302,7 @@ void matIncToMatAdj(matrizInc* mInc, matrizAdj* mAdj){
 
 void obtemVizinho(grafo* G, int u){
 	//Implementar
+	
 }
 
 void obtemPred(grafo* G, int u){
