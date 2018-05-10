@@ -355,7 +355,6 @@ void matrizAdj::expand(int t){
 
 int* matrizAdj::getLinha(int linha){ //Retorna a linha da matriz
 	if(linha >= 0 and linha < tamanhoMat){
-		//~ return &matriz[linha][0];
 		int* vetor = new int[tamanhoMat];
 		for (int i = 0; i < tamanhoMat; i++)
 		{
@@ -370,7 +369,6 @@ int* matrizAdj::getLinha(int linha){ //Retorna a linha da matriz
 	
 int* matrizAdj::getColuna(int coluna){ //Retorna a coluna da matriz
 	if(coluna >= 0 and coluna < tamanhoMat){
-		//~ return &matriz[linha][0];
 		int* vetor = new int[tamanhoMat];
 		for (int i = 0; i < tamanhoMat; i++)
 		{
@@ -829,7 +827,8 @@ class vertices{
 		int qntVertices;
 		void expandVetor();
 		bool compare(dado A, dado B); 
-		bool compare(coord A, coord B); 
+		bool compare(coord A, coord B);
+		void deletePos(int pos); 
 	public:
 		vertices(int qntVertices);
 		vertices();
@@ -971,12 +970,7 @@ void vertices::print(){
 int vertices::deleteVertice(dado del){
 	int pos = search(del);
 	
-	if(pos >= 0 and pos < qntVertices){
-		noh* aux = vetor[pos];
-		vetor[pos] = NULL;
-		delete aux;
-		qntVertices--;
-	}
+	deletePos(pos);
 	
 	return pos;
 }
@@ -984,14 +978,18 @@ int vertices::deleteVertice(dado del){
 int vertices::deleteVertice(coord del){
 	int pos = search(del);
 	
+	deletePos(pos);
+	
+	return pos;
+}
+
+void vertices::deletePos(int pos){
 	if(pos >= 0 and pos < qntVertices){
 		noh* aux = vetor[pos];
 		vetor[pos] = NULL;
 		delete aux;
 		qntVertices--;
 	}
-	
-	return pos;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1019,6 +1017,8 @@ class grafo{
 		void insertAresta(dado dadosNohA, dado dadosNohB, int peso);//Para grafos ponderados
 		void removeVertice(dado dadosNoh);
 		void removeVertice(coord coordenadasNoh);
+		int search(dado dadosNoh);
+		int search(coord coordenadas);
 };
 
 grafo::grafo(string orientation, bool ponderado, int qualEstrutura){
@@ -1125,6 +1125,13 @@ void grafo::removeVertice(coord dadosNoh){
 	else if(qualEstrutura == 3){
 		mInc->removeVertice(pos);
 	}
+}
+
+int grafo::search(dado dadosNoh){
+	return verticesDoGrafo->search(dadosNoh);
+}
+int grafo::search(coord coordenadas){
+	return verticesDoGrafo->search(coordenadas);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1256,7 +1263,47 @@ void matIncToMatAdj(matrizInc* mInc, matrizAdj* mAdj){
 	}
 }
 
+void obtemVizinho(grafo* G, int u){
+	//Implementar
+}
 
+void obtemPred(grafo* G, int u){
+	//Implementar
+}
+
+void obtemSuc(grafo* G, int u){
+	//Implementar
+}
+
+void ehVizinho(grafo* G, int u, int v){
+	//Implementar
+}
+
+void ehPredecessor(grafo* G, int u, int v){
+	//Implementar
+}
+
+void ehSucessor(grafo* G, int u, int v){
+	//Implementar
+}
+
+void delVertice(grafo* G, int u){
+	//Implementar
+}
+
+void delAresta(grafo* G, int u, int v){
+	//Implementar
+}
+
+grafo* geraSubGrafoIV(grafo* G){
+	//Implementar
+	return NULL;
+}
+
+grafo* geraSubGrafoIA(grafo* G){
+	//Implementar
+	return NULL;
+}
 
 int main(){
 
