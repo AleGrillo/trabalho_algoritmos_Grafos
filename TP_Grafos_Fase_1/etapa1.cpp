@@ -1191,7 +1191,7 @@ void grafo::printPos(int pos){
 }
 
 ////////////////////////////////////////////////////////////////////////
-/////////////////////////Funções externas///////////////////////////////
+/////////////////////////Funções para testes////////////////////////////
 
 void listToMatAdj(grafo* G){
 	matrizAdj* mAdj = G->getMAdj();
@@ -1454,7 +1454,15 @@ void ehSucessor(grafo* G, int u, int v){
 	//recebe dois vértices u e v como parâmetros e retorna true se v é sucessor
 	//de u (para grafos direcionados);
 	if(G->getOrientation() == "DIRECTED"){
-		//Implementar
+		if(G->getQualEstrutura() == 1){
+			listasAdj* lAdj = G->getLAdj();
+			if(lAdj->searchIn(u,v) == true){
+				G->printPos(v);
+				cout << " e sucessor de ";
+				G->printPos(u);
+				cout << endl;
+			}
+		}
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
