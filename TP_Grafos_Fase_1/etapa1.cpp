@@ -389,7 +389,6 @@ void matrizInc::insert(int verticeA, int verticeB){
 		expandLinhas();
 		if(verticeA < qntColunas and verticeB < qntColunas){
 			if(orientation == "UNDIRECTED"){
-				//~ cout << "A\n";
 				matriz[qntLinhas - 1][verticeA] = 1;
 				matriz[qntLinhas - 1][verticeB] = 1;
 			}
@@ -1097,62 +1096,76 @@ void grafo::insertAresta(dado dadosNohA, dado dadosNohB){
 	int idA = verticesDoGrafo->insertVertice(dadosNohA);
 	int idB = verticesDoGrafo->insertVertice(dadosNohB);
 	
-	if(orientation == "UNDIRECTED"){
-		inserctIn(idA,idB);
-		inserctIn(idB,idA);
-	}
-	else if(orientation == "DIRECTED"){
-		inserctIn(idA,idB);
-	}
+	inserctIn(idA,idB);
 }
 
 void grafo::insertAresta(coord coordenadasNohA, coord coordenadasNohB){
 	int idA = verticesDoGrafo->insertVertice(coordenadasNohA);
 	int idB = verticesDoGrafo->insertVertice(coordenadasNohB);
 	
-	if(orientation == "UNDIRECTED"){
-		inserctIn(idA,idB);
-		inserctIn(idB,idA);
-	}
-	else if(orientation == "DIRECTED"){
-		inserctIn(idA,idB);
-	}
+	inserctIn(idA,idB);
 }
 
 void grafo::insertAresta(dado dadosNohA, dado dadosNohB, int peso){
 	int idA = verticesDoGrafo->insertVertice(dadosNohA);
 	int idB = verticesDoGrafo->insertVertice(dadosNohB);
 	
-	if(orientation == "UNDIRECTED"){
-		inserctIn(idA,idB,peso);
-		inserctIn(idB,idA,peso);
-	}
-	else if(orientation == "DIRECTED"){
-		inserctIn(idA,idB,peso);
-	}
+	inserctIn(idA,idB,peso);
 }
 
 void grafo::inserctIn(int idA, int idB){
-	if(qualEstrutura == 1){
-		lAdj->insertIn(idA, idB);
+	
+	if(orientation == "UNDIRECTED"){
+		if(qualEstrutura == 1){
+			lAdj->insertIn(idA, idB);
+			lAdj->insertIn(idB, idA);
+		}
+		else if(qualEstrutura == 2){
+			mAdj->insert(idA, idB);
+			mAdj->insert(idB, idA);
+		}
+		else if(qualEstrutura == 3){
+			mInc->insert(idA, idB);
+		}
 	}
-	else if(qualEstrutura == 2){
-		mAdj->insert(idA, idB);
-	}
-	else if(qualEstrutura == 3){
-		mInc->insert(idA, idB);
+	else if(orientation == "DIRECTED"){
+		if(qualEstrutura == 1){
+			lAdj->insertIn(idA, idB);
+		}
+		else if(qualEstrutura == 2){
+			mAdj->insert(idA, idB);
+		}
+		else if(qualEstrutura == 3){
+			mInc->insert(idA, idB);
+		}
 	}
 }
 
 void grafo::inserctIn(int idA, int idB, int peso){
-	if(qualEstrutura == 1){
-		lAdj->insertIn(idA, idB, peso);
+	
+	if(orientation == "UNDIRECTED"){
+		if(qualEstrutura == 1){
+			lAdj->insertIn(idA, idB, peso);
+			lAdj->insertIn(idB, idA, peso);
+		}
+		else if(qualEstrutura == 2){
+			mAdj->insert(idA, idB, peso);
+			mAdj->insert(idB, idA, peso);
+		}
+		else if(qualEstrutura == 3){
+			mInc->insert(idA, idB);
+		}
 	}
-	else if(qualEstrutura == 2){
-		mAdj->insert(idA, idB, peso);
-	}
-	else if(qualEstrutura == 3){
-		mInc->insert(idA, idB);
+	else if(orientation == "DIRECTED"){
+		if(qualEstrutura == 1){
+			lAdj->insertIn(idA, idB, peso);
+		}
+		else if(qualEstrutura == 2){
+			mAdj->insert(idA, idB, peso);
+		}
+		else if(qualEstrutura == 3){
+			mInc->insert(idA, idB);
+		}
 	}
 }
 
@@ -1253,6 +1266,7 @@ void listToMatAdj(grafo* G){
 			}
 		}
 	}
+	G->printVertices();
 	mAdj->printMat();
 }
 
@@ -1273,6 +1287,7 @@ void listToMatInc(grafo* G){
 			}
 		}
 	}
+	G->printVertices();
 	mInc->printMat();
 }
 
@@ -1312,6 +1327,7 @@ void matAdjToMatInc(grafo* G){
 			}
 		}
 	}
+	G->printVertices();
 	mInc->printMat();
 }
 
@@ -1368,6 +1384,7 @@ void matIncToMatAdj(grafo* G){
 			}
 		}
 	}
+	G->printVertices();
 	mAdj->printMat();
 }
 
