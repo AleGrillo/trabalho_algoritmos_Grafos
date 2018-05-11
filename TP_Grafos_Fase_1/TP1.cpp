@@ -1,31 +1,17 @@
+/*
+* Trabalho de Algoritmo Em Grafos - Etapa 1 - Estrutura de Dados
+* Copyright 2018 by Alexandre And Hemerson And Ricardo
+* TP1.h - Local das assinaturas das funções
+* TP1.cpp - Códigos das assinaturas das funções
+* TP1_Main.cpp - Função principal que implementa as funções
+*/
+
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include "TP1.h"
 
 using namespace std;
-
-//Para Grafos eucledianos
-struct coord {
-	double x;
-	double y;
-};
-
-typedef double dado; //Para ficar mais fácil substituir o tipo no futuro
-
-/**
- * Classe noh que guardara as informações de cada vertice do grafo
- */
-class noh{
-	friend class vertices;
-	private:
-		int id; //id que guarda a posição no vetor com vertices no grafo
-		dado dadosNoh; //Para vertices com peso
-		coord coordenadas; //Para grafos eucledianos
-		bool eucledian;
-	public:
-		noh(int id, dado dadosNoh);
-		noh(int id, coord coordenadas);
-};
 
 noh::noh(int id, dado dadosNoh){
 	this->id = id;
@@ -40,31 +26,7 @@ noh::noh(int id, coord coordenadas){
 	eucledian = true; //influencia na hora de imprimir ou retornar o valor do noh
 }
 
-////////////////////////////////////////////////////////////////////////
-/////////////////////////Classe Vertice///////////////////////////////
 
-/**
- * São os vertices da lista de adjacencias. Esses vertices possuem um id, que
- * é uma identificação de onde ele está no vetor de nohs do grafo (nesse vetor
- * que estão as informações de valores ou as coordenadas desse vertive), e também
- * possuem um peso caso o grafo seja ponderado.
- */
-
-class verticeDeAdj{
-	friend class lista; //lista individual de cada vertice
-	friend class listasAdj; //Todas as listas de adjacencias dos vertices
-							//do grafo
-	private:
-		int id;
-		int peso; //Caso o grafo seja ponderado
-		verticeDeAdj* proximo;
-	public:
-		verticeDeAdj(int id);
-		verticeDeAdj(int id, int peso);
-		int getId();
-		int getPeso();
-		verticeDeAdj* getProximo();
-};
 
 verticeDeAdj::verticeDeAdj(int id){
 	this->id = id;
@@ -90,33 +52,7 @@ verticeDeAdj* verticeDeAdj::getProximo(){
 	return proximo;
 }
 
-////////////////////////////////////////////////////////////////////////
-///////////////////////Matriz de Adjacencias////////////////////////////
 
-/**
- * Estrutura de Dados: Matriz de Adjacêndias
- */
-
-class matrizAdj{
-	private:
-		int **matriz;
-		int tamanhoMat;
-		void expand(int t);
-		void deleteMat();
-		void create(int tamanhoMat);
-	public:
-		matrizAdj(int tamanhoMat);
-		matrizAdj();
-		~matrizAdj();
-		void insert(int linha, int coluna, int peso);
-		void insert(int linha, int coluna);
-		int getTam();
-		int getPeso(int verticeA, int verticeB);
-		void printMat();
-		bool search(int linha, int coluna);
-		void remove(int verticeA, int verticeB);
-		void removeVertice(int verticeA);
-};
 
 matrizAdj::matrizAdj(int tamanhoMat){
 	create(tamanhoMat);
@@ -264,33 +200,6 @@ int matrizAdj::getPeso(int verticeA, int verticeB){
 	exit(EXIT_FAILURE);
 }
 
-////////////////////////////////////////////////////////////////////////
-///////////////////////Matriz de Incidencias////////////////////////////
-
-class matrizInc{
-	private:
-		int** matriz;
-		int qntLinhas; //Qnt de arestas, LEMBRANDO que cada linha
-					   //da matriz representa uma aresta
-		int qntColunas;//Qnt de vertices, LEMBRANDO que cada coluna
-					   //da matriz é um vertice
-		void expandLinhas();
-		void expandColunas(int qntExpand);
-		void deleteMat();
-		void create(int qntVertices);
-		string orientation;
-	public:
-		matrizInc(string orientation, int qntVertices);
-		matrizInc(string orientation);
-		~matrizInc();
-		void insert(int verticeA, int verticeB);
-		void printMat();
-		bool search(int verticeA, int verticeB, int& comecoAresta);
-		int getQntColunas();
-		int getQntLinhas();
-		void remove(int verticeA, int verticeB);
-		void removeVertice(int verticeA);
-};
 
 matrizInc::matrizInc(string orientation, int qntVertices){
 	this->orientation = orientation;
@@ -490,31 +399,6 @@ void matrizInc::removeVertice(int verticeA){
 	}
 }
 
-////////////////////////////////////////////////////////////////////////
-/////////////////////////Classe Lista///////////////////////////////////
-
-/**
- * Estrutura de Dados: Lista encadeada simples
- */
-
-class lista{
-	private:
-		verticeDeAdj* primeiro;
-		verticeDeAdj* ultimo;
-		int tamanhoLista;
-		void copyList(lista* copy);// copia a lista
-	public:
-		lista();
-		~lista();
-		void insert(int id);
-		void insert(int id, int peso);
-		bool remove(int id);
-		bool search(int id);
-		bool deleteList();
-		verticeDeAdj* getFirst(); //Retorna uma copia do primeiro verticeDeAdj da lista
-		void print();
-};
-
 lista::lista(){
 	primeiro = NULL;
 	ultimo = NULL;
@@ -645,35 +529,6 @@ void lista::print(){
 	}
 	cout << "NULL" << endl;
 }
-
-////////////////////////////////////////////////////////////////////////
-//////////////////////Classe Listas de Adjacencia///////////////////////
-
-/**
- * Estrutura de Dados: Lista de Adjacencias; é um vetor de listas encadeadas
- * descrita anteriormente
- */
-
-class listasAdj{
-	private:
-		lista** listas;
-		int qntListas;
-		void create(int qntListas);
-		void deleteListas();
-		void expandListas(int qntExpand);
-	public:
-		listasAdj();
-		listasAdj(int qntListas);
-		~listasAdj();
-		bool removeIn(int posVertice, int verticeRemover);
-		void insertIn(int posVertice, int verticeInserir);
-		void insertIn(int posVertice, int verticeInserir, int peso);
-		bool removeVertice(int posVertice);
-		inline int getQnt();
-		verticeDeAdj* getListaPos(int pos);
-		bool searchIn(int posVertice, int procurar);
-		void print();
-};
 
 listasAdj::listasAdj(){
 	create(0);
@@ -816,30 +671,6 @@ bool listasAdj::searchIn(int posVertice, int procurar){
 	return false;
 }
 
-////////////////////////////////////////////////////////////////////////
-/////////////////////Classe vertices do Grafo///////////////////////////
-
-class vertices{
-	private:
-		noh** vetor;
-		int qntVertices;
-		void expandVetor();
-		bool compare(dado A, dado B);
-		bool compare(coord A, coord B);
-	public:
-		vertices(int qntVertices);
-		vertices();
-		~vertices();
-		int insertVertice(dado novo);
-		int insertVertice(coord novo);
-		void deletePos(int pos);
-		int deleteVertice(dado del);
-		int deleteVertice(coord del);
-		void print();
-		void printPos(int pos);
-		int search(dado pos);
-		int search(coord pos);
-};
 
 vertices::vertices(int qntVertices){
 	this->qntVertices = qntVertices;
@@ -1035,43 +866,6 @@ void vertices::printPos(int pos){
 		}
 	}
 }
-
-////////////////////////////////////////////////////////////////////////
-///////////////////////////Classe Grafo/////////////////////////////////
-
-class grafo{
-	private:
-		vertices* verticesDoGrafo;
-		listasAdj* lAdj;
-		matrizAdj* mAdj;
-		matrizInc* mInc;
-		int qualEstrutura;//Vem do main contendo a opção de estrutura de
-						  //dados escolhida pelo usuario para armazenar os
-						  //vertices e as arestas.
-		string orientation;
-		bool ponderado;
-		void inserctIn(int idA, int idB);//Insere na estrutura de dados escolhida
-		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados
-												//escolhida com grafos ponderados
-	public:
-		grafo(string orientation, bool ponderado, int qualEstrutura);
-		~grafo();
-		void insertAresta(dado dadosNohA, dado dadosNohB);//Para vertices com apenas um valor
-		void insertAresta(coord coordenadasNohA, coord coordenadasNohB);//Para vertices com coordenadas
-		void insertAresta(dado dadosNohA, dado dadosNohB, int peso);//Para grafos ponderados
-		void removeVertice(int pos);
-		int search(dado dadosNoh);
-		int search(coord coordenadas);
-		listasAdj* getLAdj();
-		matrizAdj* getMAdj();
-		matrizInc* getMInc();
-		bool getPonderado();
-		int getQualEstrutura();
-		string getOrientation();
-		void printPos(int pos);
-		void printVertices();
-		void printGrafo();
-};
 
 grafo::grafo(string orientation, bool ponderado, int qualEstrutura){
 	verticesDoGrafo = new vertices();
@@ -1689,139 +1483,4 @@ grafo* geraSubGrafoIV(grafo* G){
 grafo* geraSubGrafoIA(grafo* G){
 	//Implementar
 	return NULL;
-}
-
-////////////////////////////////////////////////////////////////////////
-//////////////////////////Funções do Main///////////////////////////////
-
-string nomeArq(){
-	cout << "-NOME DO ARQUIVO-\n";
-	string nome;
-	cin >> nome;
-	return nome;
-}
-
-bool ePonderado(){
-	cout << "-GRAFO PONDERADO-\n";
-	cout << "Sim				0\n";
-	cout << "Nao				1\n";
-	int comando;
-	cin >> comando;
-
-	if(comando == 0){
-		return true;
-	}
-	else if(comando == 1){
-		return false;
-	}
-	else{
-		cout << "comando invalido\n";
-		exit(EXIT_FAILURE);
-	}
-}
-
-int estruturaUtilizada(){
-	cout << "-QUAL ESTRUTURA DE DADOS SERA UTILIZADA-\n";
-	cout << "Lista de Adjacencias					1\n";
-	cout << "Matriz de Adjacencias					2\n";
-	cout << "Matriz de Incidencias					3\n";
-
-	int comando;
-	cin >> comando;
-
-	if(comando > 0 and comando < 4){
-		return comando;
-	}
-	else{
-		cout << "comando invalido\n";
-		exit(EXIT_FAILURE);
-	}
-}
-
-bool dadosVertices(){
-	cout << "-QUAIS DADOS SERAO PASSADOS PARA OS VERTICES-\n";
-	cout << "Coordenadas (Euclediano)				0\n";
-	cout << "Apenas valores						1\n";
-
-	int comando;
-	cin >> comando;
-
-	if(comando == 0){
-		return true;
-	}
-	else if(comando == 1){
-		return false;
-	}
-	else{
-		cout << "comando invalido\n";
-		exit(EXIT_FAILURE);
-	}
-}
-
-
-int menu(){
-	int comando = -1;
-	return comando;
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-int main(){
-
-	bool ponderado = ePonderado();
-	bool eucledian = dadosVertices();
-	int qualEstrutura = estruturaUtilizada();
-	string orientation;
-	string nomeArquivo = nomeArq() + ".txt";
-	ifstream arquivo(nomeArquivo.c_str());
-	if(arquivo){
-		arquivo >> orientation;
-		if(orientation == "UNDIRECTED" or orientation == "DIRECTED"){
-			grafo* Grafo = new grafo(orientation, ponderado, qualEstrutura);
-
-			while(arquivo.good()){
-				if(ponderado == true){
-					dado dadosNohA;
-					dado dadosNohB;
-					int peso;
-					arquivo >> dadosNohA;
-					arquivo >> dadosNohB;
-					arquivo >> peso;
-					Grafo->insertAresta(dadosNohA,dadosNohB,peso);
-				}
-				else{
-					if(eucledian == true){
-						coord coordenadasA;
-						coord coordenadasB;
-						int num;
-						arquivo >> num;
-						arquivo >> coordenadasA.x;
-						arquivo >> coordenadasA.y;
-						arquivo >> coordenadasB.x;
-						arquivo >> coordenadasB.y;
-						Grafo->insertAresta(coordenadasA,coordenadasB);
-					}
-					else{
-						dado dadosNohA;
-						dado dadosNohB;
-						arquivo >> dadosNohA;
-						arquivo >> dadosNohB;
-						Grafo->insertAresta(dadosNohA,dadosNohB);
-					}
-				}
-			}
-			Grafo->printGrafo();
-		}
-		else{
-			cerr << "falha ao ler o arquivo\n";
-			exit(EXIT_FAILURE);
-		}
-	}
-	else{
-		cerr << "falha ao abrir o arquivo\n";
-		exit(EXIT_FAILURE);
-	}
-
-return 0;
 }

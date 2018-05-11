@@ -1,18 +1,18 @@
 CPP = g++
 CPPFLAGS = -Wall
 
-OBJ = TP2Main.o TP2.o
+OBJ = TP1_Main.o TP1.o
 
-TP2Main: $(OBJ)
-	$(CPP) $(CPPFLAGS) $(OBJ) -o TP2Main
+TP1_Main: $(OBJ)
+	$(CPP) $(CPPFLAGS) $(OBJ) -o TP1_Main
 
-TP2Main.o: TP2Main.cpp
-	$(CPP) $(CPPFLAGS) -c TP2Main.cpp -o TP2Main.o
+TP1_Main.o: TP1_Main.cpp
+	$(CPP) $(CPPFLAGS) -c TP1_Main.cpp -o TP1_Main.o
 
-TP2.o: TP2.cpp TP2.h
-	$(CPP) $(CPPFLAGS) -c TP2.cpp -o TP2.o
+TP1.o: TP1.cpp TP1.h
+	$(CPP) $(CPPFLAGS) -c TP1.cpp -o TP1.o
 
-all: TP2Main
+all: TP1_Main
 
 clean:
 	rm -f *.o
