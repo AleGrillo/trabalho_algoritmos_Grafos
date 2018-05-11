@@ -1,0 +1,8 @@
+UNDIRECTED
+vertex0 x_coord_vertex0 y_coord_vertex0
+vertex1 x_coord_vertex1 y_coord_vertex1
+vertex2 x_coord_vertex2 y_coord_vertex2
+vertex3 x_coord_vertex3 y_coord_vertex3
+...
+vertexn x_coord_vertexn y_coord_vertexn
+[Nota: este é um grafo valorado. Os pesos das arestas correspondem à distância Euclidiana entre cada par de vértice.]

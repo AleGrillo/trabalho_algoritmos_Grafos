@@ -1672,7 +1672,7 @@ int main(){
 	bool eucledian = dadosVertices();
 	int qualEstrutura = estruturaUtilizada();
 	string orientation;
-	string nomeArquivo = nomeArq();
+	string nomeArquivo = nomeArq() + ".txt";
 	ifstream arquivo(nomeArquivo.c_str());
 	if(arquivo){
 		arquivo >> orientation;
