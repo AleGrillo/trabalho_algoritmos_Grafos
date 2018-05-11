@@ -1085,6 +1085,9 @@ class grafo{
 		void printPos(int pos);
 		void printVertices();
 		void printGrafo();
+		void printLAdj();
+		void printMAdj();
+		void printMInc();
 };
 
 grafo::grafo(string orientation, bool ponderado, bool eucledian, int qualEstrutura){
@@ -1229,28 +1232,40 @@ void grafo::printVertices(){
 	verticesDoGrafo->print();
 }
 
+void grafo::printLAdj(){
+	int tam = lAdj->getQnt();
+	for (int i = 0; i < tam; i++)
+	{
+		verticeDeAdj* aux = lAdj->getListaPos(i);
+		while(aux){
+			int id = aux->getId();
+			verticesDoGrafo->printPos(id);
+			cout << " -> ";
+			aux = aux->getProximo();
+		}
+		cout << "NULL\n";
+	}
+}
+
+void grafo::printMAdj(){
+	printVertices();
+	mAdj->printMat();
+}
+
+void grafo::printMInc(){
+	printVertices();
+	mInc->printMat();
+}
+
 void grafo::printGrafo(){
 	if(qualEstrutura == 1){
-		int tam = lAdj->getQnt();
-		for (int i = 0; i < tam; i++)
-		{
-			verticeDeAdj* aux = lAdj->getListaPos(i);
-			while(aux){
-				int id = aux->getId();
-				verticesDoGrafo->printPos(id);
-				cout << " -> ";
-				aux = aux->getProximo();
-			}
-			cout << "NULL\n";
-		}
+		printLAdj();
 	}
 	else if(qualEstrutura == 2){
-		printVertices();
-		mAdj->printMat();
+		printMAdj();
 	}
 	else if(qualEstrutura == 3){
-		printVertices();
-		mInc->printMat();
+		printMInc();
 	}
 }
 
@@ -1283,8 +1298,6 @@ void listToMatAdj(grafo* G){
 			}
 		}
 	}
-	G->printVertices();
-	mAdj->printMat();
 }
 
 void listToMatInc(grafo* G){
@@ -1304,8 +1317,6 @@ void listToMatInc(grafo* G){
 			}
 		}
 	}
-	G->printVertices();
-	mInc->printMat();
 }
 
 void matAdjToList(grafo* G){
@@ -1328,7 +1339,6 @@ void matAdjToList(grafo* G){
 			}
 		}
 	}
-	lAdj->print();
 }
 
 void matAdjToMatInc(grafo* G){
@@ -1344,8 +1354,6 @@ void matAdjToMatInc(grafo* G){
 			}
 		}
 	}
-	G->printVertices();
-	mInc->printMat();
 }
 
 void matIncToListAdj(grafo* G){
@@ -1373,7 +1381,6 @@ void matIncToListAdj(grafo* G){
 			}
 		}
 	}
-	lAdj->print();
 }
 
 void matIncToMatAdj(grafo* G){
@@ -1401,8 +1408,6 @@ void matIncToMatAdj(grafo* G){
 			}
 		}
 	}
-	G->printVertices();
-	mAdj->printMat();
 }
 
 void obtemVizinhos(grafo* G, int u){
@@ -1802,6 +1807,7 @@ void estruturaDeDadosGrafo(grafo* G, int comando){
 			else if(estrutura == 3){
 				matIncToListAdj(G);
 			}
+			G->printLAdj();
 		}
 		else if(comando == 2){
 			if(estrutura == 1){
@@ -1810,6 +1816,7 @@ void estruturaDeDadosGrafo(grafo* G, int comando){
 			else if(estrutura == 3){
 				matIncToMatAdj(G);
 			}
+			G->printMAdj();
 		}
 		else if(comando == 3){
 			if(estrutura == 1){
@@ -1818,6 +1825,7 @@ void estruturaDeDadosGrafo(grafo* G, int comando){
 			else if(estrutura == 2){
 				matAdjToMatInc(G);
 			}
+			G->printMInc();
 		}
 	}
 }
