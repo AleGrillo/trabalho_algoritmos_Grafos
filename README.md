@@ -1,4 +1,4 @@
-﻿## Trabalho Prático Final - Fase 1
+## Trabalho Prático Final - Fase 1
 
 -   <b> Estruturas de Dados </b>
 -   <b> Conversões de Estruturas de Dados </b>
