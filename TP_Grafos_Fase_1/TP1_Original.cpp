@@ -1106,7 +1106,6 @@ grafo::~grafo(){
 }
 
 void grafo::insertAresta(dado dadosNohA, dado dadosNohB){
-	cout << dadosNohA << " " << dadosNohB << endl;
 	int idA = verticesDoGrafo->insertVertice(dadosNohA);
 	int idB = verticesDoGrafo->insertVertice(dadosNohB);
 	
@@ -1418,6 +1417,7 @@ void obtemVizinhos(grafo* G, int u){
 			if(i != u and (lAdj->searchIn(i,u) == true or lAdj->searchIn(u,i))){
 				G->printPos(i);
 			}
+			cout << endl;
 		}
 	}
 	else if(G->getQualEstrutura() == 2){
@@ -1428,6 +1428,7 @@ void obtemVizinhos(grafo* G, int u){
 			if(mAdj->search(i,u) == true or mAdj->search(u,i) == true){
 				G->printPos(i);
 			}
+			cout << endl;
 		}
 	}
 	else if(G->getQualEstrutura() == 3){
@@ -1441,9 +1442,9 @@ void obtemVizinhos(grafo* G, int u){
 			{
 				G->printPos(i);
 			}
+			cout << endl;
 		}
 	}
-	cout << endl;
 }
 
 void obtemPred(grafo* G, int u){
@@ -1457,10 +1458,10 @@ void obtemPred(grafo* G, int u){
 			{
 				if(i != u and lAdj->searchIn(i,u) == true){
 					G->printPos(i);
-					cout << " e predecessor de ";
+					cout << "e predecessor de ";
 					G->printPos(u);
-					cout << endl;;
 				}
+				cout << endl;
 			}
 			
 		}
@@ -1471,9 +1472,10 @@ void obtemPred(grafo* G, int u){
 			{
 				if(mAdj->search(i,u) == true){
 					G->printPos(i);
-					cout << " e predecessor de ";
+					cout << "e predecessor de ";
 					G->printPos(u);
 				}
+				cout << endl;
 			}
 		}
 		else if(G->getQualEstrutura() == 3){
@@ -1486,9 +1488,10 @@ void obtemPred(grafo* G, int u){
 					mInc->search(u,i,inicioAresta) == true){
 						if(inicioAresta == i){
 							G->printPos(i);
-							cout << " e predecessor de ";
+							cout << "e predecessor de ";
 							G->printPos(u);
 						}
+						cout << endl;
 				}
 			}
 		}
@@ -1510,10 +1513,10 @@ void obtemSuc(grafo* G, int u){
 			{
 				if(i != u and lAdj->searchIn(u,i) == true){
 					G->printPos(i);
-					cout << " e sucessor de ";
+					cout << "e sucessor de ";
 					G->printPos(u);
-					cout << endl;
 				}
+				cout << endl;
 			}
 			
 		}
@@ -1524,9 +1527,10 @@ void obtemSuc(grafo* G, int u){
 			{
 				if(mAdj->search(u,i) == true){
 					G->printPos(i);
-					cout << " e sucessor de ";
+					cout << "e sucessor de ";
 					G->printPos(u);
 				}
+				cout << endl;
 			}
 		}
 		else if(G->getQualEstrutura() == 3){
@@ -1539,9 +1543,10 @@ void obtemSuc(grafo* G, int u){
 					mInc->search(u,i,inicioAresta) == true){
 						if(inicioAresta == u){
 							G->printPos(i);
-							cout << " e sucessor de ";
+							cout << "e sucessor de ";
 							G->printPos(u);
 						}
+						cout << endl;
 				}
 			}
 		}
@@ -1563,6 +1568,7 @@ void ehVizinho(grafo* G, int u, int v){
 			cout << "e vizinho de ";
 			G->printPos(v);
 		}
+		cout << endl;
 	}
 	else if(G->getQualEstrutura() == 2){
 		matrizAdj* mAdj = G->getMAdj();
@@ -1572,6 +1578,7 @@ void ehVizinho(grafo* G, int u, int v){
 			cout << "e vizinho de ";
 			G->printPos(v);
 		}
+		cout << endl;
 	}
 	else if(G->getQualEstrutura() == 3){
 		matrizInc* mInc = G->getMInc();
@@ -1582,8 +1589,8 @@ void ehVizinho(grafo* G, int u, int v){
 			cout << "e vizinho de ";
 			G->printPos(v);
 		}
+		cout << endl;
 	}
-	cout << endl;
 }
 
 void ehPredecessor(grafo* G, int u, int v){
@@ -1597,6 +1604,7 @@ void ehPredecessor(grafo* G, int u, int v){
 				cout << "e predecessor de ";
 				G->printPos(u);
 			}
+			cout << endl;
 		}
 		else if(G->getQualEstrutura() == 2){
 			matrizAdj* mAdj = G->getMAdj();
@@ -1605,6 +1613,7 @@ void ehPredecessor(grafo* G, int u, int v){
 				cout << "e predecessor de ";
 				G->printPos(u);
 			}
+			cout << endl;
 		}
 		else if(G->getQualEstrutura() == 3){
 			matrizInc* mInc = G->getMInc();
@@ -1616,9 +1625,9 @@ void ehPredecessor(grafo* G, int u, int v){
 						cout << "e predecessor de ";
 						G->printPos(u);
 					}
+					cout << endl;
 			}
 		}
-		cout << endl;
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
@@ -1637,6 +1646,7 @@ void ehSucessor(grafo* G, int u, int v){
 				cout << "e sucessor de ";
 				G->printPos(u);
 			}
+			cout << endl;
 		}
 		else if(G->getQualEstrutura() == 2){
 			matrizAdj* mAdj = G->getMAdj();
@@ -1645,6 +1655,7 @@ void ehSucessor(grafo* G, int u, int v){
 				cout << "e sucessor de ";
 				G->printPos(u);
 			}
+			cout << endl;
 		}
 		else if(G->getQualEstrutura() == 3){
 			matrizInc* mInc = G->getMInc();
@@ -1656,9 +1667,9 @@ void ehSucessor(grafo* G, int u, int v){
 						cout << "e sucessor de ";
 						G->printPos(u);
 					}
+					cout << endl;
 			}
 		}
-		cout << endl;
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
