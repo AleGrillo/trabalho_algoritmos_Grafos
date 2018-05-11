@@ -16,72 +16,84 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////Funções do Main///////////////////////////////
-bool ePonderado(){
-	cout << "-GRAFO PONDERADO-\n";
-	cout << "Sim				0\n";
-	cout << "Nao				1\n";
+bool ePonderado() {
+  cout << "##############################################################" << endl;
+	cout << "################### O Grafo é Ponderado? #####################" << endl;
+  cout << "##############################################################" << endl;
+	cout << "###################### Sim	-----> [0] ########################" << endl;
+	cout << "###################### Não -----> [1] ########################" << endl;
+  cout << "##############################################################" << endl;
+
 	int comando;
 	cin >> comando;
 
-	if(comando == 0){
+	if(comando == 0) {
 		return true;
-	}
-	else if(comando == 1){
+	} else if (comando == 1) {
 		return false;
-	}
-	else{
-		cout << "comando invalido\n";
+	} else {
+    cout << "##############################################################" << endl;
+    cout << "####################     Opção invalida     ##################" << endl;
+    cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
 }
 
-string nomeArq(){
-	cout << "-NOME DO ARQUIVO-\n";
+
+bool dadosVertices() {
+  cout << "## Quais os tipos de dados serão passados para os vertices? ##" << endl;
+  cout << "##############################################################" << endl;
+  cout << "########### Coordenadas(Euclediano)  -----> [0] ##############" << endl;
+  cout << "################  Apenas valores	    -----> [1] ##############" << endl;
+  cout << "##############################################################" << endl;
+
+	int comando;
+	cin >> comando;
+
+	if (comando == 0) {
+		return true;
+	} else if (comando == 1) {
+		return false;
+	} else {
+    cout << "##############################################################" << endl;
+    cout << "####################     Opção invalida     ##################" << endl;
+    cout << "##############################################################" << endl;
+		exit(EXIT_FAILURE);
+	}
+}
+
+string nomeArq() {
+  cout << "##############   Digite o nome do Arquivo:";
+  cout << "#############################################################" << endl;
+
 	string nome;
 	cin >> nome;
+
 	return nome;
 }
 
-int estruturaUtilizada(){
-	cout << "-QUAL ESTRUTURA DE DADOS SERA UTILIZADA-\n";
-	cout << "Lista de Adjacencias					1\n";
-	cout << "Matriz de Adjacencias					2\n";
-	cout << "Matriz de Incidencias					3\n";
+int estruturaUtilizada() {
+  cout << "######## Qual a Estrutura de Dados deseja utilizar? #########" << endl;
+  cout << "#############################################################" << endl;
+  cout << "########### Lista de Adjacencias	 -----> [1]  ###############" << endl;
+  cout << "########### Matriz de Adjacencias -----> [2]  ###############" << endl;
+  cout << "########### Matriz de Incidencias -----> [3]  ###############" << endl;
+  cout << "#############################################################" << endl;
 
 	int comando;
 	cin >> comando;
 
-	if(comando > 0 and comando < 4){
+	if(comando > 0 and comando < 4) {
 		return comando;
-	}
-	else{
-		cout << "comando invalido\n";
+	}	else {
+    cout << "##############################################################" << endl;
+    cout << "####################     Opção invalida     ##################" << endl;
+    cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
 }
 
-bool dadosVertices(){
-	cout << "-QUAIS DADOS SERAO PASSADOS PARA OS VERTICES-\n";
-	cout << "Coordenadas (Euclediano)				0\n";
-	cout << "Apenas valores						1\n";
-
-	int comando;
-	cin >> comando;
-
-	if(comando == 0){
-		return true;
-	}
-	else if(comando == 1){
-		return false;
-	}
-	else{
-		cout << "comando invalido\n";
-		exit(EXIT_FAILURE);
-	}
-}
-
-
-int menu(){
+int menu() {
 	int comando = -1;
 	return comando;
 }
@@ -97,9 +109,10 @@ int main() {
 
   ifstream arquivo(nomeArquivo.c_str());
 
-  if(arquivo){
+  if (arquivo) {
 		arquivo >> orientation;
-		if(orientation == "UNDIRECTED" or orientation == "DIRECTED"){
+
+		if (orientation == "UNDIRECTED" or orientation == "DIRECTED"){
 			grafo* Grafo = new grafo(orientation, ponderado, qualEstrutura);
 
 			while(arquivo.good()){
