@@ -201,6 +201,7 @@ void lista::copyList(lista* copy){
 }
 
 verticeDeAdj* lista::getFirst(){
+	//Retorna uma copia da lista 
 	lista* copy;
 	copy = new lista();
 	copyList(copy);
@@ -250,8 +251,6 @@ class matrizAdj{
 		~matrizAdj();
 		void insert(int linha, int coluna, int peso);
 		void insert(int linha, int coluna);
-		int* getLinha(int linha);
-		int* getColuna(int coluna);
 		int getTam();
 		int getPeso(int verticeA, int verticeB);
 		void printMat();
@@ -353,34 +352,6 @@ void matrizAdj::expand(int t){
 	matriz = mat;
 }
 
-int* matrizAdj::getLinha(int linha){ //Retorna a linha da matriz
-	if(linha >= 0 and linha < tamanhoMat){
-		int* vetor = new int[tamanhoMat];
-		for (int i = 0; i < tamanhoMat; i++)
-		{
-			vetor[i] = matriz[linha][i];
-		}
-		
-		return vetor;
-	}
-	
-	return NULL;
-}
-	
-int* matrizAdj::getColuna(int coluna){ //Retorna a coluna da matriz
-	if(coluna >= 0 and coluna < tamanhoMat){
-		int* vetor = new int[tamanhoMat];
-		for (int i = 0; i < tamanhoMat; i++)
-		{
-			vetor[i] = matriz[i][coluna];
-		}
-		
-		return vetor;
-	}
-	
-	return NULL;
-}
-
 void matrizAdj::printMat(){
 	for (int i = 0; i < tamanhoMat; i++)
 	{
@@ -460,7 +431,6 @@ class matrizInc{
 		int getQntLinhas();
 		void remove(int verticeA, int verticeB);
 		void removeVertice(int verticeA);
-		bool* vizinhos(int vertice);
 };
 
 matrizInc::matrizInc(string orientation, int qntVertices){
@@ -607,7 +577,7 @@ bool matrizInc::search(int verticeA, int verticeB, int& comecoAresta){
 		{
 			if(orientation == "UNDIRECTED"){
 				if(matriz[i][verticeA] == 1 and matriz[i][verticeB] == 1){
-					comecoAresta = -1;
+					comecoAresta = 0;
 					return true;
 				}
 			}
@@ -659,23 +629,6 @@ void matrizInc::removeVertice(int verticeA){
 			}
 		}
 	}
-}
-
-bool* matrizInc::vizinhos(int vertice){
-	if(vertice >= 0 and vertice <= qntColunas){
-		bool* vizinhos = new bool[qntColunas];
-		int aux;
-		for (int i = 0; i < qntColunas; i++)
-		{
-			if(i != vertice){
-				vizinhos[i] = search(vertice,i,aux);
-			}
-			else vizinhos[i] = false;
-		}
-		
-		return vizinhos;
-	}
-	return NULL;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1340,52 +1293,88 @@ void matIncToMatAdj(grafo* G){
 void obtemVizinho(grafo* G, int u){
 	//Recebe um vértice u como parâmetro e retorna um conjunto de vértices
 	//vizinhos a u;
-	if(G->getOrientation() == "UNDIRECTED"){
-		if(G->getQualEstrutura() == 1){
-			listasAdj* lAdj = G->getLAdj();
-			verticeDeAdj* aux = lAdj->getListaPos(u);
-			while(aux){
-				G->printPos(aux->getId());
-				aux = aux->getProximo();
+	if(G->getQualEstrutura() == 1){
+		listasAdj* lAdj = G->getLAdj();
+		int tam = lAdj->getQnt();
+		
+		for (int i = 0; i < tam; i++)
+		{
+			if(lAdj->searchIn(i,u) == true or lAdj->searchIn(u,i)){
+				G->printPos(i);
 			}
-			cout << endl;
-		}
-		else if(G->getQualEstrutura() == 2){
-			matrizAdj* mAdj = G->getMAdj();
-			int tam = mAdj->getTam();
-			int* vizinhos = mAdj->getLinha(u);
-			for (int i = 0; i < tam; i++)
-			{
-				if(vizinhos[i] != 0){
-					G->printPos(i);
-				}
-			}
-			cout << endl;
-		}
-		else if(G->getQualEstrutura() == 3){
-			matrizInc* mInc = G->getMInc();
-			int tam = mInc->getQntColunas();
-			bool* vizinhos = mInc->vizinhos(u);
-			for (int i = 0; i < tam; i++)
-			{
-				if(vizinhos[i] == true)
-				{
-					G->printPos(i);
-				}
-			}
-			cout << endl;
 		}
 	}
-	else{
-		//Implementar
+	else if(G->getQualEstrutura() == 2){
+		matrizAdj* mAdj = G->getMAdj();
+		int tam = mAdj->getTam();
+		for (int i = 0; i < tam; i++)
+		{
+			if(mAdj->search(i,u) == true or mAdj->search(u,i) == true){
+				G->printPos(i);
+			}
+		}
 	}
+	else if(G->getQualEstrutura() == 3){
+		matrizInc* mInc = G->getMInc();
+		int tam = mInc->getQntColunas();
+		int comecoAresta;
+		for (int i = 0; i < tam; i++)
+		{
+			if(i != u and (mInc->search(i,u,comecoAresta) == true or 
+					(mInc->search(u,i,comecoAresta) == true)))
+			{
+				G->printPos(i);
+			}
+		}
+	}
+	cout << endl;
 }
 
 void obtemPred(grafo* G, int u){
 	//recebe um vértice u como parâmetro e retorna o conjunto de predecessores
 	//do vértice em questão (para grafos direcionados);
 	if(G->getOrientation() == "DIRECTED"){
-		//Implementar
+		if(G->getQualEstrutura() == 1){
+			listasAdj* lAdj = G->getLAdj();
+			int tam = lAdj->getQnt();
+			for (int i = 0; i < tam; i++)
+			{
+				if(i != u and lAdj->searchIn(i,u) == true){
+					G->printPos(i);
+					cout << " e predecessor de ";
+					G->printPos(u);
+				}
+			}
+			
+		}
+		else if(G->getQualEstrutura() == 2){
+			matrizAdj* mAdj = G->getMAdj();
+			int tam = mAdj->getTam();
+			for (int i = 0; i < tam; i++)
+			{
+				if(mAdj->search(i,u) == true){
+					G->printPos(i);
+					cout << " e predecessor de ";
+					G->printPos(u);
+				}
+			}
+		}
+		else if(G->getQualEstrutura() == 3){
+			matrizInc* mInc = G->getMInc();
+			int tam = mInc->getQntColunas();
+			int inicioAresta;
+			for (int i = 0; i < tam; i++)
+			{
+				if(mInc->search(i,u,inicioAresta) == true or
+					mInc->search(u,i,inicioAresta) == true){
+						if(inicioAresta == i){
+							G->printPos(i);
+							cout << " e predecessor de ";
+							G->printPos(u);
+						}
+				}
+			}
+		}
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
@@ -1397,7 +1386,47 @@ void obtemSuc(grafo* G, int u){
 	//recebe um vértice u como parâmetro e retorna o conjunto de sucessores do
 	//vértice em questão (para grafos direcionados);
 	if(G->getOrientation() == "DIRECTED"){
-		//Implementar
+		if(G->getQualEstrutura() == 1){
+			listasAdj* lAdj = G->getLAdj();
+			int tam = lAdj->getQnt();
+			for (int i = 0; i < tam; i++)
+			{
+				if(i != u and lAdj->searchIn(u,i) == true){
+					G->printPos(i);
+					cout << " e sucessor de ";
+					G->printPos(u);
+				}
+			}
+			
+		}
+		else if(G->getQualEstrutura() == 2){
+			matrizAdj* mAdj = G->getMAdj();
+			int tam = mAdj->getTam();
+			for (int i = 0; i < tam; i++)
+			{
+				if(mAdj->search(u,i) == true){
+					G->printPos(i);
+					cout << " e sucessor de ";
+					G->printPos(u);
+				}
+			}
+		}
+		else if(G->getQualEstrutura() == 3){
+			matrizInc* mInc = G->getMInc();
+			int tam = mInc->getQntColunas();
+			int inicioAresta;
+			for (int i = 0; i < tam; i++)
+			{
+				if(mInc->search(i,u,inicioAresta) == true or
+					mInc->search(u,i,inicioAresta) == true){
+						if(inicioAresta == u){
+							G->printPos(i);
+							cout << " e sucessor de ";
+							G->printPos(u);
+						}
+				}
+			}
+		}
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
@@ -1410,7 +1439,8 @@ void ehVizinho(grafo* G, int u, int v){
 	//vizinhos;
 	if(G->getQualEstrutura() == 1){
 		listasAdj* lAdj = G->getLAdj();
-		if(lAdj->searchIn(u,v) == true){
+		if(lAdj->searchIn(u,v) == true or
+			lAdj->searchIn(v,u) == true){
 			G->printPos(u);
 			cout << " e vizinho de ";
 			G->printPos(v);
@@ -1419,7 +1449,8 @@ void ehVizinho(grafo* G, int u, int v){
 	}
 	else if(G->getQualEstrutura() == 2){
 		matrizAdj* mAdj = G->getMAdj();
-		if(mAdj->search(u,v) == true){
+		if(mAdj->search(u,v) == true or
+			mAdj->search(v,u) == true){
 			G->printPos(u);
 			cout << " e vizinho de ";
 			G->printPos(v);
@@ -1429,7 +1460,8 @@ void ehVizinho(grafo* G, int u, int v){
 	else if(G->getQualEstrutura() == 3){
 		matrizInc* mInc = G->getMInc();
 		int aux;
-		if(mInc->search(u,v,aux) == true){
+		if(mInc->search(u,v,aux) == true or
+			mInc->search(v,u,aux) == true){
 			G->printPos(u);
 			cout << " e vizinho de ";
 			G->printPos(v);
@@ -1442,7 +1474,34 @@ void ehPredecessor(grafo* G, int u, int v){
 	//recebe dois vértices u e v como parâmetros e retorna true se v é predecessor
 	//de u (para grafos direcionados);
 	if(G->getOrientation() == "DIRECTED"){
-		//Implementar
+		if(G->getQualEstrutura() == 1){
+			listasAdj* lAdj = G->getLAdj();
+			if(lAdj->searchIn(v,u) == true){
+				G->printPos(v);
+				cout << " e predecessor de ";
+				G->printPos(u);
+			}
+		}
+		else if(G->getQualEstrutura() == 2){
+			matrizAdj* mAdj = G->getMAdj();
+			if(mAdj->search(v,u) == true){
+				G->printPos(v);
+				cout << " e predecessor de ";
+				G->printPos(u);
+			}
+		}
+		else if(G->getQualEstrutura() == 3){
+			matrizInc* mInc = G->getMInc();
+			int inicioAresta;
+			if(mInc->search(v,u,inicioAresta) == true or
+				mInc->search(u,v,inicioAresta) == true){
+					if(inicioAresta == v){
+						G->printPos(v);
+						cout << " e predecessor de ";
+						G->printPos(u);
+					}
+			}
+		}
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
@@ -1460,9 +1519,29 @@ void ehSucessor(grafo* G, int u, int v){
 				G->printPos(v);
 				cout << " e sucessor de ";
 				G->printPos(u);
-				cout << endl;
 			}
 		}
+		else if(G->getQualEstrutura() == 2){
+			matrizAdj* mAdj = G->getMAdj();
+			if(mAdj->search(u,v) == true){
+				G->printPos(v);
+				cout << " e sucessor de ";
+				G->printPos(u);
+			}
+		}
+		else if(G->getQualEstrutura() == 3){
+			matrizInc* mInc = G->getMInc();
+			int inicioAresta;
+			if(mInc->search(u,v,inicioAresta) == true or
+				mInc->search(v,u,inicioAresta) == true){
+					if(inicioAresta == u){
+						G->printPos(v);
+						cout << " e sucessor de ";
+						G->printPos(u);
+					}
+			}
+		}
+		cout << endl;
 	}
 	else{
 		cerr << "Grafo não orientado!\n";
