@@ -389,6 +389,7 @@ void matrizInc::insert(int verticeA, int verticeB){
 		expandLinhas();
 		if(verticeA < qntColunas and verticeB < qntColunas){
 			if(orientation == "UNDIRECTED"){
+				//~ cout << "A\n";
 				matriz[qntLinhas - 1][verticeA] = 1;
 				matriz[qntLinhas - 1][verticeB] = 1;
 			}
@@ -893,9 +894,23 @@ int vertices::insertVertice(dado novo){
 		noh* novoNoh = new noh(pos, novo);
 		vetor[pos] = novoNoh;
 		return pos;
+		//Ao inserir, retorna a posição para assim, inserir uma vizinhança
+		//nas estruturas de dados dos vertices
+	}
+	else if(vetor[busca] == NULL){
+		//Se o busca encontrar uma posição no vetor e esta não 
+		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
+		//posição
+		noh* novoNoh = new noh(busca, novo);
+		vetor[busca] = novoNoh;
+		return busca;
 	}
 	else{
+		//Se o busca retorna uma posição e ela tenha algo (!= NULL)
+		//significa que o vertice já esteja no vetor
 		return busca;
+		//Retorna a posição para poder inserir na estrutura
+		//de dados de vizinhanças dos vertices
 	}
 }
 
@@ -907,9 +922,23 @@ int vertices::insertVertice(coord novo){
 		noh* novoNoh = new noh(pos, novo);
 		vetor[pos] = novoNoh;
 		return pos;
+		//Ao inserir, retorna a posição para assim, inserir uma vizinhança
+		//nas estruturas de dados dos vertices
+	}
+	else if(vetor[busca] == NULL){
+		//Se o busca encontrar uma posição no vetor e esta não 
+		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
+		//posição
+		noh* novoNoh = new noh(busca, novo);
+		vetor[busca] = novoNoh;
+		return busca;
 	}
 	else{
+		//Se o busca retorna uma posição e ela tenha algo (!= NULL)
+		//significa que o vertice já esteja no vetor
 		return busca;
+		//Retorna a posição para poder inserir na estrutura
+		//de dados de vizinhanças dos vertices
 	}
 }
 
@@ -1000,10 +1029,10 @@ void vertices::printPos(int pos){
 	if(pos >= 0 and pos < qntVertices){
 		if(vetor[pos]){
 			if(vetor[pos]->eucledian == false){
-				cout << vetor[pos]->dadosNoh << " ";
+				cout << vetor[pos]->dadosNoh;
 			}
 			else{
-				cout << vetor[pos]->coordenadas.x << "/" << vetor[pos]->coordenadas.y << " ";
+				cout << vetor[pos]->coordenadas.x << "/" << vetor[pos]->coordenadas.y;
 			}
 		}
 	}
@@ -1042,6 +1071,8 @@ class grafo{
 		int getQualEstrutura();
 		string getOrientation();
 		void printPos(int pos);
+		void printVertices();
+		void printGrafo();
 };
 
 grafo::grafo(string orientation, bool ponderado, int qualEstrutura){
@@ -1062,6 +1093,7 @@ grafo::~grafo(){
 }
 
 void grafo::insertAresta(dado dadosNohA, dado dadosNohB){
+	//~ cout << dadosNohA << " " << dadosNohB << endl;
 	int idA = verticesDoGrafo->insertVertice(dadosNohA);
 	int idB = verticesDoGrafo->insertVertice(dadosNohB);
 	
@@ -1161,6 +1193,35 @@ string grafo::getOrientation(){
 
 void grafo::printPos(int pos){
 	verticesDoGrafo->printPos(pos);
+}
+
+void grafo::printVertices(){
+	verticesDoGrafo->print();
+}
+
+void grafo::printGrafo(){
+	if(qualEstrutura == 1){
+		int tam = lAdj->getQnt();
+		for (int i = 0; i < tam; i++)
+		{
+			verticeDeAdj* aux = lAdj->getListaPos(i);
+			while(aux){
+				int id = aux->getId();
+				verticesDoGrafo->printPos(id);
+				cout << " -> ";
+				aux = aux->getProximo();
+			}
+			cout << "NULL\n";
+		}
+	}
+	else if(qualEstrutura == 2){
+		printVertices();
+		mAdj->printMat();
+	}
+	else if(qualEstrutura == 3){
+		printVertices();
+		mInc->printMat();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1637,10 +1698,10 @@ bool ePonderado(){
 	cin >> comando;
 	
 	if(comando == 0){
-		return false;
+		return true;
 	}
 	else if(comando == 1){
-		return true;
+		return false;
 	}
 	else{
 		cout << "comando invalido\n";
@@ -1675,10 +1736,10 @@ bool dadosVertices(){
 	cin >> comando;
 	
 	if(comando == 0){
-		return false;
+		return true;
 	}
 	else if(comando == 1){
-		return true;
+		return false;
 	}
 	else{
 		cout << "comando invalido\n";
@@ -1730,6 +1791,8 @@ int main(){
 					}
 				}
 			}
+			//~ Grafo->printVertices();
+			Grafo->printGrafo();
 		}
 		else{
 			cerr << "falha ao ler o arquivo\n";
