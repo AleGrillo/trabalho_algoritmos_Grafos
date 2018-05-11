@@ -4,8 +4,8 @@
 
 using namespace std;
 
-struct coord{
-	//Para Grafos eucledianos
+//Para Grafos eucledianos
+struct coord {
 	double x;
 	double y;
 };
@@ -15,7 +15,6 @@ typedef double dado; //Para ficar mais fácil substituir o tipo no futuro
 /**
  * Classe noh que guardara as informações de cada vertice do grafo
  */
-
 class noh{
 	friend class vertices;
 	private:
@@ -124,7 +123,7 @@ matrizAdj::matrizAdj(int tamanhoMat){
 }
 
 matrizAdj::matrizAdj(){
-	create(0);	
+	create(0);
 }
 
 matrizAdj::~matrizAdj(){
@@ -134,7 +133,7 @@ matrizAdj::~matrizAdj(){
 void matrizAdj::create(int tamanhoMat){
 	this->tamanhoMat = tamanhoMat;
 	matriz = new int*[tamanhoMat];
-	
+
 	for (int i = 0; i < tamanhoMat; i++)
 	{
 		matriz[i] = new int[tamanhoMat];
@@ -150,7 +149,7 @@ void matrizAdj::deleteMat(){
 	{
 		delete []matriz[i];
 	}
-	
+
 	delete []matriz;
 }
 
@@ -163,7 +162,7 @@ void matrizAdj::insert(int linha, int coluna){
 			expand((linha - tamanhoMat) + 1);
 		}
 	}
-	
+
 	int l = linha;
 	int c = coluna;
 	if(matriz[l][c] == 0){
@@ -180,7 +179,7 @@ void matrizAdj::insert(int linha, int coluna, int peso){
 			expand((linha - tamanhoMat) + 1);
 		}
 	}
-	
+
 	int l = linha;
 	int c = coluna;
 	if(matriz[l][c] == 0){
@@ -192,7 +191,7 @@ void matrizAdj::expand(int t){
 	int tam = tamanhoMat + t; //Como foi passado somente a diferença de
 							  //tamanho do tamanho atual para o que tem de ser expandido
 	int** mat = new int*[tam];
-	
+
 	for (int i = 0; i < tam; i++)
 	{
 		mat[i] = new int[tam];
@@ -206,7 +205,7 @@ void matrizAdj::expand(int t){
 			}
 		}
 	}
-	
+
 	deleteMat();
 	tamanhoMat = tam;
 	matriz = mat;
@@ -225,7 +224,7 @@ void matrizAdj::printMat(){
 
 int matrizAdj::getTam(){
 	return tamanhoMat;
-}	
+}
 
 bool matrizAdj::search(int linha, int coluna){
 	if(matriz[linha][coluna] != 0){
@@ -252,7 +251,7 @@ void matrizAdj::removeVertice(int verticeA){
 			{
 				matriz[i][verticeA] = 0;
 			}
-			
+
 		}
 	}
 }
@@ -261,7 +260,7 @@ int matrizAdj::getPeso(int verticeA, int verticeB){
 	if(verticeA < tamanhoMat and verticeB < tamanhoMat){
 		return matriz[verticeA][verticeB];
 	}
-	
+
 	exit(EXIT_FAILURE);
 }
 
@@ -326,14 +325,14 @@ void matrizInc::deleteMat(){
 	{
 		delete []matriz[i];
 	}
-	
+
 	delete []matriz;
 	matriz = NULL;
 }
 
 void matrizInc::expandLinhas(){
 	/*
-	 * Ira aumentar de uma em uma linha pois será incerido somente 
+	 * Ira aumentar de uma em uma linha pois será incerido somente
 	 * uma aresta por vez
 	 * */
 	 int qntLinhasAux = qntLinhas + 1;
@@ -351,7 +350,7 @@ void matrizInc::expandLinhas(){
 			 }
 		 }
 	 }
-	 
+
 	 deleteMat();
 	 qntLinhas = qntLinhasAux;
 	 matriz = matrizAux;
@@ -360,9 +359,9 @@ void matrizInc::expandLinhas(){
 void matrizInc::expandColunas(int qntExpand){
 	/*
 	 * Caso em que a posicao passada do vertice é maior que a quantidade
-	 * de vertices já existentes 
+	 * de vertices já existentes
 	 */
-	 
+
 	 int qntColunasAux = qntColunas + qntExpand;
 	 int** matrizAux = new int*[qntColunasAux];
 	 for (int i = 0; i < qntLinhas; i++)
@@ -378,7 +377,7 @@ void matrizInc::expandColunas(int qntExpand){
 			 }
 		 }
 	 }
-	 
+
 	 deleteMat();
 	 qntColunas = qntColunasAux;
 	 matriz = matrizAux;
@@ -432,7 +431,7 @@ void matrizInc::printMat(){
 }
 
 bool matrizInc::search(int verticeA, int verticeB, int& comecoAresta){
-	if(verticeA < qntColunas and verticeB < qntColunas){	
+	if(verticeA < qntColunas and verticeB < qntColunas){
 		for (int i = 0; i < qntLinhas; i++)
 		{
 			if(orientation == "UNDIRECTED"){
@@ -528,7 +527,7 @@ lista::~lista(){
 
 void lista::insert(int id){
 	verticeDeAdj* novo = new verticeDeAdj(id);
-	
+
 	if(primeiro == NULL){
 		primeiro = novo;
 		ultimo = novo;
@@ -543,7 +542,7 @@ void lista::insert(int id){
 
 void lista::insert(int id, int peso){
 	verticeDeAdj* novo = new verticeDeAdj(id, peso);
-	
+
 	if(primeiro == NULL){
 		primeiro = novo;
 		ultimo = novo;
@@ -567,12 +566,12 @@ bool lista::remove(int id){
 		else{
 			verticeDeAdj* aux = primeiro;;
 			verticeDeAdj* ant;
-			
+
 			while(aux->proximo and aux->id != id){
 				ant = aux;
 				aux = aux->proximo;
 			}
-			
+
 			if(aux and aux->id == id){
 				ant->proximo = aux->proximo;
 				delete aux;
@@ -614,7 +613,7 @@ void lista::copyList(lista* copy){
 }
 
 verticeDeAdj* lista::getFirst(){
-	//Retorna uma copia da lista 
+	//Retorna uma copia da lista
 	lista* copy;
 	copy = new lista();
 	copyList(copy);
@@ -624,20 +623,20 @@ verticeDeAdj* lista::getFirst(){
 bool lista::search(int id){
 	verticeDeAdj* aux = primeiro;
 	bool achou = false;
-	
+
 	while(aux and achou == false){
 		if(aux->id == id){
 			achou = true;
 		}
 		aux = aux->proximo;
 	}
-	
+
 	return achou;
 }
 
 void lista::print(){
 	verticeDeAdj* aux = primeiro;
-	
+
 	while(aux){
 		if(aux){
 			cout << aux->id << " -> ";
@@ -653,7 +652,7 @@ void lista::print(){
 /**
  * Estrutura de Dados: Lista de Adjacencias; é um vetor de listas encadeadas
  * descrita anteriormente
- */ 
+ */
 
 class listasAdj{
 	private:
@@ -696,7 +695,7 @@ void listasAdj::deleteListas(){
 void listasAdj::create(int qntListas){
 	this->qntListas = qntListas;
 	listas = new lista*[qntListas];
-	
+
 	for (int i = 0; i < qntListas; i++)
 	{
 		listas[i] = new lista();
@@ -727,7 +726,7 @@ void listasAdj::expandListas(int qntExpand){
 			listasAux[i] = new lista();
 		}
 	}
-	
+
 	deleteListas();
 	listas = listasAux;
 	qntListas = qntAux;
@@ -736,7 +735,7 @@ void listasAdj::expandListas(int qntExpand){
 void listasAdj::insertIn(int posVertice, int verticeInserir){
 	if(posVertice < qntListas){
 		bool busca = listas[posVertice]->search(verticeInserir);
-		
+
 		if(busca == false){
 			listas[posVertice]->insert(verticeInserir);
 		}
@@ -757,7 +756,7 @@ void listasAdj::insertIn(int posVertice, int verticeInserir){
 void listasAdj::insertIn(int posVertice, int verticeInserir, int peso){
 	if(posVertice < qntListas){
 		bool busca = listas[posVertice]->search(verticeInserir);
-		
+
 		if(busca == false){
 			listas[posVertice]->insert(verticeInserir,peso);
 		}
@@ -786,16 +785,16 @@ bool listasAdj::removeVertice(int posVertice){
 	if(posVertice < qntListas){
 		verticeDeAdj* aux = listas[posVertice]->getFirst();
 		aux = aux->proximo;
-		
+
 		while(aux){
 			//Apaga o vertice da lista de cada vertice que o tenha como vizinho
 			listas[aux->id]->remove(posVertice);
 			aux = aux->proximo;
 		}
-		
+
 		return listas[posVertice]->deleteList();
 	}
-	
+
 	return false;
 }
 
@@ -825,7 +824,7 @@ class vertices{
 		noh** vetor;
 		int qntVertices;
 		void expandVetor();
-		bool compare(dado A, dado B); 
+		bool compare(dado A, dado B);
 		bool compare(coord A, coord B);
 	public:
 		vertices(int qntVertices);
@@ -845,7 +844,7 @@ class vertices{
 vertices::vertices(int qntVertices){
 	this->qntVertices = qntVertices;
 	vetor = new noh*[qntVertices];
-	
+
 	for (int i = 0; i < qntVertices; i++)
 	{
 		vetor[i] = NULL;
@@ -868,7 +867,7 @@ vertices::~vertices(){
 void vertices::expandVetor(){
 	int qntAux = qntVertices + 1;
 	noh** vetorAux = new noh*[qntAux];
-	
+
 	for (int i = 0; i < qntAux; i++)
 	{
 		if(i < qntVertices){
@@ -878,9 +877,9 @@ void vertices::expandVetor(){
 			vetorAux[i] = NULL;
 		}
 	}
-	
+
 	delete []vetor;
-	
+
 	vetor = vetorAux;
 	qntVertices = qntAux;
 }
@@ -897,7 +896,7 @@ int vertices::insertVertice(dado novo){
 		//nas estruturas de dados dos vertices
 	}
 	else if(vetor[busca] == NULL){
-		//Se o busca encontrar uma posição no vetor e esta não 
+		//Se o busca encontrar uma posição no vetor e esta não
 		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
 		//posição
 		noh* novoNoh = new noh(busca, novo);
@@ -925,7 +924,7 @@ int vertices::insertVertice(coord novo){
 		//nas estruturas de dados dos vertices
 	}
 	else if(vetor[busca] == NULL){
-		//Se o busca encontrar uma posição no vetor e esta não 
+		//Se o busca encontrar uma posição no vetor e esta não
 		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
 		//posição
 		noh* novoNoh = new noh(busca, novo);
@@ -975,7 +974,7 @@ bool vertices::compare(dado A, dado B){
 	if(A == B){
 		return true;
 	}
-	
+
 	return false;
 }
 bool vertices::compare(coord A, coord B){
@@ -992,7 +991,7 @@ void vertices::print(){
 			cout << vetor[i]->dadosNoh << " ";
 		}
 		else{
-			cout << vetor[i]->coordenadas.x << "/" 
+			cout << vetor[i]->coordenadas.x << "/"
 			<< vetor[i]->coordenadas.y << " ";
 		}
 	}
@@ -1001,17 +1000,17 @@ void vertices::print(){
 
 int vertices::deleteVertice(dado del){
 	int pos = search(del);
-	
+
 	deletePos(pos);
-	
+
 	return pos;
 }
 
 int vertices::deleteVertice(coord del){
 	int pos = search(del);
-	
+
 	deletePos(pos);
-	
+
 	return pos;
 }
 
@@ -1052,7 +1051,7 @@ class grafo{
 		string orientation;
 		bool ponderado;
 		void inserctIn(int idA, int idB);//Insere na estrutura de dados escolhida
-		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados 
+		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados
 												//escolhida com grafos ponderados
 	public:
 		grafo(string orientation, bool ponderado, int qualEstrutura);
@@ -1095,26 +1094,26 @@ void grafo::insertAresta(dado dadosNohA, dado dadosNohB){
 	//~ cout << dadosNohA << " " << dadosNohB << endl;
 	int idA = verticesDoGrafo->insertVertice(dadosNohA);
 	int idB = verticesDoGrafo->insertVertice(dadosNohB);
-	
+
 	inserctIn(idA,idB);
 }
 
 void grafo::insertAresta(coord coordenadasNohA, coord coordenadasNohB){
 	int idA = verticesDoGrafo->insertVertice(coordenadasNohA);
 	int idB = verticesDoGrafo->insertVertice(coordenadasNohB);
-	
+
 	inserctIn(idA,idB);
 }
 
 void grafo::insertAresta(dado dadosNohA, dado dadosNohB, int peso){
 	int idA = verticesDoGrafo->insertVertice(dadosNohA);
 	int idB = verticesDoGrafo->insertVertice(dadosNohB);
-	
+
 	inserctIn(idA,idB,peso);
 }
 
 void grafo::inserctIn(int idA, int idB){
-	
+
 	if(orientation == "UNDIRECTED"){
 		if(qualEstrutura == 1){
 			lAdj->insertIn(idA, idB);
@@ -1142,7 +1141,7 @@ void grafo::inserctIn(int idA, int idB){
 }
 
 void grafo::inserctIn(int idA, int idB, int peso){
-	
+
 	if(orientation == "UNDIRECTED"){
 		if(qualEstrutura == 1){
 			lAdj->insertIn(idA, idB, peso);
@@ -1394,7 +1393,7 @@ void obtemVizinho(grafo* G, int u){
 	if(G->getQualEstrutura() == 1){
 		listasAdj* lAdj = G->getLAdj();
 		int tam = lAdj->getQnt();
-		
+
 		for (int i = 0; i < tam; i++)
 		{
 			if(lAdj->searchIn(i,u) == true or lAdj->searchIn(u,i)){
@@ -1418,7 +1417,7 @@ void obtemVizinho(grafo* G, int u){
 		int comecoAresta;
 		for (int i = 0; i < tam; i++)
 		{
-			if(i != u and (mInc->search(i,u,comecoAresta) == true or 
+			if(i != u and (mInc->search(i,u,comecoAresta) == true or
 					(mInc->search(u,i,comecoAresta) == true)))
 			{
 				G->printPos(i);
@@ -1443,7 +1442,7 @@ void obtemPred(grafo* G, int u){
 					G->printPos(u);
 				}
 			}
-			
+
 		}
 		else if(G->getQualEstrutura() == 2){
 			matrizAdj* mAdj = G->getMAdj();
@@ -1495,7 +1494,7 @@ void obtemSuc(grafo* G, int u){
 					G->printPos(u);
 				}
 			}
-			
+
 		}
 		else if(G->getQualEstrutura() == 2){
 			matrizAdj* mAdj = G->getMAdj();
@@ -1708,7 +1707,7 @@ bool ePonderado(){
 	cout << "Nao				1\n";
 	int comando;
 	cin >> comando;
-	
+
 	if(comando == 0){
 		return true;
 	}
@@ -1726,10 +1725,10 @@ int estruturaUtilizada(){
 	cout << "Lista de Adjacencias					1\n";
 	cout << "Matriz de Adjacencias					2\n";
 	cout << "Matriz de Incidencias					3\n";
-	
+
 	int comando;
 	cin >> comando;
-	
+
 	if(comando > 0 and comando < 4){
 		return comando;
 	}
@@ -1743,10 +1742,10 @@ bool dadosVertices(){
 	cout << "-QUAIS DADOS SERAO PASSADOS PARA OS VERTICES-\n";
 	cout << "Coordenadas (Euclediano)				0\n";
 	cout << "Apenas valores						1\n";
-	
+
 	int comando;
 	cin >> comando;
-	
+
 	if(comando == 0){
 		return true;
 	}
@@ -1769,7 +1768,7 @@ int menu(){
 ////////////////////////////////////////////////////////////////////////
 
 int main(){
-	
+
 	bool ponderado = ePonderado();
 	bool eucledian = dadosVertices();
 	int qualEstrutura = estruturaUtilizada();
@@ -1780,7 +1779,7 @@ int main(){
 		arquivo >> orientation;
 		if(orientation == "UNDIRECTED" or orientation == "DIRECTED"){
 			grafo* Grafo = new grafo(orientation, ponderado, qualEstrutura);
-			
+
 			while(arquivo.good()){
 				if(ponderado == true){
 					dado dadosNohA;
@@ -1823,6 +1822,6 @@ int main(){
 		cerr << "falha ao abrir o arquivo\n";
 		exit(EXIT_FAILURE);
 	}
-	
+
 return 0;
 }
