@@ -172,26 +172,21 @@ class vertices {
 		int search(coord pos);
 };
 
-
-
-
-////////////////////////////////////////////////////////////////////////
-///////////////////////////Classe Grafo/////////////////////////////////
-
-class grafo{
+//////////////////////////////  Classe Grafo  ///////////////////////////////
+class grafo {
 	private:
 		vertices* verticesDoGrafo;
 		listasAdj* lAdj;
 		matrizAdj* mAdj;
 		matrizInc* mInc;
-		int qualEstrutura;//Vem do main contendo a opção de estrutura de
-						  //dados escolhida pelo usuario para armazenar os
-						  //vertices e as arestas.
+		int qualEstrutura;  //Vem do main contendo a opção de estrutura de
+						            //dados escolhida pelo usuario para armazenar os
+						            //vertices e as arestas.
 		string orientation;
 		bool ponderado;
-		void inserctIn(int idA, int idB);//Insere na estrutura de dados escolhida
-		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados
-												//escolhida com grafos ponderados
+		void inserctIn(int idA, int idB); //Insere na estrutura de dados escolhida
+		void inserctIn(int idA, int idB, int peso);//  Insere na estrutura de dados
+												                      //escolhida com grafos ponderados
 	public:
 		grafo(string orientation, bool ponderado, int qualEstrutura);
 		~grafo();
@@ -211,9 +206,5 @@ class grafo{
 		void printVertices();
 		void printGrafo();
 };
-
-
-
-
 
 #endif
