@@ -5,6 +5,7 @@
 using namespace std;
 
 struct coord{
+	//Para Grafos eucledianos
 	double x;
 	double y;
 };
@@ -19,8 +20,8 @@ class noh{
 	friend class vertices;
 	private:
 		int id; //id que guarda a posição no vetor com vertices no grafo
-		dado dadosNoh;
-		coord coordenadas;
+		dado dadosNoh; //Para vertices com peso
+		coord coordenadas; //Para grafos eucledianos
 		bool eucledian;
 	public:
 		noh(int id, dado dadosNoh);
@@ -30,25 +31,33 @@ class noh{
 noh::noh(int id, dado dadosNoh){
 	this->id = id;
 	this->dadosNoh = dadosNoh;
-	eucledian = false;
+	eucledian = false; //influencia na hora de imprimir ou retornar o valor do noh
 }
 
 noh::noh(int id, coord coordenadas){
 	this->id = id;
 	this->coordenadas.x = coordenadas.x;
 	this->coordenadas.y = coordenadas.y;
-	eucledian = true;
+	eucledian = true; //influencia na hora de imprimir ou retornar o valor do noh
 }
 
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////Classe Vertice///////////////////////////////
 
+/**
+ * São os vertices da lista de adjacencias. Esses vertices possuem um id, que
+ * é uma identificação de onde ele está no vetor de nohs do grafo (nesse vetor
+ * que estão as informações de valores ou as coordenadas desse vertive), e também
+ * possuem um peso caso o grafo seja ponderado.
+ */
+
 class verticeDeAdj{
-	friend class lista;
-	friend class listasAdj;
+	friend class lista; //lista individual de cada vertice
+	friend class listasAdj; //Todas as listas de adjacencias dos vertices
+							//do grafo
 	private:
 		int id;
-		int peso;
+		int peso; //Caso o grafo seja ponderado
 		verticeDeAdj* proximo;
 	public:
 		verticeDeAdj(int id);
@@ -83,160 +92,11 @@ verticeDeAdj* verticeDeAdj::getProximo(){
 }
 
 ////////////////////////////////////////////////////////////////////////
-/////////////////////////Classe Lista///////////////////////////////////
-
-class lista{
-	private:
-		verticeDeAdj* primeiro;
-		verticeDeAdj* ultimo;
-		int tamanhoLista;
-		void copyList(lista* copy);// copia a lista
-	public:
-		lista();
-		~lista();
-		void insert(int id);
-		void insert(int id, int peso);
-		bool remove(int id);
-		bool search(int id);
-		bool deleteList();
-		verticeDeAdj* getFirst(); //Retorna uma copia do primeiro verticeDeAdj da lista
-		void print();
-};
-
-lista::lista(){
-	primeiro = NULL;
-	ultimo = NULL;
-	tamanhoLista = 0;
-}
-
-lista::~lista(){
-	deleteList();
-}
-
-void lista::insert(int id){
-	verticeDeAdj* novo = new verticeDeAdj(id);
-	
-	if(primeiro == NULL){
-		primeiro = novo;
-		ultimo = novo;
-		tamanhoLista++;
-	}
-	else{
-		ultimo->proximo = novo;
-		ultimo = novo;
-		tamanhoLista++;
-	}
-}
-
-void lista::insert(int id, int peso){
-	verticeDeAdj* novo = new verticeDeAdj(id, peso);
-	
-	if(primeiro == NULL){
-		primeiro = novo;
-		ultimo = novo;
-		tamanhoLista++;
-	}
-	else{
-		ultimo->proximo = novo;
-		ultimo = novo;
-		tamanhoLista++;
-	}
-}
-
-bool lista::remove(int id){
-	if(primeiro == NULL){
-		return false;
-	}
-	else{
-		if(primeiro->id == id){
-			return false;
-		}
-		else{
-			verticeDeAdj* aux = primeiro;;
-			verticeDeAdj* ant;
-			
-			while(aux->proximo and aux->id != id){
-				ant = aux;
-				aux = aux->proximo;
-			}
-			
-			if(aux->id == id){
-				ant->proximo = aux->proximo;
-				delete aux;
-				tamanhoLista--;
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-	}
-}
-
-bool lista::deleteList(){
-	if(primeiro == NULL){
-		return false;
-	}
-	else{
-		verticeDeAdj* aux;
-		while(primeiro){
-			aux = primeiro;
-			primeiro = primeiro->proximo;
-			delete aux;
-			tamanhoLista--;
-		}
-		primeiro = NULL;
-		ultimo = NULL;
-		return true;
-	}
-}
-
-void lista::copyList(lista* copy){
-	verticeDeAdj* aux = primeiro;
-	while(aux){
-		verticeDeAdj* novo = new verticeDeAdj(aux->id);
-		copy->insert(novo->id);
-		aux = aux->proximo;
-	}
-}
-
-verticeDeAdj* lista::getFirst(){
-	//Retorna uma copia da lista 
-	lista* copy;
-	copy = new lista();
-	copyList(copy);
-	return copy->primeiro;
-}
-
-bool lista::search(int id){
-	verticeDeAdj* aux = primeiro;
-	bool achou = false;
-	
-	while(aux and achou == false){
-		if(aux->id == id){
-			achou = true;
-		}
-		aux = aux->proximo;
-	}
-	
-	return achou;
-}
-
-void lista::print(){
-	verticeDeAdj* aux = primeiro;
-	
-	while(aux){
-		if(aux){
-			cout << aux->id << " -> ";
-		}
-		aux = aux->proximo;
-	}
-	cout << "NULL" << endl;
-	//~ cout << endl;
-}
-
-////////////////////////////////////////////////////////////////////////
 ///////////////////////Matriz de Adjacencias////////////////////////////
+
+/**
+ * Estrutura de Dados: Matriz de Adjacêndias
+ */
 
 class matrizAdj{
 	private:
@@ -411,9 +271,9 @@ int matrizAdj::getPeso(int verticeA, int verticeB){
 class matrizInc{
 	private:
 		int** matriz;
-		int qntLinhas; //Ou qnt de arestas, considerando que cada linha
+		int qntLinhas; //Qnt de arestas, LEMBRANDO que cada linha
 					   //da matriz representa uma aresta
-		int qntColunas;//Ou qnt de vertices, considerando que cada coluna
+		int qntColunas;//Qnt de vertices, LEMBRANDO que cada coluna
 					   //da matriz é um vertice
 		void expandLinhas();
 		void expandColunas(int qntExpand);
@@ -632,11 +492,167 @@ void matrizInc::removeVertice(int verticeA){
 }
 
 ////////////////////////////////////////////////////////////////////////
+/////////////////////////Classe Lista///////////////////////////////////
+
+/**
+ * Estrutura de Dados: Lista encadeada simples
+ */
+
+class lista{
+	private:
+		verticeDeAdj* primeiro;
+		verticeDeAdj* ultimo;
+		int tamanhoLista;
+		void copyList(lista* copy);// copia a lista
+	public:
+		lista();
+		~lista();
+		void insert(int id);
+		void insert(int id, int peso);
+		bool remove(int id);
+		bool search(int id);
+		bool deleteList();
+		verticeDeAdj* getFirst(); //Retorna uma copia do primeiro verticeDeAdj da lista
+		void print();
+};
+
+lista::lista(){
+	primeiro = NULL;
+	ultimo = NULL;
+	tamanhoLista = 0;
+}
+
+lista::~lista(){
+	deleteList();
+}
+
+void lista::insert(int id){
+	verticeDeAdj* novo = new verticeDeAdj(id);
+	
+	if(primeiro == NULL){
+		primeiro = novo;
+		ultimo = novo;
+		tamanhoLista++;
+	}
+	else{
+		ultimo->proximo = novo;
+		ultimo = novo;
+		tamanhoLista++;
+	}
+}
+
+void lista::insert(int id, int peso){
+	verticeDeAdj* novo = new verticeDeAdj(id, peso);
+	
+	if(primeiro == NULL){
+		primeiro = novo;
+		ultimo = novo;
+		tamanhoLista++;
+	}
+	else{
+		ultimo->proximo = novo;
+		ultimo = novo;
+		tamanhoLista++;
+	}
+}
+
+bool lista::remove(int id){
+	if(primeiro == NULL){
+		return false;
+	}
+	else{
+		if(primeiro->id == id){
+			return false;
+		}
+		else{
+			verticeDeAdj* aux = primeiro;;
+			verticeDeAdj* ant;
+			
+			while(aux->proximo and aux->id != id){
+				ant = aux;
+				aux = aux->proximo;
+			}
+			
+			if(aux and aux->id == id){
+				ant->proximo = aux->proximo;
+				delete aux;
+				tamanhoLista--;
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	}
+}
+
+bool lista::deleteList(){
+	if(primeiro == NULL){
+		return false;
+	}
+	else{
+		verticeDeAdj* aux;
+		while(primeiro){
+			aux = primeiro;
+			primeiro = primeiro->proximo;
+			delete aux;
+			tamanhoLista--;
+		}
+		primeiro = NULL;
+		ultimo = NULL;
+		return true;
+	}
+}
+
+void lista::copyList(lista* copy){
+	verticeDeAdj* aux = primeiro;
+	while(aux){
+		verticeDeAdj* novo = new verticeDeAdj(aux->id);
+		copy->insert(novo->id);
+		aux = aux->proximo;
+	}
+}
+
+verticeDeAdj* lista::getFirst(){
+	//Retorna uma copia da lista 
+	lista* copy;
+	copy = new lista();
+	copyList(copy);
+	return copy->primeiro;
+}
+
+bool lista::search(int id){
+	verticeDeAdj* aux = primeiro;
+	bool achou = false;
+	
+	while(aux and achou == false){
+		if(aux->id == id){
+			achou = true;
+		}
+		aux = aux->proximo;
+	}
+	
+	return achou;
+}
+
+void lista::print(){
+	verticeDeAdj* aux = primeiro;
+	
+	while(aux){
+		if(aux){
+			cout << aux->id << " -> ";
+		}
+		aux = aux->proximo;
+	}
+	cout << "NULL" << endl;
+}
+
+////////////////////////////////////////////////////////////////////////
 //////////////////////Classe Listas de Adjacencia///////////////////////
 
 /**
- * Classe que contém um vetor com as listas de adjacencia de cada 
- * vertice do grafo
+ * Estrutura de Dados: Lista de Adjacencias; é um vetor de listas encadeadas
+ * descrita anteriormente
  */ 
 
 class listasAdj{
@@ -903,11 +919,13 @@ int vertices::search(dado buscar){
 		if(vetor[i]){
 			if(compare(vetor[i]->dadosNoh, buscar) == true){
 				return i;
+				//Não insere o mesmo noh no grafo duas vezes
 			}
 		}
-		else return i; //Retorna a primeira posição vazia
+		else return i; //Retorna a primeira posição vazia caso o vetor tenha
+					   //essas posições vazias
 	}
-	return -1;
+	return -1; //Se o vetor estiver cheio e o noh não estiver no vetor
 }
 
 int vertices::search(coord buscar){
@@ -916,11 +934,13 @@ int vertices::search(coord buscar){
 		if(vetor[i]){
 			if(compare(vetor[i]->coordenadas, buscar) == true){
 				return i;
+				//Não insere o mesmo noh no grafo duas vezes
 			}
 		}
-		else return i; //Retorna a primeira posição vazia
+		else return i; //Retorna a primeira posição vazia caso o vetor tenha
+					   //essas posições vazias
 	}
-	return -1;
+	return -1; //Se o vetor estiver cheio e o noh não estiver no vetor
 }
 
 bool vertices::compare(dado A, dado B){
