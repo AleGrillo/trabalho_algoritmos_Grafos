@@ -19,10 +19,8 @@ struct coord {
 
 typedef double dado; //Para ficar mais fácil substituir o tipo no futuro
 
-/**
- * Classe noh que guardara as informações de cada vertice do grafo
- */
-class noh{
+//// Classe noh que guardara as informações de cada vertice do grafo ////
+class noh {
 	friend class vertices;
 	private:
 		int id; //id que guarda a posição no vetor com vertices no grafo
@@ -34,19 +32,15 @@ class noh{
 		noh(int id, coord coordenadas);
 };
 
-////////////////////////////////////////////////////////////////////////
-/////////////////////////Classe Vertice///////////////////////////////
-
-/**
- * São os vertices da lista de adjacencias. Esses vertices possuem um id, que
- * é uma identificação de onde ele está no vetor de nohs do grafo (nesse vetor
- * que estão as informações de valores ou as coordenadas desse vertive), e também
- * possuem um peso caso o grafo seja ponderado.
- */
-class verticeDeAdj{
+///////////////////////////// Classe Vertice ///////////////////////////////
+// São os vertices da lista de adjacencias. Esses vertices possuem um id, //
+// que é uma identificação de onde ele está no vetor de nohs do grafo     //
+// (nesse vetor que estão as informações de valores ou as coordenadas     //
+// desse vertive), e também possuem um peso caso o grafo seja ponderado.  //
+////////////////////////////////////////////////////////////////////////////
+class verticeDeAdj {
 	friend class lista; //lista individual de cada vertice
-	friend class listasAdj; //Todas as listas de adjacencias dos vertices
-							//do grafo
+	friend class listasAdj; //Todas as listas de adjacencias dos vertices do grafo
 	private:
 		int id;
 		int peso; //Caso o grafo seja ponderado
@@ -59,13 +53,10 @@ class verticeDeAdj{
 		verticeDeAdj* getProximo();
 };
 
-
-////////////////////////////////////////////////////////////////////////
-///////////////////////Matriz de Adjacencias////////////////////////////
-/**
- * Estrutura de Dados: Matriz de Adjacêndias
- */
-class matrizAdj{
+//////////////////////////  Matriz de Adjacencias  /////////////////////////
+//              Estrutura de Dados: Matriz de Adjacêndias                 //
+////////////////////////////////////////////////////////////////////////////
+class matrizAdj {
 	private:
 		int **matriz;
 		int tamanhoMat;
@@ -86,16 +77,14 @@ class matrizAdj{
 		void removeVertice(int verticeA);
 };
 
-
-////////////////////////////////////////////////////////////////////////
-///////////////////////Matriz de Incidencias////////////////////////////
-class matrizInc{
+///////////////////////    Matriz de Incidencias   /////////////////////////
+class matrizInc {
 	private:
 		int** matriz;
 		int qntLinhas; //Qnt de arestas, LEMBRANDO que cada linha
-					   //da matriz representa uma aresta
+					         //da matriz representa uma aresta
 		int qntColunas;//Qnt de vertices, LEMBRANDO que cada coluna
-					   //da matriz é um vertice
+					         //da matriz é um vertice
 		void expandLinhas();
 		void expandColunas(int qntExpand);
 		void deleteMat();
@@ -114,17 +103,10 @@ class matrizInc{
 		void removeVertice(int verticeA);
 };
 
-
-
-
-////////////////////////////////////////////////////////////////////////
-/////////////////////////Classe Lista///////////////////////////////////
-
-/**
- * Estrutura de Dados: Lista encadeada simples
- */
-
-class lista{
+////////////////////////////  Classe Lista  ////////////////////////////////
+//              Estrutura de Dados: Lista encadeada simples               //
+////////////////////////////////////////////////////////////////////////////
+class lista {
 	private:
 		verticeDeAdj* primeiro;
 		verticeDeAdj* ultimo;
@@ -142,18 +124,11 @@ class lista{
 		void print();
 };
 
-
-
-
-////////////////////////////////////////////////////////////////////////
-//////////////////////Classe Listas de Adjacencia///////////////////////
-
-/**
- * Estrutura de Dados: Lista de Adjacencias; é um vetor de listas encadeadas
- * descrita anteriormente
- */
-
-class listasAdj{
+////////////////////  Classe Listas de Adjacencia  //////////////////////////
+// Estrutura de Dados: Lista de Adjacencias; é um vetor de listas          //
+// encadeadas descrita anteriormente                                       //
+/////////////////////////////////////////////////////////////////////////////
+class listasAdj {
 	private:
 		lista** listas;
 		int qntListas;
@@ -174,12 +149,8 @@ class listasAdj{
 		void print();
 };
 
-
-
-////////////////////////////////////////////////////////////////////////
-/////////////////////Classe vertices do Grafo///////////////////////////
-
-class vertices{
+//////////////////////  Classe vertices do Grafo  ///////////////////////////
+class vertices {
 	private:
 		noh** vetor;
 		int qntVertices;
