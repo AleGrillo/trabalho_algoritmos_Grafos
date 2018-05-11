@@ -112,49 +112,55 @@ int main() {
   if (arquivo) {
 		arquivo >> orientation;
 
-		if (orientation == "UNDIRECTED" or orientation == "DIRECTED"){
+		if (orientation == "UNDIRECTED" or orientation == "DIRECTED") {
 			grafo* Grafo = new grafo(orientation, ponderado, qualEstrutura);
 
-			while(arquivo.good()){
-				if(ponderado == true){
+			while (arquivo.good()) {
+				if(ponderado == true) {
 					dado dadosNohA;
 					dado dadosNohB;
 					int peso;
+
 					arquivo >> dadosNohA;
 					arquivo >> dadosNohB;
 					arquivo >> peso;
-					Grafo->insertAresta(dadosNohA,dadosNohB,peso);
-				}
-				else{
-					if(eucledian == true){
+
+          Grafo->insertAresta(dadosNohA, dadosNohB, peso);
+				} else {
+					if (eucledian == true) {
 						coord coordenadasA;
 						coord coordenadasB;
 						int num;
+
 						arquivo >> num;
 						arquivo >> coordenadasA.x;
 						arquivo >> coordenadasA.y;
 						arquivo >> coordenadasB.x;
 						arquivo >> coordenadasB.y;
-						Grafo->insertAresta(coordenadasA,coordenadasB);
-					}
-					else{
+
+            Grafo->insertAresta(coordenadasA, coordenadasB);
+					} else {
 						dado dadosNohA;
 						dado dadosNohB;
+
 						arquivo >> dadosNohA;
 						arquivo >> dadosNohB;
-						Grafo->insertAresta(dadosNohA,dadosNohB);
+
+            Grafo->insertAresta(dadosNohA, dadosNohB);
 					}
 				}
 			}
 			Grafo->printGrafo();
-		}
-		else{
-			cerr << "falha ao ler o arquivo\n";
+		} else {
+      cout << "##############################################################" << endl;
+      cout << "###################   Falha ao ler Arquivo   #################" << endl;
+      cout << "##############################################################" << endl;
 			exit(EXIT_FAILURE);
 		}
-	}
-	else{
-		cerr << "falha ao abrir o arquivo\n";
+	} else {
+    cout << "##############################################################" << endl;
+    cout << "##################   Falha ao abrir Arquivo   ################" << endl;
+    cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
 
