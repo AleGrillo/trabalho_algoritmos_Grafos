@@ -13,7 +13,7 @@
 
 <p> Para executar o trabalho, existem duas opções: </p>
 <li> Makefile: </b> </li>
-    <li> Certifique-se que a linha 13 esteja comentada para executar o makefile </li>
+   <li> Certifique-se que a linha 13 esteja comentada para executar o makefile </li>
    <li> Abra o terminal no diretório do arquivo Makefile
    <li> Digite Makefile </li>
    <li> Digite ./TP1_Main </li>
