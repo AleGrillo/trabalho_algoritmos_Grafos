@@ -437,17 +437,13 @@ bool matrizInc::search(int verticeA, int verticeB, int& comecoAresta){
 		{
 			if(orientation == "UNDIRECTED"){
 				if(matriz[i][verticeA] == 1 and matriz[i][verticeB] == 1){
-					comecoAresta = 0;
+					comecoAresta = -1;
 					return true;
 				}
 			}
 			else{
 				if(matriz[i][verticeA] == -1 and matriz[i][verticeB] == 1){
 					comecoAresta = verticeA;
-					return true;
-				}
-				else if(matriz[i][verticeA] == 1 and matriz[i][verticeB] == -1){
-					comecoAresta = verticeB;
 					return true;
 				}
 			}
@@ -747,11 +743,11 @@ void listasAdj::insertIn(int posVertice, int verticeInserir){
 		if(busca == false){
 			listas[posVertice]->insert(verticeInserir);
 		}
-		else{
-			cout << "Vertice ja esta na lista da posicao " << posVertice << endl;
-			//Não insere um vizinho repetido porém essa condição pode ser alterada
-			//caso seja permitido arestas duplas
-		}
+		//~ else{
+			//~ cout << "Vertice ja esta na lista da posicao " << posVertice << endl;
+			//~ //Não insere um vizinho repetido porém essa condição pode ser alterada
+			//~ //caso seja permitido arestas duplas
+		//~ }
 	}
 	else{
 		int qnt = (posVertice - qntListas) + 1;
@@ -1359,25 +1355,30 @@ void matAdjToMatInc(grafo* G){
 void matIncToListAdj(grafo* G){
 	matrizInc* mInc = G->getMInc();
 	listasAdj* lAdj = G->getLAdj();
-	int linhas = mInc->getQntLinhas();
 	int colunas = mInc->getQntColunas();
-	for (int i = 0; i < linhas; i++)
+	for (int i = 0; i < colunas; i++)
 	{
 		for (int j = 0; j < colunas; j++)
 		{
 			int comecoAresta;
-			if(mInc->search(i,j,comecoAresta) == true and i != j){
+			if(i != j and mInc->search(i,j,comecoAresta) == true){
+				G->printPos(i);
+				cout << " ";
+				G->printPos(j);
+				cout << " aresta inicial " << comecoAresta << " ";
 				if(comecoAresta == -1){
 					lAdj->insertIn(i,j);
 				}
 				else{
+					G->printPos(comecoAresta);
 					if(comecoAresta == i){
 						lAdj->insertIn(i,j);
 					}
-					else{
+					else if(comecoAresta == j){
 						lAdj->insertIn(j,i);
 					}
 				}
+				cout << endl;
 			}
 		}
 	}
@@ -1386,9 +1387,8 @@ void matIncToListAdj(grafo* G){
 void matIncToMatAdj(grafo* G){
 	matrizInc* mInc = G->getMInc();
 	matrizAdj* mAdj = G->getMAdj();
-	int linhas = mInc->getQntLinhas();
 	int colunas = mInc->getQntColunas();
-	for (int i = 0; i < linhas; i++)
+	for (int i = 0; i < colunas; i++)
 	{
 		for (int j = 0; j < colunas; j++)
 		{
@@ -1665,8 +1665,7 @@ void ehSucessor(grafo* G, int u, int v){
 		else if(G->getQualEstrutura() == 3){
 			matrizInc* mInc = G->getMInc();
 			int inicioAresta;
-			if(mInc->search(u,v,inicioAresta) == true or
-				mInc->search(v,u,inicioAresta) == true){
+			if(mInc->search(u,v,inicioAresta) == true){
 					if(inicioAresta == u){
 						G->printPos(v);
 						cout << "e sucessor de ";
@@ -1852,6 +1851,7 @@ int comand(){
 	
 	return comando;
 }
+
 int getVertice(grafo* G){
 	bool eucledian = G->getEucledian();
 	int vertice;

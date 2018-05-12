@@ -56,7 +56,7 @@ class verticeDeAdj {
 //////////////////////////  Matriz de Adjacencias  /////////////////////////
 //              Estrutura de Dados: Matriz de Adjacêndias                 //
 ////////////////////////////////////////////////////////////////////////////
-class matrizAdj {
+class matrizAdj{
 	private:
 		int **matriz;
 		int tamanhoMat;
@@ -78,13 +78,13 @@ class matrizAdj {
 };
 
 ///////////////////////    Matriz de Incidencias   /////////////////////////
-class matrizInc {
+class matrizInc{
 	private:
 		int** matriz;
 		int qntLinhas; //Qnt de arestas, LEMBRANDO que cada linha
-					         //da matriz representa uma aresta
+					   //da matriz representa uma aresta
 		int qntColunas;//Qnt de vertices, LEMBRANDO que cada coluna
-					         //da matriz é um vertice
+					   //da matriz é um vertice
 		void expandLinhas();
 		void expandColunas(int qntExpand);
 		void deleteMat();
@@ -106,7 +106,7 @@ class matrizInc {
 ////////////////////////////  Classe Lista  ////////////////////////////////
 //              Estrutura de Dados: Lista encadeada simples               //
 ////////////////////////////////////////////////////////////////////////////
-class lista {
+class lista	{
 	private:
 		verticeDeAdj* primeiro;
 		verticeDeAdj* ultimo;
@@ -122,13 +122,14 @@ class lista {
 		bool deleteList();
 		verticeDeAdj* getFirst(); //Retorna uma copia do primeiro verticeDeAdj da lista
 		void print();
+		int getTam();
 };
 
 ////////////////////  Classe Listas de Adjacencia  //////////////////////////
 // Estrutura de Dados: Lista de Adjacencias; é um vetor de listas          //
 // encadeadas descrita anteriormente                                       //
 /////////////////////////////////////////////////////////////////////////////
-class listasAdj {
+class listasAdj	{
 	private:
 		lista** listas;
 		int qntListas;
@@ -150,12 +151,12 @@ class listasAdj {
 };
 
 //////////////////////  Classe vertices do Grafo  ///////////////////////////
-class vertices {
+class vertices	{
 	private:
 		noh** vetor;
 		int qntVertices;
 		void expandVetor();
-		bool compare(dado A, dado B);
+		bool compare(dado A, dado B); 
 		bool compare(coord A, coord B);
 	public:
 		vertices(int qntVertices);
@@ -173,22 +174,23 @@ class vertices {
 };
 
 //////////////////////////////  Classe Grafo  ///////////////////////////////
-class grafo {
+class grafo	{
 	private:
 		vertices* verticesDoGrafo;
 		listasAdj* lAdj;
 		matrizAdj* mAdj;
 		matrizInc* mInc;
-		int qualEstrutura;  //Vem do main contendo a opção de estrutura de
-						            //dados escolhida pelo usuario para armazenar os
-						            //vertices e as arestas.
+		int qualEstrutura;//Vem do main contendo a opção de estrutura de
+						  //dados escolhida pelo usuario para armazenar os
+						  //vertices e as arestas.
 		string orientation;
 		bool ponderado;
-		void inserctIn(int idA, int idB); //Insere na estrutura de dados escolhida
-		void inserctIn(int idA, int idB, int peso);//  Insere na estrutura de dados
-												                      //escolhida com grafos ponderados
+		bool eucledian;
+		void inserctIn(int idA, int idB);//Insere na estrutura de dados escolhida
+		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados 
+												//escolhida com grafos ponderados
 	public:
-		grafo(string orientation, bool ponderado, int qualEstrutura);
+		grafo(string orientation, bool ponderado, bool eucledian, int qualEstrutura);
 		~grafo();
 		void insertAresta(dado dadosNohA, dado dadosNohB);//Para vertices com apenas um valor
 		void insertAresta(coord coordenadasNohA, coord coordenadasNohB);//Para vertices com coordenadas
@@ -200,11 +202,15 @@ class grafo {
 		matrizAdj* getMAdj();
 		matrizInc* getMInc();
 		bool getPonderado();
+		bool getEucledian();
 		int getQualEstrutura();
 		string getOrientation();
 		void printPos(int pos);
 		void printVertices();
 		void printGrafo();
+		void printLAdj();
+		void printMAdj();
+		void printMInc();
 };
 
 #endif
