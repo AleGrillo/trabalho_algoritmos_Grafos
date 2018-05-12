@@ -846,6 +846,7 @@ class vertices{
 		void printPos(int pos);
 		int search(dado pos);
 		int search(coord pos);
+		int getQntVertices();
 };
 
 vertices::vertices(int qntVertices){
@@ -1044,6 +1045,10 @@ void vertices::printPos(int pos){
 	}
 }
 
+int vertices::getQntVertices(){
+	return qntVertices;
+}
+
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////Classe Grafo/////////////////////////////////
 
@@ -1071,6 +1076,7 @@ class grafo{
 		void removeVertice(int pos);
 		int search(dado dadosNoh);
 		int search(coord coordenadas);
+		int getQntVertices();
 		listasAdj* getLAdj();
 		matrizAdj* getMAdj();
 		matrizInc* getMInc();
@@ -1084,6 +1090,9 @@ class grafo{
 		void printLAdj();
 		void printMAdj();
 		void printMInc();
+		void setEstruturaDados(listasAdj* lAdj);
+		void setEstruturaDados(matrizAdj* mAdj);
+		void setEstruturaDados(matrizInc* mInc);
 };
 
 grafo::grafo(string orientation, bool ponderado, bool eucledian, int qualEstrutura){
@@ -1263,6 +1272,25 @@ void grafo::printGrafo(){
 	else if(qualEstrutura == 3){
 		printMInc();
 	}
+}
+
+void grafo::setEstruturaDados(listasAdj* lAdj){
+	delete this->lAdj;
+	this->lAdj = lAdj;
+}
+
+void grafo::setEstruturaDados(matrizAdj* mAdj){
+	delete this->mAdj;
+	this->mAdj = mAdj;
+}
+
+void grafo::setEstruturaDados(matrizInc* mInc){
+	delete this->mInc;
+	this->mInc = mInc;
+}
+
+int grafo::getQntVertices(){
+	return verticesDoGrafo->getQntVertices();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1716,15 +1744,33 @@ void delAresta(grafo* G, int u, int v){
 	}
 }
 
-grafo* geraSubGrafoIV(grafo* G){
-	//Implementar
-	return NULL;
+grafo* criaSubGrafo(grafo* G){
+	//Cria uma cópia do Grafo G para ser o subGrafo
+	grafo* subGrafo = new grafo(G->getOrientation(), G->getPonderado(),
+								G->getEucledian(), G->getQualEstrutura());
+	
+	if(G->getQualEstrutura() == 1){
+		subGrafo->setEstruturaDados(G->getLAdj());
+	}
+	else if(G->getQualEstrutura() == 2){
+		subGrafo->setEstruturaDados(G->getMAdj());
+	}
+	else if(G->getQualEstrutura() == 3){
+		subGrafo->setEstruturaDados(G->getMInc());
+	}
+	
+	return subGrafo;
 }
 
-grafo* geraSubGrafoIA(grafo* G){
-	//Implementar
-	return NULL;
-}
+//~ grafo* geraSubGrafoIV(grafo* G){
+	//~ grafo* subGrafo = criaSubGrafo(G);
+	//~ return subGrafo;
+//~ }
+
+//~ grafo* geraSubGrafoIA(grafo* G){
+	//~ grafo* subGrafo = criaSubGrafo(G);
+	//~ return subGrafo;
+//~ }
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////Funções do Main///////////////////////////////
@@ -1956,14 +2002,70 @@ void menu(grafo* G){
 			}
 		}
 		else if(comando == 10){
+			cout << "VERTICE A SER REMOVIDO\n";
+			int u = getVertice(G);
+			if(u == -1){
+				cout << "Vertice nao esta no Grafo\n";
+			}
+			else{
+				delVertice(G,u);
+			}
 		}
 		else if(comando == 11){
+			cout << "VERTICE U\n";
+			int u = getVertice(G);
+			cout << "VERTICE V\n";
+			int v = getVertice(G);
+			if(u == -1 or v == -1){
+				cout << "Vertice nao esta no Grafo\n";
+			}
+			else delAresta(G,u,v);
 		}
 		else if(comando == 12){
+			grafo* subGrafo = criaSubGrafo(G);
+			cout << "QUANTOS VERTICES ELIMINAR DO GRAFO\n";
+			int qnt;
+			cin >> qnt;
+			
+			if(qnt > subGrafo->getQntVertices()){
+				cout << "Quantidade de vertices escolhida maior que quantidade ";
+				cout <<	"de vertices do Grafo\n";
+			}
+			else{
+				for (int i = 0; i < qnt; i++)
+				{
+					cout << "VERTICE U\n";
+					int u = getVertice(subGrafo);
+					if(u == -1){
+						cout << "Vertice nao esta no Grafo\n";
+					}
+					else{
+						delVertice(subGrafo,u);
+					}
+				}
+			}
+			
 		}
 		else if(comando == 13){
+			grafo* subGrafo = criaSubGrafo(G);
+			cout << "QUANTAS ARESTAS ELIMINAR DO GRAFO\n";
+			int qnt;
+			cin >> qnt;
+			
+			for (int i = 0; i < qnt; i++)
+			{
+				cout << "VERTICE U\n";
+				int u = getVertice(subGrafo);
+				cout << "VERTICE V\n";
+				int v = getVertice(subGrafo);
+				if(u == -1 or v == -1){
+					cout << "Vertice nao esta no Grafo\n";
+				}
+				else delAresta(subGrafo,u,v);
+			}
 		}
 		else{
+			cout << "Comando invalido\n";
 		}
 	}while(comando != 0);
 }
