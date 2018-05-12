@@ -5,9 +5,9 @@
 <li> <b> Funções de Grafos </b> </li>
 
 ## Equipe:
-*   Alexandre Grilo
-*   Hemerson Batista
-*   Ricardo Caldeira
+<li> Alexandre Grillo </li>
+<li> Hemerson Batista </li>
+<li> Ricardo Caldeira </li>
 
 ## Execução:
 
@@ -26,6 +26,7 @@
         <li> Certifique-se que a linha 13 não esteja comentada, pois ela inclue as funções implementadas </li>
         <li> Pronto, agora já pode utilizar o programa </li>
     </ul>
+    
 ## Ideia:
 
 <p> A ideia central do trabalho é armazenar os dados dos vértices (nohs) em um vetor principal do Grafo. Esse vetor se expande a medida que novos vértices entram no grafo. Assim que adicionados, os vértices ganham um ID. Esse ID corresponde a posição no vetor principal. </p>
