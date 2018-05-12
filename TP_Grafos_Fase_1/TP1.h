@@ -25,8 +25,8 @@ class noh
 	friend class vertices;
 
 private:
-	int id;						 //id que guarda a posição no vetor com vertices no grafo
-	dado dadosNoh;		 //Para vertices com peso
+	int id;			   //id que guarda a posição no vetor com vertices no grafo
+	dado dadosNoh;	   //Para vertices com peso
 	coord coordenadas; //Para grafos eucledianos
 	bool eucledian;
 
@@ -43,9 +43,9 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 class verticeDeAdj
 {
-	friend class lista;			//lista individual de cada vertice
+	friend class lista;		//lista individual de cada vertice
 	friend class listasAdj; //Todas as listas de adjacencias dos vertices
-													//do grafo
+							//do grafo
 private:
 	int id;
 	int peso; //Caso o grafo seja ponderado
@@ -91,9 +91,9 @@ class matrizInc
 private:
 	int **matriz;
 	int qntLinhas;	//Qnt de arestas, LEMBRANDO que cada linha
-									//da matriz representa uma aresta
+					//da matriz representa uma aresta
 	int qntColunas; //Qnt de vertices, LEMBRANDO que cada coluna
-									//da matriz é um vertice
+					//da matriz é um vertice
 	void expandLinhas();
 	void expandColunas(int qntExpand);
 	void deleteMat();
@@ -198,20 +198,20 @@ private:
 	matrizAdj *mAdj;
 	matrizInc *mInc;
 	int qualEstrutura; //Vem do main contendo a opção de estrutura de
-										 //dados escolhida pelo usuario para armazenar os
-										 //vertices e as arestas.
+					   //dados escolhida pelo usuario para armazenar os
+					   //vertices e as arestas.
 	string orientation;
 	bool ponderado;
 	bool eucledian;
-	void inserctIn(int idA, int idB);						//Insere na estrutura de dados escolhida
+	void inserctIn(int idA, int idB);			//Insere na estrutura de dados escolhida
 	void inserctIn(int idA, int idB, int peso); //Insere na estrutura de dados
-																							//escolhida com grafos ponderados
+												//escolhida com grafos ponderados
 public:
 	grafo(string orientation, bool ponderado, bool eucledian, int qualEstrutura);
 	~grafo();
-	void insertAresta(dado dadosNohA, dado dadosNohB);							 //Para vertices com apenas um valor
+	void insertAresta(dado dadosNohA, dado dadosNohB);				 //Para vertices com apenas um valor
 	void insertAresta(coord coordenadasNohA, coord coordenadasNohB); //Para vertices com coordenadas
-	void insertAresta(dado dadosNohA, dado dadosNohB, int peso);		 //Para grafos ponderados
+	void insertAresta(dado dadosNohA, dado dadosNohB, int peso);	 //Para grafos ponderados
 	void removeVertice(int pos);
 	int search(dado dadosNoh);
 	int search(coord coordenadas);
