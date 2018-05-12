@@ -1,8 +1,8 @@
 ## Trabalho Prático Final - Fase 1
 
--   <b> Estruturas de Dados </b>
--   <b> Conversões de Estruturas de Dados </b>
--   <b> Funções de Grafos </b>
+<li> <b> Estruturas de Dados </b> </li>
+<li> <b> Conversões de Estruturas de Dados </b> </li>
+<li> <b> Funções de Grafos </b> </li>
 
 ## Equipe:
 *   Alexandre Grilo
@@ -12,7 +12,7 @@
 ## Execução:
 
 <p> Para executar o trabalho, existem duas opções: </p>
-*   <b>Makefile: </b> <br>
+<li> Makefile: </b> </li>
    *   Certifique-se que a linha 13 esteja comentada para executar o makefile <br>
    *   Abra o terminal no diretório do arquivo Makefile
    *   Digite Makefile <br>
