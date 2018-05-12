@@ -13,15 +13,15 @@
 
 <p> Para executar o trabalho, existem duas opções: </p>
 <li> Makefile: </b> </li>
-   *   Certifique-se que a linha 13 esteja comentada para executar o makefile <br>
-   *   Abra o terminal no diretório do arquivo Makefile
-   *   Digite Makefile <br>
-   *   Digite ./TP1_Main <br>
-   *   Pronto, agora já pode utilizar o programa <br>
-*   <b> Geany: </b> <br>
-   *   Para utilizar pelo Geany, basta Compilar, Construir e Executar o arquivo TP1_Main.cpp <br>
-   *   Certifique-se que a linha 13 não esteja comentada, pois ela inclue as funções implementadas <br>
-   *   Pronto, agora já pode utilizar o programa <br>
+   <li> Certifique-se que a linha 13 esteja comentada para executar o makefile </li>
+   <li> Abra o terminal no diretório do arquivo Makefile
+   <li> Digite Makefile </li>
+   <li> Digite ./TP1_Main </li>
+   <li> Pronto, agora já pode utilizar o programa </li>
+<li> <b> Geany: </b>  </li>
+   <li> Para utilizar pelo Geany, basta Compilar, Construir e Executar o arquivo TP1_Main.cpp </li>
+   <li> Certifique-se que a linha 13 não esteja comentada, pois ela inclue as funções implementadas </li>
+   <li> Pronto, agora já pode utilizar o programa </li>
 
 ## Ideia:
 
