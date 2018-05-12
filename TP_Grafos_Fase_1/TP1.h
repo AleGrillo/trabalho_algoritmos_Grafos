@@ -151,12 +151,12 @@ class listasAdj	{
 };
 
 //////////////////////  Classe vertices do Grafo  ///////////////////////////
-class vertices	{
+class vertices{
 	private:
 		noh** vetor;
 		int qntVertices;
 		void expandVetor();
-		bool compare(dado A, dado B); 
+		bool compare(dado A, dado B);
 		bool compare(coord A, coord B);
 	public:
 		vertices(int qntVertices);
@@ -171,6 +171,7 @@ class vertices	{
 		void printPos(int pos);
 		int search(dado pos);
 		int search(coord pos);
+		int getQntVertices();
 };
 
 //////////////////////////////  Classe Grafo  ///////////////////////////////
@@ -187,7 +188,7 @@ class grafo	{
 		bool ponderado;
 		bool eucledian;
 		void inserctIn(int idA, int idB);//Insere na estrutura de dados escolhida
-		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados 
+		void inserctIn(int idA, int idB, int peso);//Insere na estrutura de dados
 												//escolhida com grafos ponderados
 	public:
 		grafo(string orientation, bool ponderado, bool eucledian, int qualEstrutura);
@@ -198,6 +199,7 @@ class grafo	{
 		void removeVertice(int pos);
 		int search(dado dadosNoh);
 		int search(coord coordenadas);
+		int getQntVertices();
 		listasAdj* getLAdj();
 		matrizAdj* getMAdj();
 		matrizInc* getMInc();
@@ -211,6 +213,9 @@ class grafo	{
 		void printLAdj();
 		void printMAdj();
 		void printMInc();
+		void setEstruturaDados(listasAdj* lAdj);
+		void setEstruturaDados(matrizAdj* mAdj);
+		void setEstruturaDados(matrizInc* mInc);
 };
 
 #endif

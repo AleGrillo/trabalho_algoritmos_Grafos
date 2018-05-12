@@ -16,43 +16,20 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////Funções do Main///////////////////////////////
-int getVertice(grafo* G){
-	bool eucledian = G->getEucledian();
-	int vertice;
-	
-	if(eucledian == true){
-		cout << "Digite as coordenadas do vertice\n";
-		cout << "X									";
-		coord coordenadas;
-		cin >> coordenadas.x;
-		cout << "Y									";
-		cin >> coordenadas.y;
-		vertice = G->search(coordenadas);
-	}
-	else{
-		cout << "Digite o valor do vertice: ";
-		dado dadosNoh;
-		cin >> dadosNoh;
-		vertice = G->search(dadosNoh);
-	}
-	
-	return vertice;
-}
-
 bool ePonderado() {
   cout << "##############################################################" << endl;
 	cout << "################### O Grafo é Ponderado? #####################" << endl;
   cout << "##############################################################" << endl;
-	cout << "###################### Sim	-----> [0] ########################" << endl;
-	cout << "###################### Não -----> [1] ########################" << endl;
+	cout << "###################### Sim	-----> [1] ########################" << endl;
+	cout << "###################### Não -----> [2] ########################" << endl;
   cout << "##############################################################" << endl;
 
 	int comando;
 	cin >> comando;
 
-	if(comando == 0) {
+	if(comando == 1) {
 		return true;
-	} else if (comando == 1) {
+	} else if (comando == 2) {
 		return false;
 	} else {
     cout << "##############################################################" << endl;
@@ -66,16 +43,16 @@ bool ePonderado() {
 bool dadosVertices() {
   cout << "## Quais os tipos de dados serão passados para os vertices? ##" << endl;
   cout << "##############################################################" << endl;
-  cout << "########### Coordenadas(Euclediano)  -----> [0] ##############" << endl;
-  cout << "################  Apenas valores	    -----> [1] ##############" << endl;
+  cout << "########### Coordenadas(Euclediano)  -----> [1] ##############" << endl;
+  cout << "################  Apenas valores	    -----> [2] ##############" << endl;
   cout << "##############################################################" << endl;
 
 	int comando;
 	cin >> comando;
 
-	if (comando == 0) {
+	if (comando == 1) {
 		return true;
-	} else if (comando == 1) {
+	} else if (comando == 2) {
 		return false;
 	} else {
     cout << "##############################################################" << endl;
@@ -154,29 +131,54 @@ void estruturaDeDadosGrafo(grafo* G, int comando){
 
 int comand(){
 	int comando;
-	
-	cout << "Obter Lista de Adjacencias do Grafo				1\n";
-	cout << "Obter Matriz de Adjacencias do Grafo				2\n";
-	cout << "Obter Matriz de Incidencias do Grafo				3\n";
-	cout << "Obter vizinhos de um vertice u					4\n";
-	cout << "Obter predecessores de um vertice u				5\n";
-	cout << "Obter Sucessores de um vertice u				6\n";
-	cout << "Verificar se dois vertices u e v sao vizinhos			7\n";
-	cout << "Verificar se v e predecessor de u				8\n";
-	cout << "Verificar se v e sucessor de u					9\n";
-	cout << "Deletar um vertice						10\n";
-	cout << "Deletar uma aresta						11\n";
-	cout << "Gerar subGrafo induzido por vertices				12\n";
-	cout << "Gerar subGrafo induzido por arestas				13\n";
-	cout << "Sair								0\n";
-	
+
+  cout << "##############################################################" << endl;
+	cout << "#########  Obter Lista de Adjacencias do Grafo			       1   " << endl;
+	cout << "#########  Obter Matriz de Adjacencias do Grafo		       2   " << endl;
+	cout << "#########  Obter Matriz de Incidencias do Grafo		       3   " << endl;
+	cout << "#########  Obter vizinhos de um vertice u					       4   " << endl;
+	cout << "#########  Obter predecessores de um vertice u				     5   " << endl;
+	cout << "#########  Obter Sucessores de um vertice u				       6   " << endl;
+	cout << "#########  Verificar se dois vertices u e v sao vizinhos  7   " << endl;
+	cout << "#########  Verificar se v e predecessor de u			         8   " << endl;
+	cout << "#########  Verificar se v e sucessor de u				         9   " << endl;
+	cout << "#########  Deletar um vertice						                 10  " << endl;
+	cout << "#########  Deletar uma aresta						                 11  " << endl;
+	cout << "#########  Gerar subGrafo induzido por vertices			     12  " << endl;
+	cout << "#########  Gerar subGrafo induzido por arestas				     13  " << endl;
+	cout << "#########  Sair								                           0   " << endl;
+  cout << "##############################################################" << endl;
+
 	cin >> comando;
-	
+
 	return comando;
 }
 
+int getVertice(grafo* G){
+	bool eucledian = G->getEucledian();
+	int vertice;
+
+	if(eucledian == true){
+		cout << "Digite as coordenadas do vertice\n";
+		cout << "X									";
+		coord coordenadas;
+		cin >> coordenadas.x;
+		cout << "Y									";
+		cin >> coordenadas.y;
+		vertice = G->search(coordenadas);
+	}
+	else{
+		cout << "Digite o valor do vertice: ";
+		dado dadosNoh;
+		cin >> dadosNoh;
+		vertice = G->search(dadosNoh);
+	}
+
+	return vertice;
+}
+
 void menu(grafo* G){
-	
+
 	int comando = -1;
 	do{
 		comando = comand();
@@ -256,16 +258,77 @@ void menu(grafo* G){
 			}
 		}
 		else if(comando == 10){
+			cout << "VERTICE A SER REMOVIDO\n";
+			int u = getVertice(G);
+			if(u == -1){
+				cout << "Vertice nao esta no Grafo\n";
+			}
+			else{
+				delVertice(G,u);
+			}
 		}
 		else if(comando == 11){
+			cout << "VERTICE U\n";
+			int u = getVertice(G);
+			cout << "VERTICE V\n";
+			int v = getVertice(G);
+			if(u == -1 or v == -1){
+				cout << "Vertice nao esta no Grafo\n";
+			}
+			else delAresta(G,u,v);
 		}
 		else if(comando == 12){
+			grafo* subGrafo = criaSubGrafo(G);
+			cout << "QUANTOS VERTICES ELIMINAR DO GRAFO\n";
+			int qnt;
+			cin >> qnt;
+
+			if(qnt > subGrafo->getQntVertices()){
+				cout << "Quantidade de vertices escolhida maior que quantidade ";
+				cout <<	"de vertices do Grafo\n";
+			}
+			else{
+				for (int i = 0; i < qnt; i++)
+				{
+					cout << "VERTICE U\n";
+					int u = getVertice(subGrafo);
+					if(u == -1){
+						cout << "Vertice nao esta no Grafo\n";
+					}
+					else{
+						delVertice(subGrafo,u);
+					}
+				}
+			}
+
 		}
 		else if(comando == 13){
+			grafo* subGrafo = criaSubGrafo(G);
+			cout << "QUANTAS ARESTAS ELIMINAR DO GRAFO\n";
+			int qnt;
+			cin >> qnt;
+
+			for (int i = 0; i < qnt; i++)
+			{
+				cout << "VERTICE U\n";
+				int u = getVertice(subGrafo);
+				cout << "VERTICE V\n";
+				int v = getVertice(subGrafo);
+				if(u == -1 or v == -1){
+					cout << "Vertice nao esta no Grafo\n";
+				}
+				else delAresta(subGrafo,u,v);
+			}
 		}
 		else{
+			cout << "Comando invalido\n";
 		}
 	}while(comando != 0);
+}
+
+int menu() {
+	int comando = -1;
+	return comando;
 }
 
 int main() {
@@ -277,51 +340,45 @@ int main() {
 	string orientation;
 	string nomeArquivo = nomeArq() + ".txt";
 
-  ifstream arquivo(nomeArquivo.c_str());
+	ifstream arquivo(nomeArquivo.c_str());
 
-  if (arquivo) {
+	if(arquivo) {
 		arquivo >> orientation;
 
-		if (orientation == "UNDIRECTED" or orientation == "DIRECTED") {
-			grafo* Grafo = new grafo(orientation, ponderado, qualEstrutura);
+		if(orientation == "UNDIRECTED" or orientation == "DIRECTED") {
+			grafo* Grafo = new grafo(orientation, ponderado, eucledian, qualEstrutura);
 
-			while (arquivo.good()) {
+			while(arquivo.good()) {
 				if(ponderado == true) {
 					dado dadosNohA;
 					dado dadosNohB;
 					int peso;
-
 					arquivo >> dadosNohA;
 					arquivo >> dadosNohB;
 					arquivo >> peso;
-
-          Grafo->insertAresta(dadosNohA, dadosNohB, peso);
-				} else {
-					if (eucledian == true) {
+					Grafo->insertAresta(dadosNohA,dadosNohB,peso);
+				}	else {
+					if(eucledian == true) {
 						coord coordenadasA;
 						coord coordenadasB;
 						int num;
-
 						arquivo >> num;
 						arquivo >> coordenadasA.x;
 						arquivo >> coordenadasA.y;
 						arquivo >> coordenadasB.x;
 						arquivo >> coordenadasB.y;
-
-            Grafo->insertAresta(coordenadasA, coordenadasB);
+						Grafo->insertAresta(coordenadasA,coordenadasB);
 					} else {
 						dado dadosNohA;
 						dado dadosNohB;
-
 						arquivo >> dadosNohA;
 						arquivo >> dadosNohB;
-
-            Grafo->insertAresta(dadosNohA, dadosNohB);
+						Grafo->insertAresta(dadosNohA,dadosNohB);
 					}
 				}
 			}
 			menu(Grafo);
-		} else {
+    } else {
       cout << "##############################################################" << endl;
       cout << "###################   Falha ao ler Arquivo   #################" << endl;
       cout << "##############################################################" << endl;
