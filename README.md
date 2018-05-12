@@ -11,7 +11,7 @@
 
 ## Execução:
 
-<p> Para executar o trabalho, existem duas opções.
+<h1> Para executar o trabalho, existem duas opções: </h1>
 *   <b> Makefile: </b>
    -   Certifique-se que a linha 13 esteja comentada para executar o makefile
    -   Abra o terminal no diretório do arquivo Makefile
@@ -21,7 +21,7 @@
 -  <b> Geany: </b>
    -   Para utilizar pelo Geany, basta Compilar, Construir e Executar o arquivo TP1_Main.cpp
    -   Certifique-se que a linha 13 não esteja comentada, pois ela inclue as funções implementadas
-   -   Pronto, agora já pode utilizar o programa</p>
+   -   Pronto, agora já pode utilizar o programa
 
 ## Ideia:
 
