@@ -303,7 +303,7 @@ void matrizInc::expandLinhas()
 
 void matrizInc::expandColunas(int qntExpand)
 {
-	/* Caso em que a posicao passada do vertice é maior que a quantidade
+	/* Caso em que a posicao passada do vertice e maior que a quantidade
 	 * de vertices já existentes */
 
 	int qntColunasAux = qntColunas + qntExpand;
@@ -522,7 +522,6 @@ bool lista::remove(int id)
 		else
 		{
 			verticeDeAdj *aux = primeiro;
-			;
 			verticeDeAdj *ant;
 
 			while (aux->proximo and aux->id != id)
@@ -708,7 +707,7 @@ void listasAdj::insertIn(int posVertice, int verticeInserir)
 		}
 		//~ else{
 		//~ cout << "Vertice ja esta na lista da posicao " << posVertice << endl;
-		//~ //Não insere um vizinho repetido porém essa condição pode ser alterada
+		//~ //nao insere um vizinho repetido porem essa condição pode ser alterada
 		//~ //caso seja permitido arestas duplas
 		//~ }
 	}
@@ -738,7 +737,7 @@ void listasAdj::insertIn(int posVertice, int verticeInserir, int peso)
 		else
 		{
 			cout << "Vertice ja esta na lista da posicao " << posVertice << endl;
-			//Não insere um vizinho repetido porém essa condição pode ser alterada
+			//nao insere um vizinho repetido porem essa condição pode ser alterada
 			//caso seja permitido arestas duplas
 		}
 	}
@@ -867,7 +866,7 @@ int vertices::insertVertice(dado novo)
 	}
 	else if (vetor[busca] == NULL)
 	{
-		//Se o busca encontrar uma posição no vetor e esta não
+		//Se o busca encontrar uma posição no vetor e esta nao
 		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
 		//posição
 		noh *novoNoh = new noh(busca, novo);
@@ -899,7 +898,7 @@ int vertices::insertVertice(coord novo)
 	}
 	else if (vetor[busca] == NULL)
 	{
-		//Se o busca encontrar uma posição no vetor e esta não
+		//Se o busca encontrar uma posição no vetor e esta nao
 		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
 		//posição
 		noh *novoNoh = new noh(busca, novo);
@@ -925,14 +924,14 @@ int vertices::search(dado buscar)
 			if (compare(vetor[i]->dadosNoh, buscar) == true)
 			{
 				return i;
-				//Não insere o mesmo noh no grafo duas vezes
+				//nao insere o mesmo noh no grafo duas vezes
 			}
 		}
 		else
 			return i; //Retorna a primeira posição vazia caso o vetor tenha
 					  //essas posições vazias
 	}
-	return -1; //Se o vetor estiver cheio ou o noh não estiver no vetor
+	return -1; //Se o vetor estiver cheio ou o noh nao estiver no vetor
 }
 
 int vertices::search(coord buscar)
@@ -944,14 +943,14 @@ int vertices::search(coord buscar)
 			if (compare(vetor[i]->coordenadas, buscar) == true)
 			{
 				return i;
-				//Não insere o mesmo noh no grafo duas vezes
+				//nao insere o mesmo noh no grafo duas vezes
 			}
 		}
 		else
 			return i; //Retorna a primeira posição vazia caso o vetor tenha
 					  //essas posições vazias
 	}
-	return -1; //Se o vetor estiver cheio ou o noh não estiver no vetor
+	return -1; //Se o vetor estiver cheio ou o noh nao estiver no vetor
 }
 
 bool vertices::compare(dado A, dado B)
@@ -976,14 +975,17 @@ void vertices::print()
 {
 	for (int i = 0; i < qntVertices; i++)
 	{
-		if (vetor[i]->eucledian == false)
+		if (vetor[i])
 		{
-			cout << vetor[i]->dadosNoh << " ";
-		}
-		else
-		{
-			cout << vetor[i]->coordenadas.x << "/"
-				 << vetor[i]->coordenadas.y << " ";
+			if (vetor[i]->eucledian == false)
+			{
+				cout << vetor[i]->dadosNoh << " ";
+			}
+			else
+			{
+				cout << vetor[i]->coordenadas.x << "/"
+					 << vetor[i]->coordenadas.y << " ";
+			}
 		}
 	}
 	cout << endl;
@@ -1462,7 +1464,7 @@ void matIncToMatAdj(grafo *G)
 
 void obtemVizinhos(grafo *G, int u)
 {
-	//Recebe um vértice u como parâmetro e retorna um conjunto de vértices
+	//Recebe um vertice u como parâmetro e retorna um conjunto de vertices
 	//vizinhos a u;
 	if (G->getQualEstrutura() == 1)
 	{
@@ -1510,8 +1512,8 @@ void obtemVizinhos(grafo *G, int u)
 
 void obtemPred(grafo *G, int u)
 {
-	//recebe um vértice u como parâmetro e retorna o conjunto de predecessores
-	//do vértice em questão (para grafos direcionados);
+	//recebe um vertice u como parâmetro e retorna o conjunto de predecessores
+	//do vertice em questão (para grafos direcionados);
 	if (G->getOrientation() == "DIRECTED")
 	{
 		if (G->getQualEstrutura() == 1)
@@ -1568,7 +1570,7 @@ void obtemPred(grafo *G, int u)
 	else
 	{
 		cout << "##############################################################" << endl;
-		cerr << "#################     Grafo não orientado!     ###############" << endl;
+		cerr << "#################     Grafo nao orientado!     ###############" << endl;
 		cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -1576,8 +1578,8 @@ void obtemPred(grafo *G, int u)
 
 void obtemSuc(grafo *G, int u)
 {
-	//recebe um vértice u como parâmetro e retorna o conjunto de sucessores do
-	//vértice em questão (para grafos direcionados);
+	//recebe um vertice u como parâmetro e retorna o conjunto de sucessores do
+	//vertice em questão (para grafos direcionados);
 	if (G->getOrientation() == "DIRECTED")
 	{
 		if (G->getQualEstrutura() == 1)
@@ -1634,7 +1636,7 @@ void obtemSuc(grafo *G, int u)
 	else
 	{
 		cout << "##############################################################" << endl;
-		cerr << "#################     Grafo não orientado!     ###############" << endl;
+		cerr << "#################     Grafo nao orientado!     ###############" << endl;
 		cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -1642,7 +1644,7 @@ void obtemSuc(grafo *G, int u)
 
 void ehVizinho(grafo *G, int u, int v)
 {
-	//recebe dois vértices u e v como parâmetros e retorna true se os mesmos são
+	//recebe dois vertices u e v como parâmetros e retorna true se os mesmos são
 	//vizinhos;
 	if (G->getQualEstrutura() == 1)
 	{
@@ -1685,7 +1687,7 @@ void ehVizinho(grafo *G, int u, int v)
 
 void ehPredecessor(grafo *G, int u, int v)
 {
-	//recebe dois vértices u e v como parâmetros e retorna true se v é predecessor
+	//recebe dois vertices u e v como parâmetros e retorna true se v e predecessor
 	//de u (para grafos direcionados);
 	if (G->getOrientation() == "DIRECTED")
 	{
@@ -1731,7 +1733,7 @@ void ehPredecessor(grafo *G, int u, int v)
 	else
 	{
 		cout << "##############################################################" << endl;
-		cerr << "#################     Grafo não orientado!     ###############" << endl;
+		cerr << "#################     Grafo nao orientado!     ###############" << endl;
 		cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -1739,7 +1741,7 @@ void ehPredecessor(grafo *G, int u, int v)
 
 void ehSucessor(grafo *G, int u, int v)
 {
-	//recebe dois vértices u e v como parâmetros e retorna true se v é sucessor
+	//recebe dois vertices u e v como parâmetros e retorna true se v e sucessor
 	//de u (para grafos direcionados);
 	if (G->getOrientation() == "DIRECTED")
 	{
@@ -1784,7 +1786,7 @@ void ehSucessor(grafo *G, int u, int v)
 	else
 	{
 		cout << "##############################################################" << endl;
-		cerr << "#################     Grafo não orientado!     ###############" << endl;
+		cerr << "#################     Grafo nao orientado!     ###############" << endl;
 		cout << "##############################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -1792,7 +1794,7 @@ void ehSucessor(grafo *G, int u, int v)
 
 void delVertice(grafo *G, int u)
 {
-	//deleta um vértice do grafo e as arestas incidentes a ele (por consequência);
+	//deleta um vertice do grafo e as arestas incidentes a ele (por consequência);
 	int qualEstrutura = G->getQualEstrutura();
 	G->removeVertice(u);
 	if (qualEstrutura == 1)
@@ -1836,8 +1838,9 @@ void delAresta(grafo *G, int u, int v)
 grafo *criaSubGrafo(grafo *G)
 {
 	//Cria uma cópia do Grafo G para ser o subGrafo
-	grafo *subGrafo = new grafo(G->getOrientation(), G->getPonderado(),
-								G->getEucledian(), G->getQualEstrutura());
+	grafo *subGrafo = G;
+	// grafo *subGrafo = new grafo(G->getOrientation(), G->getPonderado(),
+								// G->getEucledian(), G->getQualEstrutura());
 
 	if (G->getQualEstrutura() == 1)
 	{
@@ -1855,23 +1858,12 @@ grafo *criaSubGrafo(grafo *G)
 	return subGrafo;
 }
 
-//~ grafo* geraSubGrafoIV(grafo* G){
-//~ grafo* subGrafo = criaSubGrafo(G);
-//~ return subGrafo;
-//~ }
-
-//~ grafo* geraSubGrafoIA(grafo* G){
-//~ grafo* subGrafo = criaSubGrafo(G);
-//~ return subGrafo;
-//~ }
-
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////Funções do Main///////////////////////////////
 
 string nomeArq()
 {
 	cout << "##############   Digite o nome do Arquivo: ";
-	cout << "#################################################################" << endl;
 	string nome;
 	cin >> nome;
 	return nome;
@@ -1880,10 +1872,10 @@ string nomeArq()
 bool ePonderado()
 {
 	cout << "#################################################################" << endl;
-	cout << "##################### O Grafo é Ponderado? ######################" << endl;
+	cout << "##################### O Grafo e Ponderado? ######################" << endl;
 	cout << "#################################################################" << endl;
 	cout << "######################## Sim -----> [1] #########################" << endl;
-	cout << "######################## Não -----> [2] #########################" << endl;
+	cout << "######################## nao -----> [2] #########################" << endl;
 	cout << "#################################################################" << endl;
 
 	int comando;
@@ -1900,7 +1892,7 @@ bool ePonderado()
 	else
 	{
 		cout << "#################################################################" << endl;
-		cout << "######################     Opção invalida     ###################" << endl;
+		cout << "######################     Opcao invalida     ###################" << endl;
 		cout << "#################################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -1926,7 +1918,7 @@ int estruturaUtilizada()
 	else
 	{
 		cout << "#################################################################" << endl;
-		cout << "######################     Opção invalida     ###################" << endl;
+		cout << "######################     Opcao invalida     ###################" << endl;
 		cout << "#################################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -1934,7 +1926,7 @@ int estruturaUtilizada()
 
 bool dadosVertices()
 {
-	cout << "#### Quais os tipos de dados serão passados para os vertices? ###" << endl;
+	cout << "#### Quais os tipos de dados Serao passados para os vertices? ###" << endl;
 	cout << "#################################################################" << endl;
 	cout << "############# Coordenadas(Euclediano)  -----> [1] ###############" << endl;
 	cout << "############# Apenas valores           -----> [2] ###############" << endl;
@@ -1954,7 +1946,7 @@ bool dadosVertices()
 	else
 	{
 		cout << "#################################################################" << endl;
-		cout << "#####################     Opção invalida     ####################" << endl;
+		cout << "#####################     Opcao invalida     ####################" << endl;
 		cout << "#################################################################" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -2081,7 +2073,7 @@ void menu(grafo *G)
 			if (u == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2100,7 +2092,7 @@ void menu(grafo *G)
 			if (u == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2119,7 +2111,7 @@ void menu(grafo *G)
 			if (u == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2142,7 +2134,7 @@ void menu(grafo *G)
 			if (u == -1 or v == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2160,7 +2152,7 @@ void menu(grafo *G)
 			if (u == -1 or v == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2178,7 +2170,7 @@ void menu(grafo *G)
 			if (u == -1 or v == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2194,7 +2186,7 @@ void menu(grafo *G)
 			if (u == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2212,7 +2204,7 @@ void menu(grafo *G)
 			if (u == -1 or v == -1)
 			{
 				cout << "#################################################################" << endl;
-				cout << "#################  Vertice não está no Grafo   ##################" << endl;
+				cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 				cout << "#################################################################" << endl;
 			}
 			else
@@ -2245,7 +2237,7 @@ void menu(grafo *G)
 					if (u == -1)
 					{
 						cout << "#################################################################" << endl;
-						cout << "#################  Vertice não está no Grafo   ##################" << endl;
+						cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 						cout << "#################################################################" << endl;
 					}
 					else
@@ -2274,7 +2266,7 @@ void menu(grafo *G)
 				if (u == -1 or v == -1)
 				{
 					cout << "#################################################################" << endl;
-					cout << "#################  Vertice não está no Grafo   ##################" << endl;
+					cout << "#################  Vertice nao esta no Grafo   ##################" << endl;
 					cout << "#################################################################" << endl;
 				}
 				else
@@ -2286,7 +2278,7 @@ void menu(grafo *G)
 		else
 		{
 			cout << "#################################################################" << endl;
-			cout << "#####################     Opção invalida     ####################" << endl;
+			cout << "#####################     Opcao invalida     ####################" << endl;
 			cout << "#################################################################" << endl;
 		}
 	} while (comando != 0);

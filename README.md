@@ -9,6 +9,19 @@
 *   Hemerson Batista
 *   Ricardo Caldeira
 
+## Execução:
+
+<p> Para executar o trabalho, existe duas opções. </p>
+*   Makefile:
+   *   Certifique-se que a linha 13 esteja comentada para executar o makefile
+   *   Abra o terminal no diretório do arquivo Makefile
+   *   Digite Makefile
+   *   Digite ./TP1_Main
+   *   Pronto, agora já pode utilizar o programa
+*  Geany:
+   *   Para utilizar pelo Geany, basta Compilar, Construir e Executar o arquivo TP1_Main.cpp
+   *   Certifique-se que a linha 13 não esteja comentada, pois ela inclue as funções implementadas
+   *   Pronto, agora já pode utilizar o programa
 
 ## Ideia:
 

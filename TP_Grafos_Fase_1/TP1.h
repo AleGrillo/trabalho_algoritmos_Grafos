@@ -24,13 +24,13 @@ class noh
 {
 	friend class vertices;
 
-private:
+  private:
 	int id;			   //id que guarda a posição no vetor com vertices no grafo
-	dado dadosNoh;	   //Para vertices com peso
+	dado dadosNoh;	 //Para vertices com peso
 	coord coordenadas; //Para grafos eucledianos
 	bool eucledian;
 
-public:
+  public:
 	noh(int id, dado dadosNoh);
 	noh(int id, coord coordenadas);
 };
@@ -46,12 +46,12 @@ class verticeDeAdj
 	friend class lista;		//lista individual de cada vertice
 	friend class listasAdj; //Todas as listas de adjacencias dos vertices
 							//do grafo
-private:
+  private:
 	int id;
 	int peso; //Caso o grafo seja ponderado
 	verticeDeAdj *proximo;
 
-public:
+  public:
 	verticeDeAdj(int id);
 	verticeDeAdj(int id, int peso);
 	int getId();
@@ -64,14 +64,14 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 class matrizAdj
 {
-private:
+  private:
 	int **matriz;
 	int tamanhoMat;
 	void expand(int t);
 	void deleteMat();
 	void create(int tamanhoMat);
 
-public:
+  public:
 	matrizAdj(int tamanhoMat);
 	matrizAdj();
 	~matrizAdj();
@@ -88,9 +88,9 @@ public:
 ///////////////////////    Matriz de Incidencias   /////////////////////////
 class matrizInc
 {
-private:
+  private:
 	int **matriz;
-	int qntLinhas;	//Qnt de arestas, LEMBRANDO que cada linha
+	int qntLinhas;  //Qnt de arestas, LEMBRANDO que cada linha
 					//da matriz representa uma aresta
 	int qntColunas; //Qnt de vertices, LEMBRANDO que cada coluna
 					//da matriz é um vertice
@@ -100,7 +100,7 @@ private:
 	void create(int qntVertices);
 	string orientation;
 
-public:
+  public:
 	matrizInc(string orientation, int qntVertices);
 	matrizInc(string orientation);
 	~matrizInc();
@@ -118,12 +118,12 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 class lista
 {
-private:
+  private:
 	verticeDeAdj *primeiro;
 	verticeDeAdj *ultimo;
 	int tamanhoLista;
 	void copyList(lista *copy); // copia a lista
-public:
+  public:
 	lista();
 	~lista();
 	void insert(int id);
@@ -142,14 +142,14 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 class listasAdj
 {
-private:
+  private:
 	lista **listas;
 	int qntListas;
 	void create(int qntListas);
 	void deleteListas();
 	void expandListas(int qntExpand);
 
-public:
+  public:
 	listasAdj();
 	listasAdj(int qntListas);
 	~listasAdj();
@@ -166,14 +166,14 @@ public:
 //////////////////////  Classe vertices do Grafo  ///////////////////////////
 class vertices
 {
-private:
+  private:
 	noh **vetor;
 	int qntVertices;
 	void expandVetor();
 	bool compare(dado A, dado B);
 	bool compare(coord A, coord B);
 
-public:
+  public:
 	vertices(int qntVertices);
 	vertices();
 	~vertices();
@@ -192,7 +192,7 @@ public:
 //////////////////////////////  Classe Grafo  ///////////////////////////////
 class grafo
 {
-private:
+  private:
 	vertices *verticesDoGrafo;
 	listasAdj *lAdj;
 	matrizAdj *mAdj;
@@ -206,7 +206,7 @@ private:
 	void inserctIn(int idA, int idB);			//Insere na estrutura de dados escolhida
 	void inserctIn(int idA, int idB, int peso); //Insere na estrutura de dados
 												//escolhida com grafos ponderados
-public:
+  public:
 	grafo(string orientation, bool ponderado, bool eucledian, int qualEstrutura);
 	~grafo();
 	void insertAresta(dado dadosNohA, dado dadosNohB);				 //Para vertices com apenas um valor
