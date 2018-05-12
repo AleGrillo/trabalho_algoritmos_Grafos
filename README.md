@@ -13,8 +13,8 @@
 
 <p> Para executar o trabalho, existem duas opções: </p>
 -   <b> Makefile: </b> <br>
-   -   Certifique-se que a linha 13 esteja comentada para executar o makefile <br>
-   -   Abra o terminal no diretório do arquivo Makefile
+    -   Certifique-se que a linha 13 esteja comentada para executar o makefile <br>
+    -   Abra o terminal no diretório do arquivo Makefile
    -   Digite Makefile <br>
    -   Digite ./TP1_Main <br>
    -   Pronto, agora já pode utilizar o programa <br>
