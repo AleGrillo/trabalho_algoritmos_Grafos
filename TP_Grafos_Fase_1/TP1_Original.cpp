@@ -1,3 +1,8 @@
+/*
+* Trabalho de Algoritmo Em Grafos - Etapa 1 - Estrutura de Dados
+* Copyright 2018 by Alexandre And Hemerson And Ricardo
+*/
+
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
@@ -995,12 +1000,14 @@ bool vertices::compare(coord A, coord B){
 void vertices::print(){
 	for (int i = 0; i < qntVertices; i++)
 	{
-		if(vetor[i]->eucledian == false){
-			cout << vetor[i]->dadosNoh << " ";
-		}
-		else{
-			cout << vetor[i]->coordenadas.x << "/" 
-			<< vetor[i]->coordenadas.y << " ";
+		if(vetor[i]){
+			if(vetor[i]->eucledian == false){
+				cout << vetor[i]->dadosNoh << " ";
+			}
+			else{
+				cout << vetor[i]->coordenadas.x << "/" 
+				<< vetor[i]->coordenadas.y << " ";
+			}
 		}
 	}
 	cout << endl;
@@ -1746,8 +1753,7 @@ void delAresta(grafo* G, int u, int v){
 
 grafo* criaSubGrafo(grafo* G){
 	//Cria uma cópia do Grafo G para ser o subGrafo
-	grafo* subGrafo = new grafo(G->getOrientation(), G->getPonderado(),
-								G->getEucledian(), G->getQualEstrutura());
+	grafo* subGrafo = G;
 	
 	if(G->getQualEstrutura() == 1){
 		subGrafo->setEstruturaDados(G->getLAdj());
@@ -1761,16 +1767,6 @@ grafo* criaSubGrafo(grafo* G){
 	
 	return subGrafo;
 }
-
-//~ grafo* geraSubGrafoIV(grafo* G){
-	//~ grafo* subGrafo = criaSubGrafo(G);
-	//~ return subGrafo;
-//~ }
-
-//~ grafo* geraSubGrafoIA(grafo* G){
-	//~ grafo* subGrafo = criaSubGrafo(G);
-	//~ return subGrafo;
-//~ }
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////Funções do Main///////////////////////////////
@@ -2043,6 +2039,7 @@ void menu(grafo* G){
 						delVertice(subGrafo,u);
 					}
 				}
+				subGrafo->printGrafo();
 			}
 			
 		}
@@ -2063,6 +2060,7 @@ void menu(grafo* G){
 				}
 				else delAresta(subGrafo,u,v);
 			}
+			subGrafo->printGrafo();
 		}
 		else{
 			cout << "Comando invalido\n";
