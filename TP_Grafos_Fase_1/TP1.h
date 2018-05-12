@@ -250,7 +250,11 @@ void delVertice(grafo *G, int u);
 void delAresta(grafo *G, int u, int v);
 grafo *criaSubGrafo(grafo *G);
 string nomeArq();
-bool ePonderado() int estruturaUtilizada() bool dadosVertices() void estruturaDeDadosGrafo(grafo *G, int comando) int comand();
+bool ePonderado();
+int estruturaUtilizada();
+bool dadosVertices();
+void estruturaDeDadosGrafo(grafo *G, int comando);
+int comand();
 int getVertice(grafo *G);
 void menu(grafo *G);
 

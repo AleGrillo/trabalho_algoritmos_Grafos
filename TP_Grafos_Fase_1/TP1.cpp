@@ -1882,7 +1882,7 @@ bool ePonderado()
 	cout << "#################################################################" << endl;
 	cout << "##################### O Grafo é Ponderado? ######################" << endl;
 	cout << "#################################################################" << endl;
-	cout << "######################## Sim	-----> [1] #########################" << endl;
+	cout << "######################## Sim -----> [1] #########################" << endl;
 	cout << "######################## Não -----> [2] #########################" << endl;
 	cout << "#################################################################" << endl;
 
@@ -1908,11 +1908,12 @@ bool ePonderado()
 
 int estruturaUtilizada()
 {
-	cout << "######## Qual a Estrutura de Dados deseja utilizar? #########" << endl;
 	cout << "#################################################################" << endl;
-	cout << "############## Lista de Adjacencias	-----> [1]  ################" << endl;
-	cout << "############## Matriz de Adjacencias -----> [2]  ################" << endl;
-	cout << "############## Matriz de Incidencias -----> [3]  ################" << endl;
+	cout << "######## Qual a Estrutura de Dados deseja utilizar? #############" << endl;
+	cout << "#################################################################" << endl;
+	cout << "#############   Lista de Adjacencias  -----> [1]  ###############" << endl;
+	cout << "#############   Matriz de Adjacencias -----> [2]  ###############" << endl;
+	cout << "#############   Matriz de Incidencias -----> [3]  ###############" << endl;
 	cout << "#################################################################" << endl;
 
 	int comando;
@@ -1933,10 +1934,10 @@ int estruturaUtilizada()
 
 bool dadosVertices()
 {
-	cout << "## Quais os tipos de dados serão passados para os vertices? ##" << endl;
+	cout << "#### Quais os tipos de dados serão passados para os vertices? ###" << endl;
 	cout << "#################################################################" << endl;
 	cout << "############# Coordenadas(Euclediano)  -----> [1] ###############" << endl;
-	cout << "##################  Apenas valores	    -----> [2] ###############" << endl;
+	cout << "############# Apenas valores           -----> [2] ###############" << endl;
 	cout << "#################################################################" << endl;
 
 	int comando;
@@ -2014,19 +2015,19 @@ int comand()
 	cout << "#################################################################" << endl;
 	cout << "#################################################################" << endl;
 	cout << "#################################################################" << endl;
-	cout << "### Obter Lista de Adjacencias do Grafo					 -----> [1]  ###" << endl;
-	cout << "### Obter Matriz de Adjacencias do Grafo					 -----> [2]  ###" << endl;
-	cout << "### Obter Matriz de Incidencias do Grafo					 -----> [3]  ###" << endl;
-	cout << "### Obter vizinhos de um vertice u							   -----> [4]  ###" << endl;
-	cout << "### Obter predecessores de um vertice u					 -----> [5]  ###" << endl;
-	cout << "### Obter Sucessores de um vertice u							 -----> [6]  ###" << endl;
+	cout << "### Obter Lista de Adjacencias do Grafo           -----> [1]  ###" << endl;
+	cout << "### Obter Matriz de Adjacencias do Grafo          -----> [2]  ###" << endl;
+	cout << "### Obter Matriz de Incidencias do Grafo          -----> [3]  ###" << endl;
+	cout << "### Obter vizinhos de um vertice u                -----> [4]  ###" << endl;
+	cout << "### Obter predecessores de um vertice u           -----> [5]  ###" << endl;
+	cout << "### Obter Sucessores de um vertice u              -----> [6]  ###" << endl;
 	cout << "### Verificar se dois vertices u e v sao vizinhos -----> [7]  ###" << endl;
-	cout << "### Verificar se v e predecessor de u					   -----> [8]  ###" << endl;
-	cout << "### Verificar se v e sucessor de u							   -----> [9]  ###" << endl;
-	cout << "### Deletar um vertice							               -----> [10] ###" << endl;
-	cout << "### Deletar uma aresta							               -----> [11] ###" << endl;
-	cout << "### Gerar subGrafo induzido por vertices				   -----> [12] ###" << endl;
-	cout << "### Gerar subGrafo induzido por arestas				   -----> [13] ###" << endl;
+	cout << "### Verificar se v e predecessor de u             -----> [8]  ###" << endl;
+	cout << "### Verificar se v e sucessor de u                -----> [9]  ###" << endl;
+	cout << "### Deletar um vertice                            -----> [10] ###" << endl;
+	cout << "### Deletar uma aresta                            -----> [11] ###" << endl;
+	cout << "### Gerar subGrafo induzido por vertices          -----> [12] ###" << endl;
+	cout << "### Gerar subGrafo induzido por arestas           -----> [13] ###" << endl;
 	cout << "####################### Sair -----> [0] #########################" << endl;
 	cout << "#################################################################" << endl;
 
