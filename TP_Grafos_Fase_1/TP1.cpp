@@ -269,7 +269,7 @@ void matrizInc::deleteMat()
 		delete[] matriz[i];
 	}
 
-	delete[] matriz;
+	//~ delete[] matriz;
 	matriz = NULL;
 }
 
