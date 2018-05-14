@@ -244,7 +244,14 @@ matrizInc::matrizInc(string orientation)
 
 matrizInc::~matrizInc()
 {
-	deleteMat();
+	//~ deleteMat();
+	for (int i = 0; i < qntLinhas; i++)
+	{
+		delete[] matriz[i];
+	}
+
+	delete[] matriz;
+	matriz = NULL;
 }
 
 void matrizInc::create(int qntVertices)
