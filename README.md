@@ -1,13 +1,12 @@
-## Trabalho Prático Final - Fase 1
+﻿## Trabalho Prático Final - Fase 1
 
-<li> <b> Estruturas de Dados </b> </li>
-<li> <b> Conversões de Estruturas de Dados </b> </li>
-<li> <b> Funções de Grafos </b> </li>
+<li> <b> Problema A </b> </li>
+<li> <b> Divisão de alunos em grupos equilibrados </b> </li>
+<li> <b> Problema NP Completo </b> </li>
 
 ## Equipe:
 <li> Alexandre Grillo </li>
 <li> Hemerson Batista </li>
-<li> Ricardo Caldeira </li>
 
 ## Execução:
 
@@ -29,5 +28,17 @@
     
 ## Ideia:
 
-<p> A ideia central do trabalho é armazenar os dados dos vértices (nohs) em um vetor principal do Grafo. Esse vetor se expande a medida que novos vértices entram no grafo. Assim que adicionados, os vértices ganham um ID. Esse ID corresponde a posição no vetor principal. </p>
-<p> Para adicionar o vértice a estrutura de dados que guarda as vizinhanças (lista ou matriz de adjacências, matriz de incidências), é passado o ID do vértice no vetor principal. Portanto, a posição em qualquer uma das listas é determinada pela ordem de entrada do vértice atravéz do arquivo porém a adjacência é SEMPRE determinada pela ligação dos pares no arquivo de instância. Lembrando que embora o ID determine a posição na Estrutura de Dados escolhida, o valor de identificação estara no vetor principal do Grafo e para acessa-lo existe uma função expecífica que o retorna. </p>
+<p> A montagem de grupos de estudo é um desafio para docentes, visto que a resolução dos
+problemas propostos aos estudantes requer habilidades distintas. Deste modo, é desejável
+que estes grupos de alunos sejam o mais heterogêneo possível, para que as características
+dos indivíduos envolvidos crie uma sinergia e torne o processo de aprendizado construtivo e
+eficaz. </p>
+<p> Sistematicamente, podemos definir este problema como segue. Cada estudante u possui
+uma nota pu, que indica o grau de aptidão para a resolução do problema proposto. O total
+de grupos de estudantes a ser formado é igual a g. Os grupos possuem limites mínimos e
+máximos de aptidão dados por L e U, respectivamente. Cada estudante deve pertencer a
+apenas um grupo. A relação entre cada par de estudantes u e v é dado pelo valor duv 2 R,
+que quantifica a similaridade das características entre os dois estudantes relativas à resolução
+do problema proposto por um docente. Nosso objetivo é criar g grupos de estudantes que
+maximize o somatório das distâncias entre os elementos escolhidos a pertencer em cada
+grupo. </p>
