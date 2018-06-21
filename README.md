@@ -1,4 +1,4 @@
-﻿## Trabalho Prático Final - Fase 1
+﻿## Trabalho Prático Final - Fase 2
 
 <li> <b> Problema A </b> </li>
 <li> <b> Divisão de alunos em grupos equilibrados </b> </li>
