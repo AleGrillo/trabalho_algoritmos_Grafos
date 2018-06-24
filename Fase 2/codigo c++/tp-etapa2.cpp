@@ -405,8 +405,13 @@ listasAdj::~listasAdj()
 
 void listasAdj::deleteListas()
 {
-	qntListas = 0;
+	for (int i = 0; i < qntListas; i++)
+	{
+		listas[i]->deleteList();
+		delete listas[i];
+	}
 	delete[] listas;
+	qntListas = 0;
 }
 
 void listasAdj::create(int qntListas)
@@ -485,7 +490,8 @@ void listasAdj::print()
 		if (listas[i])
 		{
 			cout << "LISTA DO VERTICE " << i << " -> ";
-			cout << listas[i]->getTam();
+			listas[i]->print();
+			//~ cout << listas[i]->getTam();
 			cout << endl;
 		}
 	}
