@@ -128,7 +128,7 @@ class listasAdj
 	~listasAdj();
 	void insertIn(int posVertice, int verticeInserir, float distancia);
 	bool removeIn(int posVertice, int idRemover);
-	bool removeVertice(int idRemover); //Remove o vertice das listas dos outros vertices
+	void removeVertice(int idRemover); //Remove o vertice das listas dos outros vertices
 	inline int getQnt();
 	void print();
 };
@@ -141,12 +141,13 @@ class vertices
 	int qntVertices;
 	void expandVetor();
 	bool compare(dado A, dado B);
+	void create(int qntVertices);
 
   public:
 	vertices(int qntVertices);
 	vertices();
 	~vertices();
-	int insertVertice(dado novo);
+	int insertVertice(dado peso);
 	void deletePos(int pos);
 	int deleteVertice(dado del);
 	//~ int deleteVertice(coord del);

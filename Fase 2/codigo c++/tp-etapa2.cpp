@@ -388,8 +388,6 @@ int lista::getTam()
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////Classe ListasAdj/////////////////////////////////
 
-//Corrigir daqui pra baixo
-
 listasAdj::listasAdj()
 {
 	create(0);
@@ -419,13 +417,7 @@ void listasAdj::create(int qntListas)
 	for (int i = 0; i < qntListas; i++)
 	{
 		listas[i] = new lista();
-		listas[i]->insert(i,0);
 	}
-}
-
-inline int listasAdj::getQnt()
-{
-	return qntListas;
 }
 
 void listasAdj::expandListas(int qntExpand)
@@ -472,13 +464,18 @@ bool listasAdj::removeIn(int posVertice, int idRemover)
 	return false;
 }
 
-bool listasAdj::removeVertice(int idRemover)
+void listasAdj::removeVertice(int idRemover)
 {
 	//Remove o vertice das listas dos outros vertices
-	
-	//Reimplementar
+	for (int i = 0; i < qntListas; i++)
+	{
+		removeIn(i, idRemover);
+	}
+}
 
-	return false;
+inline int listasAdj::getQnt()
+{
+	return qntListas;
 }
 
 void listasAdj::print()
@@ -487,7 +484,9 @@ void listasAdj::print()
 	{
 		if (listas[i])
 		{
-			listas[i]->print();
+			cout << "LISTA DO VERTICE " << i << " -> ";
+			cout << listas[i]->getTam();
+			cout << endl;
 		}
 	}
 }
@@ -497,6 +496,20 @@ void listasAdj::print()
 
 vertices::vertices(int qntVertices)
 {
+	create(qntVertices);
+}
+
+vertices::vertices()
+{
+	create(0);
+}
+
+vertices::~vertices()
+{
+	delete[] vetor;
+}
+
+void vertices::create(int qntVertices){
 	this->qntVertices = qntVertices;
 	vetor = new noh *[qntVertices];
 
@@ -504,21 +517,6 @@ vertices::vertices(int qntVertices)
 	{
 		vetor[i] = NULL;
 	}
-}
-
-vertices::vertices()
-{
-	qntVertices = 0;
-	vetor = new noh *[qntVertices];
-	for (int i = 0; i < qntVertices; i++)
-	{
-		vetor[i] = NULL;
-	}
-}
-
-vertices::~vertices()
-{
-	delete[] vetor;
 }
 
 void vertices::expandVetor()
@@ -546,34 +544,13 @@ void vertices::expandVetor()
 
 int vertices::insertVertice(dado novo)
 {
-	int busca = search(novo);
-	if (busca == -1)
-	{
-		expandVetor();
-		int pos = qntVertices - 1;
-		noh *novoNoh = new noh(pos, novo);
-		vetor[pos] = novoNoh;
-		return pos;
-		//Ao inserir, retorna a posição para assim, inserir uma vizinhança
-		//nas estruturas de dados dos vertices
-	}
-	else if (vetor[busca] == NULL)
-	{
-		//Se o busca encontrar uma posição no vetor e esta nao
-		//tenha algo (== NULL) ou seja vazia, o vertice será inserido nessa
-		//posição
-		noh *novoNoh = new noh(busca, novo);
-		vetor[busca] = novoNoh;
-		return busca;
-	}
-	else
-	{
-		//Se o busca retorna uma posição e ela tenha algo (!= NULL)
-		//significa que o vertice já esteja no vetor
-		return busca;
-		//Retorna a posição para poder inserir na estrutura
-		//de dados de vizinhanças dos vertices
-	}
+	expandVetor();
+	int pos = qntVertices - 1;
+	noh *novoNoh = new noh(pos, novo);
+	vetor[pos] = novoNoh;
+	return pos;
+	//Ao inserir, retorna a posição para assim, inserir uma vizinhança
+	//nas estruturas de dados dos vertices
 }
 
 int vertices::search(dado buscar)
@@ -628,6 +605,7 @@ int vertices::deleteVertice(dado del)
 
 void vertices::deletePos(int pos)
 {
+	//testar
 	if (pos >= 0 and pos < qntVertices)
 	{
 		noh *aux = vetor[pos];
