@@ -54,7 +54,6 @@ class matrizAdj
 	void create(int tamanhoMat);
 
   public:
-	matrizAdj(int tamanhoMat);
 	matrizAdj();
 	~matrizAdj();
 	void insert(int linha, int coluna, float distancia);
@@ -98,15 +97,14 @@ class lista
 	verticeDeAdj *primeiro;
 	verticeDeAdj *ultimo;
 	int tamanhoLista;
-	void copyList(lista *copy); // copia a lista
   public:
 	lista();
 	~lista();
 	void insert(int id, float distancia);
+	bool removeFirst();
 	bool remove(int id);
 	bool search(int id);
 	bool deleteList();
-	verticeDeAdj *getFirst(); //Retorna uma copia do primeiro verticeDeAdj da lista
 	void print();
 	int getTam();
 };
@@ -129,11 +127,9 @@ class listasAdj
 	listasAdj(int qntListas);
 	~listasAdj();
 	void insertIn(int posVertice, int verticeInserir, float distancia);
-	bool removeIn(int posVertice, int verticeRemover);
-	bool removeVertice(int posVertice);
+	bool removeIn(int posVertice, int idRemover);
+	bool removeVertice(int idRemover); //Remove o vertice das listas dos outros vertices
 	inline int getQnt();
-	verticeDeAdj *getListaPos(int pos);
-	bool searchIn(int posVertice, int procurar);
 	void print();
 };
 

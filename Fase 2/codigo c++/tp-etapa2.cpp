@@ -40,11 +40,6 @@ noh::noh(int id, dado peso)
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////Classe MatrizAdj/////////////////////////////////
 
-matrizAdj::matrizAdj(int tamanhoMat)
-{
-	create(tamanhoMat);
-}
-
 matrizAdj::matrizAdj()
 {
 	create(0);
@@ -187,7 +182,7 @@ float matrizAdj::getDistancia(int verticeA, int verticeB)
 	{
 		return matriz[verticeA][verticeB];
 	}
-
+	cerr << "Nao está na matriz\n";
 	exit(EXIT_FAILURE);
 }
 
@@ -234,6 +229,10 @@ lista::~lista()
 void lista::insert(int id, float distancia)
 {
 	verticeDeAdj *novo = new verticeDeAdj(id, distancia);
+	
+	if(search(id) == true){
+		return;
+	}
 
 	if (primeiro == NULL)
 	{
@@ -243,31 +242,28 @@ void lista::insert(int id, float distancia)
 	}
 	else
 	{
-		if(distancia < primeiro->distancia){
-			/*
-			 *A distancia nova é menor que a menor distancia da lista 
-			*/
+		if(distancia >= primeiro->distancia){
+			 //A distancia nova é maior que a menor distancia da lista 
 			novo->proximo = primeiro;
 			primeiro = novo;
 			tamanhoLista++;
 		}
-		else if(distancia > ultimo->distancia){
-			/*
-			 *A distancia nova é maior que a maior distancia da lista 
-			*/
+		else if(distancia <= ultimo->distancia){
+			 //A distancia nova é menor que a maior distancia da lista 
 			ultimo->proximo = novo;
 			ultimo = novo;
 			tamanhoLista++;
 		}
 		else{
 			/*
-			 *A distancia nova é maior que a menor distancia e
-			 *menor que a maior distancia da lista 
+			 *A distancia nova é menor que a maior distancia e
+			 *maior que a menor distancia da lista ou seja, 
+			 *deve ser inserido no meio da lista 
 			*/
-			verticeDeAdj* aux = primeiro->proximo;
+			verticeDeAdj* aux = primeiro;
 			verticeDeAdj* ant;
 			
-			while(aux and aux->distancia < distancia){
+			while(aux and aux->distancia > distancia){
 				ant = aux;
 				aux = aux->proximo;
 			}
@@ -277,6 +273,18 @@ void lista::insert(int id, float distancia)
 			tamanhoLista++;
 		}
 	}
+}
+
+bool lista::removeFirst(){
+	if(primeiro){
+		verticeDeAdj* aux = primeiro;
+		primeiro = primeiro->proximo;
+		delete aux;
+		tamanhoLista--;
+		return true;
+	}
+	
+	return false;
 }
 
 bool lista::remove(int id)
@@ -289,8 +297,8 @@ bool lista::remove(int id)
 	{
 		if (primeiro->id == id)
 		{
-			return false;
-			//Reimplementar
+			//Irá apagar o primeiro elemento da lista
+			return removeFirst();
 		}
 		else
 		{
@@ -340,15 +348,6 @@ bool lista::deleteList()
 	}
 }
 
-verticeDeAdj *lista::getFirst()
-{
-	//Retorna uma copia da lista
-	lista *copy;
-	copy = new lista();
-	copyList(copy);
-	return copy->primeiro;
-}
-
 bool lista::search(int id)
 {
 	verticeDeAdj *aux = primeiro;
@@ -374,7 +373,7 @@ void lista::print()
 	{
 		if (aux)
 		{
-			cout << aux->id << " -> ";
+			cout << aux->id << "\"" << aux->distancia << " -> ";
 		}
 		aux = aux->proximo;
 	}
@@ -429,15 +428,6 @@ inline int listasAdj::getQnt()
 	return qntListas;
 }
 
-verticeDeAdj *listasAdj::getListaPos(int pos)
-{
-	if (pos < qntListas)
-	{
-		return listas[pos]->getFirst();
-	}
-	return NULL;
-}
-
 void listasAdj::expandListas(int qntExpand)
 {
 	int qntAux = qntListas + qntExpand;
@@ -463,57 +453,30 @@ void listasAdj::insertIn(int posVertice, int verticeInserir, float distancia)
 {
 	if (posVertice < qntListas)
 	{
-		if (listas[posVertice]->getTam() == 0)
-		{
-			listas[posVertice]->insert(posVertice, 0);
-		}
-		bool busca = listas[posVertice]->search(verticeInserir);
-
-		if (busca == false)
-		{
-			listas[posVertice]->insert(verticeInserir, distancia);
-		}
-		else
-		{
-			cout << "Vertice ja esta na lista da posicao " << posVertice << endl;
-			//nao insere um vizinho repetido porem essa condição pode ser alterada
-			//caso seja permitido arestas duplas
-		}
+		listas[posVertice]->insert(verticeInserir, distancia);
 	}
 	else
 	{
 		int qnt = (posVertice - qntListas) + 1;
 		expandListas(qnt);
-		listas[posVertice]->insert(posVertice, 0);		  //Inserindo o vertice da posição na lista
 		listas[posVertice]->insert(verticeInserir, distancia); //Inserindo o vizinho
 	}
 }
 
-bool listasAdj::removeIn(int posVertice, int verticeRemover)
+bool listasAdj::removeIn(int posVertice, int idRemover)
 {
 	if (posVertice < qntListas)
 	{
-		return listas[posVertice]->remove(verticeRemover);
+		return listas[posVertice]->remove(idRemover);
 	}
 	return false;
 }
 
-bool listasAdj::removeVertice(int posVertice)
+bool listasAdj::removeVertice(int idRemover)
 {
-	if (posVertice < qntListas)
-	{
-		verticeDeAdj *aux = listas[posVertice]->getFirst();
-		aux = aux->proximo;
-
-		while (aux)
-		{
-			//Apaga o vertice da lista de cada vertice que o tenha como vizinho
-			listas[aux->id]->remove(posVertice);
-			aux = aux->proximo;
-		}
-
-		return listas[posVertice]->deleteList();
-	}
+	//Remove o vertice das listas dos outros vertices
+	
+	//Reimplementar
 
 	return false;
 }
@@ -527,18 +490,6 @@ void listasAdj::print()
 			listas[i]->print();
 		}
 	}
-}
-
-bool listasAdj::searchIn(int posVertice, int procurar)
-{
-	if (posVertice >= 0 and posVertice < qntListas)
-	{
-		if (listas[posVertice])
-		{
-			return listas[posVertice]->search(procurar);
-		}
-	}
-	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////
