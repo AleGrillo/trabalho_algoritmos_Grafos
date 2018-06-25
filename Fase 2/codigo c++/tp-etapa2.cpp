@@ -521,6 +521,15 @@ vertices::vertices()
 
 vertices::~vertices()
 {
+	deleteVetor();
+}
+
+void vertices::deleteVetor(){
+	for (int i = 0; i < qntVertices; i++)
+	{
+		delete vetor[i];
+	}
+	
 	delete[] vetor;
 }
 
@@ -552,7 +561,7 @@ void vertices::expandVetor()
 		}
 	}
 
-	delete[] vetor;
+	deleteVetor();
 
 	vetor = vetorAux;
 	qntVertices = qntAux;

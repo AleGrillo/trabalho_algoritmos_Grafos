@@ -144,6 +144,7 @@ class vertices
 	int pos; //Ultima posição inserida no vetor
 	void expandVetor();
 	void create(int qntVertices);
+	void deleteVetor();
   public:
 	vertices(int qntVertices);
 	vertices();
