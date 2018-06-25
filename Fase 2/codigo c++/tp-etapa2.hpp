@@ -84,7 +84,7 @@ class verticeDeAdj
   public:
 	verticeDeAdj(int id, float distancia);
 	int getId();
-	int getDistancia();
+	float getDistancia();
 	verticeDeAdj *getProximo();
 };
 
@@ -107,6 +107,7 @@ class lista
 	bool deleteList();
 	void print();
 	int getTam();
+	verticeDeAdj* getFirst();
 };
 
 ////////////////////  Classe Listas de Adjacencia  //////////////////////////
@@ -129,6 +130,7 @@ class listasAdj
 	void insertIn(int posVertice, int verticeInserir, float distancia);
 	bool removeIn(int posVertice, int idRemover);
 	void removeVertice(int idRemover); //Remove o vertice das listas dos outros vertices
+	verticeDeAdj* getFirst(int pos);
 	inline int getQnt();
 	void print();
 };
@@ -139,22 +141,17 @@ class vertices
   private:
 	noh **vetor;
 	int qntVertices;
+	int pos; //Ultima posição inserida no vetor
 	void expandVetor();
-	bool compare(dado A, dado B);
 	void create(int qntVertices);
-
   public:
 	vertices(int qntVertices);
 	vertices();
 	~vertices();
 	int insertVertice(dado peso);
-	void deletePos(int pos);
-	int deleteVertice(dado del);
-	//~ int deleteVertice(coord del);
+	void remove(int pos);
 	void print();
 	void printPos(int pos);
-	int search(dado pos);
-	//~ int search(coord pos);
 	int getQntVertices();
 };
 

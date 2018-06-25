@@ -201,7 +201,7 @@ int verticeDeAdj::getId()
 	return id;
 }
 
-int verticeDeAdj::getDistancia()
+float verticeDeAdj::getDistancia()
 {
 	return distancia;
 }
@@ -380,6 +380,11 @@ void lista::print()
 	cout << "NULL" << endl;
 }
 
+verticeDeAdj* lista::getFirst(){
+	verticeDeAdj* aux = new verticeDeAdj(primeiro->id, primeiro->distancia);
+	return aux;
+}
+
 int lista::getTam()
 {
 	return tamanhoLista;
@@ -483,6 +488,10 @@ inline int listasAdj::getQnt()
 	return qntListas;
 }
 
+verticeDeAdj* listasAdj::getFirst(int pos){
+	return listas[pos]->getFirst();
+}
+
 void listasAdj::print()
 {
 	for (int i = 0; i < qntListas; i++)
@@ -516,6 +525,7 @@ vertices::~vertices()
 }
 
 void vertices::create(int qntVertices){
+	pos = 0;
 	this->qntVertices = qntVertices;
 	vetor = new noh *[qntVertices];
 
@@ -550,42 +560,16 @@ void vertices::expandVetor()
 
 int vertices::insertVertice(dado novo)
 {
-	expandVetor();
-	int pos = qntVertices - 1;
+	if(pos == qntVertices){
+		expandVetor();
+		pos = qntVertices - 1;
+	}
 	noh *novoNoh = new noh(pos, novo);
 	vetor[pos] = novoNoh;
-	return pos;
+	pos++;
+	return pos - 1;
 	//Ao inserir, retorna a posição para assim, inserir uma vizinhança
 	//nas estruturas de dados dos vertices
-}
-
-int vertices::search(dado buscar)
-{
-	for (int i = 0; i < qntVertices; i++)
-	{
-		if (vetor[i])
-		{
-			if (compare(vetor[i]->id, buscar) == true)
-			{
-				return i;
-				//nao insere o mesmo noh no grafo duas vezes
-			}
-		}
-		else
-			return i; //Retorna a primeira posição vazia caso o vetor tenha
-					  //essas posições vazias
-	}
-	return -1; //Se o vetor estiver cheio ou o noh nao estiver no vetor
-}
-
-bool vertices::compare(dado A, dado B)
-{
-	if (A == B)
-	{
-		return true;
-	}
-
-	return false;
 }
 
 void vertices::print()
@@ -600,24 +584,13 @@ void vertices::print()
 	cout << endl;
 }
 
-int vertices::deleteVertice(dado del)
+void vertices::remove(int pos)
 {
-	int pos = search(del);
-
-	deletePos(pos);
-
-	return pos;
-}
-
-void vertices::deletePos(int pos)
-{
-	//testar
 	if (pos >= 0 and pos < qntVertices)
 	{
 		noh *aux = vetor[pos];
-		vetor[pos] = NULL;
 		delete aux;
-		qntVertices--;
+		vetor[pos] = NULL;
 	}
 }
 
@@ -670,7 +643,7 @@ void grafo::inserctIn(int idA, int idB, float distancia)
 
 void grafo::removeVertice(int pos)
 {
-	verticesDoGrafo->deletePos(pos);
+	verticesDoGrafo->remove(pos);
 }
 
 listasAdj *grafo::getLAdj()
@@ -681,4 +654,50 @@ listasAdj *grafo::getLAdj()
 matrizAdj *grafo::getMAdj()
 {
 	return mAdj;
+}
+
+////////////////////////////////////////////////////////////////////////
+/////////////////////////Funções auxiliares/////////////////////////////
+
+void quicksort(int* vetorId, int* vetor, int qnt, int esq, int dir){
+	/*
+	 *Para ordenar o vetor de contadores e retirar cada vértice para um grupo por vez
+	*/
+	int i = esq;
+	int j = dir;
+	int pivo = vetor[(dir + esq) / 2];
+
+	while(i <= j){
+		while(vetor[i] > pivo) i++;
+		while(vetor[j] < pivo) j--;
+		if(i <= j){
+			swap(vetor[i],vetor[j]);
+			swap(vetorId[i],vetorId[j]);
+			i++;
+			j--;
+		}
+	}
+	if(esq < j) quicksort(vetorId, vetor, qnt, esq, j);
+	if(i < dir) quicksort(vetorId, vetor, qnt, i, dir);
+}
+
+int* vetorContador(listasAdj* lAdj, int qnt){
+	int* vetorId = new int[qnt];
+	int* vetor = new int[qnt];
+	
+	for (int i = 0; i < qnt; i++)
+	{
+		vetor[i] = 0;
+	}
+	
+	for (int i = 0; i < qnt; i++)
+	{
+		verticeDeAdj* vAdj = lAdj->getFirst(i);
+		vetorId[i] = vAdj->getId();
+		vetor[vAdj->getId()]++;
+	}
+	
+	quicksort(vetorId, vetor, qnt, 0, qnt - 1);
+	
+	return vetorId;
 }
