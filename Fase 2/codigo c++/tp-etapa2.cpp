@@ -22,6 +22,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <cfloat>
 #include "tp-etapa2.hpp"
 
 using namespace std;
@@ -535,6 +536,7 @@ void vertices::deleteVetor(){
 
 void vertices::create(int qntVertices){
 	pos = 0;
+	tamanho = qntVertices;
 	this->qntVertices = qntVertices;
 	vetor = new noh *[qntVertices];
 
@@ -581,6 +583,20 @@ int vertices::insertVertice(dado novo)
 	//nas estruturas de dados dos vertices
 }
 
+int vertices::insertVertice(dado novo, int id)
+{
+	if(pos == qntVertices){
+		expandVetor();
+		pos = qntVertices - 1;
+	}
+	noh *novoNoh = new noh(id, novo); //Para inserir no grupo de alunos
+	vetor[pos] = novoNoh;
+	pos++;
+	return pos - 1;
+	//Ao inserir, retorna a posição para assim, inserir uma vizinhança
+	//nas estruturas de dados dos vertices
+}
+
 void vertices::print()
 {
 	for (int i = 0; i < qntVertices; i++)
@@ -600,6 +616,7 @@ void vertices::remove(int pos)
 		noh *aux = vetor[pos];
 		delete aux;
 		vetor[pos] = NULL;
+		tamanho--;
 	}
 }
 
@@ -615,9 +632,257 @@ void vertices::printPos(int pos)
 	}
 }
 
+dado vertices::getVertice(int pos){
+	if(pos < qntVertices){
+		return vetor[pos]->peso;
+	}
+	
+	else{
+		exit(EXIT_FAILURE);
+	}
+}
+
 int vertices::getQntVertices()
 {
 	return qntVertices;
+}
+
+int* vertices::getIds(){
+	int* vetorAux = new int[qntVertices];
+	
+	for (int i = 0; i < qntVertices; i++)
+	{
+		vetorAux[i] = vetor[i]->id;
+	}
+	
+	return vetorAux;
+}
+
+inline bool vertices::isEmpty(){
+	if(tamanho - 1 == 0){
+		return true;
+	}
+	return false;
+}
+
+////////////////////////////////////////////////////////////////////////
+//////////////////////////Classe Group//////////////////////////////////
+
+group::group(int L, int U){
+	alunos = new vertices();
+	qntAlunos = 0;
+	this->L = L;
+	this->U = U;
+	peso_total = 0;
+	distancia_total = 0.0;
+}
+
+group::~group(){
+	delete alunos;
+}
+
+void group::insertAluno(dado peso, int id){
+	alunos->insertVertice(peso, id);
+	peso_total += peso;
+}
+
+void group::setDistancia(float distancia){
+	distancia_total += distancia;
+}
+
+int group::getQntAlunos(){
+	return alunos->getQntVertices();
+}
+
+vertices* group::getGroup(){
+	return alunos;
+}
+
+void group::print(){
+	alunos->print();
+}
+
+int group::getPeso(){
+	return peso_total;
+}
+
+int* group::getIds(){
+	return alunos->getIds();
+}
+
+////////////////////////////////////////////////////////////////////////
+/////////////////////////  Classe Vetor de Grupos //////////////////////
+
+vetGroup::vetGroup(int qntGrupos){
+	tamanho = qntGrupos;
+	this->qntGrupos = qntGrupos;
+	grupos = new group *[qntGrupos];
+	
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		grupos[i] = NULL;
+	}
+}
+
+vetGroup::~vetGroup(){
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		delete grupos[i];
+	}
+	
+	delete []grupos;
+}
+
+void vetGroup::insertIn(int pos, dado peso, int id){
+	if(pos < qntGrupos){
+		grupos[pos]->insertAluno(peso, id);
+	}
+}
+
+group* vetGroup::removeGroup(int pos){
+	if(pos < qntGrupos){
+		swap(grupos[pos], grupos[qntGrupos - 1]);
+		qntGrupos--;
+		return grupos[qntGrupos];
+	}
+	else return NULL;
+}
+
+int vetGroup::getPeso(int pos){
+	if(pos < qntGrupos){
+		return grupos[pos]->getPeso();
+	}
+	
+	else return -1;
+}
+
+void vetGroup::insertGroup(int pos, int L, int U){
+	if(pos < qntGrupos){
+		group* grupo = new group(L, U);
+		grupos[pos] = grupo;
+	}
+}
+
+int vetGroup::getTam(){
+	return tamanho;
+}
+
+int* vetGroup::getIds(int pos){
+	if(pos < qntGrupos){
+		return grupos[pos]->getIds();
+	}
+	else return NULL;
+}
+
+group* vetGroup::getGroup(int pos){
+	return grupos[pos];
+}
+
+void vetGroup::print(){
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		grupos[i]->print();
+	}
+	cout << endl;
+}
+
+////////////////////////////////////////////////////////////////////////
+/////////////////////////  Classe Heap de Grupos ///////////////////////
+
+minHeap::minHeap(group** grupos, int tam, int cap){
+	if(cap == 0){
+		capacidade = tam;
+	}
+	else capacidade = cap;
+	
+	heap = new group *[capacidade];
+	
+	for(int i = 0; i < tam; i++){
+		heap[i] = grupos[i];
+	}
+	tamanho = tam;
+	arruma();
+}
+
+minHeap::~minHeap(){
+	delete []heap;
+}
+
+inline int minHeap::pai(int i){
+	return (i-1)/2;
+}
+
+inline int minHeap::esquerda(int i){
+	return (i*2)+1;
+}
+
+inline int minHeap::direita(int i){
+	return (i*2)+2;
+}
+
+void minHeap::arruma(){
+	for(int i = (tamanho/2)-1; i >= 0; i--){
+		corrigeDecendo(i);
+	}
+}
+
+void minHeap::corrigeDecendo(int i){
+	int fEsq = esquerda(i);
+	int fDir = direita(i);
+	int menor;
+	
+	if(fEsq < tamanho and heap[fEsq]->getPeso() < heap[i]->getPeso()){
+		menor = fEsq;
+	}
+	else menor = i;
+	
+	if(fDir < tamanho and heap[fDir]->getPeso() < heap[menor]->getPeso()){
+		menor = fDir;
+	}
+	
+	if(menor != i){
+		swap(heap[menor],heap[i]);
+		corrigeDecendo(menor);
+	}
+}
+
+void minHeap::corrigeSubindo(int i){
+	int p = pai(i);
+	if(heap[p]->getPeso() > heap[i]->getPeso()){
+		swap(heap[p],heap[i]);
+		corrigeSubindo(p);
+	}
+}
+
+group* minHeap::retiraRaiz(){
+	if(tamanho == 0){
+		cerr << "\nO heap esta vazio\n";
+		exit(EXIT_FAILURE);
+	}
+	
+	group* raiz = heap[0];
+	swap(heap[0],heap[tamanho-1]);
+	tamanho--;
+	corrigeDecendo(0);
+	return raiz;
+}
+
+void minHeap::insere(group* novo){
+	if(tamanho == capacidade){
+		cout << "\nO heap ja esta cheio\n";
+		return;
+	}
+	heap[tamanho] = novo;
+	corrigeSubindo(tamanho);
+	tamanho++;
+}
+
+void minHeap::print(){
+	for(int i = 0; i < tamanho; i++){
+		cout << heap[i]->getPeso() << " ";
+		heap[i]->print();
+		cout << endl;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -668,7 +933,7 @@ matrizAdj *grafo::getMAdj()
 ////////////////////////////////////////////////////////////////////////
 /////////////////////////Funções auxiliares/////////////////////////////
 
-void quicksort(int* vetorId, int* vetor, int qnt, int esq, int dir){
+void quickSort(int* vetorId, int* vetor, int qnt, int esq, int dir){
 	/*
 	 *Para ordenar o vetor de contadores e retirar cada vértice para um grupo por vez
 	*/
@@ -686,8 +951,8 @@ void quicksort(int* vetorId, int* vetor, int qnt, int esq, int dir){
 			j--;
 		}
 	}
-	if(esq < j) quicksort(vetorId, vetor, qnt, esq, j);
-	if(i < dir) quicksort(vetorId, vetor, qnt, i, dir);
+	if(esq < j) quickSort(vetorId, vetor, qnt, esq, j);
+	if(i < dir) quickSort(vetorId, vetor, qnt, i, dir);
 }
 
 int* vetorContador(listasAdj* lAdj, int qnt){
@@ -706,7 +971,48 @@ int* vetorContador(listasAdj* lAdj, int qnt){
 		vetor[vAdj->getId()]++;
 	}
 	
-	quicksort(vetorId, vetor, qnt, 0, qnt - 1);
-	
+	quickSort(vetorId, vetor, qnt, 0, qnt - 1);
+	delete []vetor;
 	return vetorId;
 }
+
+void initializeGroups(vetGroup* grupos, vertices* vert, int* vetorID, int qntGrupos){
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		dado peso = vert->getVertice(vetorID[i]);
+		grupos->insertIn(i, peso, vetorID[i]);
+	}
+}
+
+int searchMaxInsercion(listasAdj* lAdj, vetGroup* grupos, int qntGrupos){
+	float maior_dist = FLT_MIN;
+	int pos = -1;
+	int id;
+	float distancia;
+	verticeDeAdj* vertice;
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		group* aux = grupos->getGroup(i); //Retorna cada grupo já previamente criado
+		int* ids = aux->getIds(); //Um vetor com todos os ids dos vertices do grupo
+		int tam = aux->getQntAlunos(); //A quantidade de alunos que está presente em um grupo
+		for (int i = 0; i < tam; i++)
+		{
+			id = ids[i];
+			vertice = lAdj->getFirst(id);//Retorna o primeiro elemento da lista de
+														//adjacencias de um grupo
+			distancia = vertice->getDistancia();
+			if(maior_dist < distancia){
+				maior_dist = distancia;
+				pos = ids[i];
+			}
+		}
+	}
+	
+	return pos;
+}
+
+void removeToLists(vertices* vertices_grafo, listasAdj* lAdj, int pos){
+	vertices_grafo->remove(pos);
+	lAdj->removeVertice(pos);
+}
+

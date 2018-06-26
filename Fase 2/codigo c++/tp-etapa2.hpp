@@ -141,6 +141,7 @@ class vertices
   private:
 	noh **vetor;
 	int qntVertices;
+	int tamanho;
 	int pos; //Ultima posição inserida no vetor
 	void expandVetor();
 	void create(int qntVertices);
@@ -150,13 +151,84 @@ class vertices
 	vertices();
 	~vertices();
 	int insertVertice(dado peso);
+	int insertVertice(dado peso, int id); //Para inserir no grupo de alunos
 	void remove(int pos);
 	void print();
 	void printPos(int pos);
 	int getQntVertices();
+	dado getVertice(int pos);
+	int* getIds();
+	inline bool isEmpty();
 };
 
-//////////////////////////////  Classe Grafo  ///////////////////////////////
+///////////////////////////  Classe Group   ////////////////////////////
+
+class group{
+	private:
+		vertices *alunos;
+		int qntAlunos;
+		int L; //Limitante inferior
+		int U; //Limitante superior
+		int peso_total;
+		float distancia_total;
+	public:
+		group(int L, int U);
+		~group();
+		void insertAluno(dado peso, int id);
+		void setDistancia(float distancia);
+		int getQntAlunos();
+		vertices* getGroup();
+		void print();
+		int* getIds();
+		int getPeso();
+};
+
+/////////////////////////  Classe Vetor de Grupos //////////////////////
+
+class vetGroup{
+	private:
+		group** grupos;
+		int tamanho;
+		int qntGrupos;
+	public:
+		vetGroup(int qntGrupos);
+		~vetGroup();
+		void insertGroup(int pos, int L, int U);
+		void insertIn(int pos, dado peso, int id);
+		group* removeGroup(int pos);
+		int getTam();
+		int* getIds(int pos);
+		int getPeso(int pos);
+		group* getGroup(int pos);
+		void print();
+};
+
+/////////////////////////  Classe Heap de Grupos ///////////////////////
+
+class minHeap{
+
+	private:
+		group** heap;
+		int tamanho;
+		int capacidade;
+		inline int pai(int i);
+		inline int esquerda(int i);
+		inline int direita(int i);
+		void arruma();
+		void corrigeDecendo(int i);
+		void corrigeSubindo(int i);
+    public:
+    	minHeap(int cap);
+    	minHeap(group** grupos, int tam, int cap);
+    	~minHeap();
+    	void print();
+    	void insere(group* novo);
+    	void espiaRaiz();
+    	group* retiraRaiz();
+};
+
+//////////////////////////////  Classe Grafo  //////////////////////////
+
 class grafo
 {
   private:
