@@ -29,10 +29,11 @@ using namespace std;
 typedef int dado;
 
 //// Classe noh que guardara as informações de cada vertice do grafo ////
+
 class noh
 {
 	friend class vertices;
-
+	friend void montarGrupos();
   private:
 	int id;			   //id que guarda a posição no vetor com vertices no grafo
 	dado peso;	 //Para vertices com peso
@@ -74,8 +75,8 @@ class matrizAdj
 class verticeDeAdj
 {
 	friend class lista;		//lista individual de cada vertice
-	friend class listasAdj; //Todas as listas de adjacencias dos vertices
-							//do grafo
+	friend class listasAdj; //Todas as listas de adjacencias dos vertices do grafo
+	friend void searchMaxInsercion();
   private:
 	int id;
 	float distancia; //Caso o grafo seja ponderado
@@ -133,6 +134,7 @@ class listasAdj
 	verticeDeAdj* getFirst(int pos);
 	inline int getQnt();
 	void print();
+	void printPos(int pos);
 };
 
 //////////////////////  Classe vertices do Grafo  ///////////////////////////
@@ -181,6 +183,8 @@ class group{
 		void print();
 		int* getIds();
 		int getPeso();
+		int getL();
+		int getU();
 };
 
 /////////////////////////  Classe Vetor de Grupos //////////////////////
@@ -197,16 +201,19 @@ class vetGroup{
 		void insertIn(int pos, dado peso, int id);
 		group* removeGroup(int pos);
 		int getTam();
+		int getQnt();
 		int* getIds(int pos);
 		int getPeso(int pos);
 		group* getGroup(int pos);
 		void print();
+		int getL(int pos);
+		int getU(int pos);
+		void reset();
 };
 
 /////////////////////////  Classe Heap de Grupos ///////////////////////
 
 class minHeap{
-
 	private:
 		group** heap;
 		int tamanho;
@@ -218,8 +225,7 @@ class minHeap{
 		void corrigeDecendo(int i);
 		void corrigeSubindo(int i);
     public:
-    	minHeap(int cap);
-    	minHeap(group** grupos, int tam, int cap);
+    	minHeap(group** vet, int tam, int cap);
     	~minHeap();
     	void print();
     	void insere(group* novo);
