@@ -29,7 +29,6 @@ using namespace std;
 typedef int dado;
 
 //// Classe noh que guardara as informações de cada vertice do grafo ////
-
 class noh
 {
 	friend class vertices;
@@ -158,6 +157,7 @@ class vertices
 	void print();
 	void printPos(int pos);
 	int getQntVertices();
+	int getTam();
 	dado getVertice(int pos);
 	int* getIds();
 	inline bool isEmpty();

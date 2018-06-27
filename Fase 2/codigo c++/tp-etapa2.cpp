@@ -382,8 +382,11 @@ void lista::print()
 }
 
 verticeDeAdj* lista::getFirst(){
-	verticeDeAdj* aux = new verticeDeAdj(primeiro->id, primeiro->distancia);
-	return aux;
+	if(primeiro){
+		verticeDeAdj* aux = new verticeDeAdj(primeiro->id, primeiro->distancia);
+		return aux;
+	}
+	else return NULL;
 }
 
 int lista::getTam()
@@ -500,8 +503,7 @@ void listasAdj::print()
 		if (listas[i])
 		{
 			cout << "LISTA DO VERTICE " << i << " -> ";
-			//~ listas[i]->print();
-			cout << listas[i]->getTam();
+			listas[i]->print();
 			cout << endl;
 		}
 	}
@@ -608,7 +610,7 @@ void vertices::print()
 	{
 		if (vetor[i])
 		{
-			cout << vetor[i]->id << " " << vetor[i]->peso << "->" ;
+			cout << vetor[i]->id << "->" ;
 		}
 	}
 	cout << endl;
@@ -652,21 +654,28 @@ int vertices::getQntVertices()
 	return qntVertices;
 }
 
+int vertices::getTam()
+{
+	return tamanho;
+}
+
 int* vertices::getIds(){
 	int* vetorAux = new int[qntVertices];
 	
 	for (int i = 0; i < qntVertices; i++)
 	{
-		vetorAux[i] = vetor[i]->id;
-		//~ cout << vetorAux[i] << " ";
+		if(vetor[i]){
+			vetorAux[i] = vetor[i]->id;
+		}
+		else{
+			vetorAux[i] = -1;
+		}
 	}
-	//~ cout << endl;
 	return vetorAux;
 }
 
 inline bool vertices::isEmpty(){
 	if(tamanho == 0){
-		cout << tamanho << endl;
 		return true;
 	}
 	return false;
@@ -988,18 +997,28 @@ void initializeGroups(vetGroup* grupos, listasAdj* lAdj, vertices* vert, int* ve
 	{
 		dado peso = vert->getVertice(vetorID[i]);
 		grupos->insertIn(i, peso, vetorID[i]);
-		lAdj->removeVertice(i);
+		lAdj->removeVertice(vetorID[i]);
 		vert->remove(vetorID[i]);
 	}
 }
 
-int searchMaxInsercion(vetGroup* grupos, listasAdj* lAdj, int qntGrupos, int& max_insercion, int& idVertice){
-	float maior_dist = FLT_MIN;
+void insert_to_group(vetGroup* grupos, vertices* vertices_grafo, listasAdj* lAdj,
+						int pos, dado peso, int insert){
+							
+	grupos->insertIn(pos, peso, insert); //Insere esse vertice no grupo que poderá aceitar a maior
+												//distância
+	vertices_grafo->remove(insert); //Apaga o vértice inserido no grupo do conjunto de vértices
+										   //para que o mesmo não possa ser inserido em outros grupos
+	lAdj->removeVertice(insert); //Remove o mesmo das listas de adjacências para que ele não possa
+										//ser incontrado como maior distância novamente
+}
+
+int searchMaxInsercion(vetGroup* grupos, listasAdj* lAdj, int qntGrupos, int& max_insercion){
+	float maior_dist = FLT_MIN; 
 	int pos = -1;
 	int id;
 	float distancia;
 	verticeDeAdj* vertice;
-	
 	for (int i = 0; i < qntGrupos; i++)
 	{
 		group* aux = grupos->getGroup(i); //Retorna cada grupo já previamente criado
@@ -1009,51 +1028,89 @@ int searchMaxInsercion(vetGroup* grupos, listasAdj* lAdj, int qntGrupos, int& ma
 		{
 			id = ids[j];
 			vertice = lAdj->getFirst(id);//Retorna o primeiro elemento da lista de
-														//adjacencias de um grupo
+										 //adjacencias de um grupo
 			if(vertice){
-				distancia = vertice->getDistancia();
-				if(maior_dist < distancia){
+				distancia = vertice->getDistancia(); //A maior distancia será dada pelo primeiro vértice
+													 //da lista de adjacências da posição
+				if(maior_dist < distancia){ //Se a maior distância encontrada for menor que a distância do
+											//do próximo vértice
 					maior_dist = distancia;
 					max_insercion = vertice->getId();
-					idVertice = ids[j];
 					pos = i;
 				}
 			}
 		}
 	}
-	
 	return pos;
 }
 
 void mount_groups(vertices* vertices_grafo, vetGroup* grupos, listasAdj* lAdj, int qntGrupos){
 	int pos = -1;
-	int max_insercion, idVertice, L, peso_total;
+	int max_insercion, L, peso_total;
 	dado peso;
+	
+	
+	//Esse loop irá rodar enquanto estiverem grupos abaixo do limitante inferior
 	while(grupos->getQnt() > 0){
 		qntGrupos = grupos->getQnt();
-		pos = searchMaxInsercion(grupos, lAdj, qntGrupos, max_insercion, idVertice);
-		peso = vertices_grafo->getVertice(max_insercion);
-		if(peso > -1){ //Se o peso for maior que -1 significa que o vértice ainda não
-					   //possui um grupo
-			grupos->insertIn(pos, peso, max_insercion);
-			vertices_grafo->remove(max_insercion);
-			lAdj->removeVertice(max_insercion);
-		}
-		else{
-			//Se o peso for igual a -1 significa que o vértice já foi inserido 
-		    //em um grupo e removido do vetor original de vertices
-			lAdj->removeVertice(max_insercion);
-		}
-		L = grupos->getL(pos);
-		peso_total = grupos->getPeso(pos);
-		if(L >= 0){
-			if(peso_total >= L){
-				grupos->removeGroup(pos);
+		pos = searchMaxInsercion(grupos, lAdj, qntGrupos, max_insercion);//Encontra a distancia mais longa possível
+																					//dentre todos os vértices do grupo
+		if(pos > -1){//Se foi achado uma distância mais longa para inserção
+			peso = vertices_grafo->getVertice(max_insercion);//O peso será o valor do vertice
+															 //com a maior distancia da maior inserção
+			if(peso > -1){ //Se o peso for maior que -1 significa que o vértice ainda não
+						   //possui um grupo
+				insert_to_group(grupos, vertices_grafo, lAdj, pos, peso, max_insercion);
+			}
+			else{
+				//Se o peso for igual a -1 significa que o vértice já foi inserido 
+				//em um grupo e removido do vetor original de vertices
+				lAdj->removeVertice(max_insercion);//Então o vértice é apagado das listas de adjacências para não ser inserido
+												   //em outros grupos
+			}
+			L = grupos->getL(pos); //Limitante inferior do grupo
+			peso_total = grupos->getPeso(pos); //Peso atual do grupo que é um somatório
+											   //dos pesos de todos os vértices do grupo
+			if(L >= 0){
+				if(peso_total >= L){ //Se o peso total do grupo for maior que o limitante inferior
+					grupos->removeGroup(pos); //O grupo é removido para a ultima posição do vetor e
+											  //o tamanho desse vetor é reduzido
+				}
 			}
 		}
 	}
+	
+	grupos->reset(); //Restaura a quantidade de grupos pois a mesma é reduzida
+					 //quando um grupo atinge o limitante inferior (L)
+	
+	int U;
+					 
+	while(grupos->getQnt() > 0 and vertices_grafo->isEmpty() == false){
+		qntGrupos = grupos->getQnt();
+		pos = searchMaxInsercion(grupos, lAdj, qntGrupos, max_insercion);//Encontra a distancia mais longa possível
+																		 //dentre todos os vértices do grupo
+		if(pos > -1){//Se foi achado uma distância mais longa para inserção
+			peso = vertices_grafo->getVertice(max_insercion);//O peso será o valor do vertice
+															 //com a maior distancia da maior inserção
+			peso_total = grupos->getPeso(pos); //Peso atual do grupo que é um somatório
+											   //dos pesos de todos os vértices do grupo
+			U = grupos->getU(pos);
+			if(peso > -1){
+				if(peso + peso_total <= U){
+					insert_to_group(grupos, vertices_grafo, lAdj, pos, peso, max_insercion);
+				}
+				else{
+					//~ grupos->print();
+					grupos->removeGroup(pos);
+				}
+			}
+			else{
+				lAdj->removeVertice(max_insercion);
+			}
+		}
+	}
+	
 	grupos->reset();
 }
-
 
 
