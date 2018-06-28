@@ -47,7 +47,7 @@ class noh
 class matrizAdj
 {
   private:
-	float **matriz;
+	double **matriz;
 	int tamanhoMat;
 	void expand(int t);
 	void deleteMat();
@@ -55,11 +55,12 @@ class matrizAdj
 
   public:
 	matrizAdj();
+	matrizAdj(int tamanhoMat);
 	~matrizAdj();
-	void insert(int linha, int coluna, float distancia);
+	void insert(int linha, int coluna, double distancia);
 	int getTam();
-	float getDistancia(int verticeA, int verticeB);
-	void printMat();
+	double getDistancia(int verticeA, int verticeB);
+	void print();
 	bool search(int linha, int coluna);
 	void remove(int verticeA, int verticeB);
 	void removeVertice(int verticeA);
@@ -78,13 +79,13 @@ class verticeDeAdj
 	friend void searchMaxInsercion();
   private:
 	int id;
-	float distancia; //Caso o grafo seja ponderado
+	double distancia; //Caso o grafo seja ponderado
 	verticeDeAdj *proximo;
 
   public:
-	verticeDeAdj(int id, float distancia);
+	verticeDeAdj(int id, double distancia);
 	int getId();
-	float getDistancia();
+	double getDistancia();
 	verticeDeAdj *getProximo();
 };
 
@@ -100,7 +101,7 @@ class lista
   public:
 	lista();
 	~lista();
-	void insert(int id, float distancia);
+	void insert(int id, double distancia);
 	bool removeFirst();
 	bool remove(int id);
 	bool search(int id);
@@ -127,7 +128,7 @@ class listasAdj
 	listasAdj();
 	listasAdj(int qntListas);
 	~listasAdj();
-	void insertIn(int posVertice, int verticeInserir, float distancia);
+	void insertIn(int posVertice, int verticeInserir, double distancia);
 	bool removeIn(int posVertice, int idRemover);
 	void removeVertice(int idRemover); //Remove o vertice das listas dos outros vertices
 	verticeDeAdj* getFirst(int pos);
@@ -172,12 +173,12 @@ class group{
 		int L; //Limitante inferior
 		int U; //Limitante superior
 		int peso_total;
-		float distancia_total;
+		double distancia_total;
 	public:
 		group(int L, int U);
 		~group();
 		void insertAluno(dado peso, int id);
-		void setDistancia(float distancia);
+		void setDistancia(double distancia);
 		int getQntAlunos();
 		vertices* getGroup();
 		void print();
@@ -211,28 +212,6 @@ class vetGroup{
 		void reset();
 };
 
-/////////////////////////  Classe Heap de Grupos ///////////////////////
-
-class minHeap{
-	private:
-		group** heap;
-		int tamanho;
-		int capacidade;
-		inline int pai(int i);
-		inline int esquerda(int i);
-		inline int direita(int i);
-		void arruma();
-		void corrigeDecendo(int i);
-		void corrigeSubindo(int i);
-    public:
-    	minHeap(group** vet, int tam, int cap);
-    	~minHeap();
-    	void print();
-    	void insere(group* novo);
-    	void espiaRaiz();
-    	group* retiraRaiz();
-};
-
 //////////////////////////////  Classe Grafo  //////////////////////////
 
 class grafo
@@ -244,12 +223,12 @@ class grafo
 	int qualEstrutura; //Vem do main contendo a opção de estrutura de
 					   //dados escolhida pelo usuario para armazenar os
 					   //vertices e as arestas.
-	void inserctIn(int idA, int idB, float distancia); //Insere na estrutura de dados
+	void inserctIn(int idA, int idB, double distancia); //Insere na estrutura de dados
 												//escolhida com grafos ponderados
   public:
 	grafo();
 	~grafo();
-	void insertAresta(dado dadosNohA, dado dadosNohB, float distancia);	 //Para grafos ponderados
+	void insertAresta(dado dadosNohA, dado dadosNohB, double distancia);	 //Para grafos ponderados
 	void removeVertice(int pos);
 	int getQntVertices();
 	listasAdj *getLAdj();
