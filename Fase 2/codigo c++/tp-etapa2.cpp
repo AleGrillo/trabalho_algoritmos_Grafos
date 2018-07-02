@@ -148,49 +148,17 @@ int matrizAdj::getTam()
 	return tamanhoMat;
 }
 
-bool matrizAdj::search(int linha, int coluna)
-{
-	if (matriz[linha][coluna] != 0)
-	{
-		return true;
-	}
-	return false;
-}
-
-void matrizAdj::remove(int verticeA, int verticeB)
-{
-	if (verticeA < tamanhoMat and verticeB < tamanhoMat)
-	{
-		matriz[verticeA][verticeB] = 0;
-	}
-}
-
-void matrizAdj::removeVertice(int verticeA)
-{
-	if (verticeA < tamanhoMat)
-	{
-		for (int i = 0; i < tamanhoMat; i++)
-		{
-			if (matriz[verticeA][i] != 0)
-			{
-				matriz[verticeA][i] = 0;
-			}
-			if (matriz[i][verticeA] != 0)
-			{
-				matriz[i][verticeA] = 0;
-			}
-		}
-	}
-}
-
 double matrizAdj::getDistancia(int verticeA, int verticeB)
 {
 	if (verticeA < tamanhoMat and verticeB < tamanhoMat)
 	{
 		return matriz[verticeA][verticeB];
 	}
-	cerr << "Nao está na matriz\n";
-	exit(EXIT_FAILURE);
+	
+	else{
+		//O elemento não está na matriz
+		return -1;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -211,11 +179,6 @@ int verticeDeAdj::getId()
 double verticeDeAdj::getDistancia()
 {
 	return distancia;
-}
-
-verticeDeAdj *verticeDeAdj::getProximo()
-{
-	return proximo;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -469,9 +432,7 @@ void listasAdj::insertIn(int posVertice, int verticeInserir, double distancia)
 	}
 	else
 	{
-		int qnt = (posVertice - qntListas) + 1;
-		expandListas(qnt);
-		listas[posVertice]->insert(verticeInserir, distancia); //Inserindo o vizinho
+		cout << "Posição maior que a quantidade de vertices alocados\n";
 	}
 }
 
@@ -513,10 +474,6 @@ void listasAdj::print()
 			cout << endl;
 		}
 	}
-}
-
-void listasAdj::printPos(int pos){
-	listas[pos]->print();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -582,20 +539,6 @@ void vertices::expandVetor()
 	qntVertices = qntAux;
 }
 
-int vertices::insertVertice(dado novo)
-{
-	if(pos == qntVertices){
-		expandVetor();
-		pos = qntVertices - 1;
-	}
-	noh *novoNoh = new noh(pos, novo);
-	vetor[pos] = novoNoh;
-	pos++;
-	return pos - 1;
-	//Ao inserir, retorna a posição para assim, inserir uma vizinhança
-	//nas estruturas de dados dos vertices
-}
-
 int vertices::insertVertice(dado novo, int id)
 {
 	if(pos == qntVertices){
@@ -603,6 +546,20 @@ int vertices::insertVertice(dado novo, int id)
 		pos = qntVertices - 1;
 	}
 	noh *novoNoh = new noh(id, novo); //Para inserir no grupo de alunos
+	vetor[pos] = novoNoh;
+	pos++;
+	return pos - 1;
+	//Ao inserir, retorna a posição para assim, inserir uma vizinhança
+	//nas estruturas de dados dos vertices
+}
+
+int vertices::insertVertice(dado novo)
+{
+	if(pos == qntVertices){
+		expandVetor();
+		pos = qntVertices - 1;
+	}
+	noh *novoNoh = new noh(pos, novo);
 	vetor[pos] = novoNoh;
 	pos++;
 	return pos - 1;
@@ -630,18 +587,6 @@ void vertices::remove(int pos)
 		delete aux;
 		vetor[pos] = NULL;
 		tamanho--;
-	}
-}
-
-void vertices::printPos(int pos)
-{
-	if (pos >= 0 and pos < qntVertices)
-	{
-		if (vetor[pos])
-		{
-			cout << vetor[pos]->peso;
-		}
-		cout << " ";
 	}
 }
 
@@ -696,7 +641,6 @@ group::group(int L, int U){
 	this->L = L;
 	this->U = U;
 	peso_total = 0;
-	distancia_total = 0.0;
 }
 
 group::~group(){
@@ -706,10 +650,6 @@ group::~group(){
 void group::insertAluno(dado peso, int id){
 	alunos->insertVertice(peso, id);
 	peso_total += peso;
-}
-
-void group::setDistancia(double distancia){
-	distancia_total += distancia;
 }
 
 int group::getQntAlunos(){
@@ -851,6 +791,49 @@ int vetGroup::getQnt(){
 }
 
 ////////////////////////////////////////////////////////////////////////
+///////////////////////////Funções basicas//////////////////////////////
+
+void read(fstream &arquivo, vetGroup* &grupos, vertices* &vertices_grafo, listasAdj* &lAdj, matrizAdj* &mAdj,
+		  int &qntVertices, int &qntGrupos){
+	int L, U;
+	dado peso;
+	int u, v;
+	double distancia;
+	arquivo >> qntVertices;
+	arquivo >> qntGrupos;
+	grupos = new vetGroup(qntGrupos);
+	
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		arquivo >> L;
+		arquivo >> U;
+		grupos->insertGroup(i, L, U);
+	}
+	
+	vertices_grafo = new vertices(qntVertices);
+	
+	for (int i = 0; i < qntVertices; i++)
+	{
+		arquivo >> peso;
+		vertices_grafo->insertVertice(peso);
+	}
+	
+	lAdj = new listasAdj(qntVertices);
+	mAdj = new matrizAdj(qntVertices);
+
+	while(arquivo.good()){
+		arquivo >> u;
+		arquivo >> v;
+		arquivo >> distancia;
+		lAdj->insertIn(u, v, distancia);
+		mAdj->insert(u, v, distancia);
+		lAdj->insertIn(v, u, distancia);
+		mAdj->insert(v, u, distancia);
+	}
+	arquivo.close();
+}
+
+////////////////////////////////////////////////////////////////////////
 /////////////////////////Funções auxiliares/////////////////////////////
 
 void quickSort(int* vetorId, int* vetor, int qnt, int esq, int dir){
@@ -876,6 +859,7 @@ void quickSort(int* vetorId, int* vetor, int qnt, int esq, int dir){
 int* vetorContador(listasAdj* lAdj, int qnt){
 	int* vetorID = new int[qnt];
 	int* vetor = new int[qnt];
+	verticeDeAdj* vAdj = NULL;
 	
 	for (int i = 0; i < qnt; i++)
 	{
@@ -884,7 +868,7 @@ int* vetorContador(listasAdj* lAdj, int qnt){
 	
 	for (int i = 0; i < qnt; i++)
 	{
-		verticeDeAdj* vAdj = lAdj->getFirst(i);
+		vAdj = lAdj->getFirst(i);
 		vetorID[i] = vAdj->getId();
 		vetor[vAdj->getId()]++;
 	}
@@ -894,7 +878,7 @@ int* vetorContador(listasAdj* lAdj, int qnt){
 	return vetorID;
 }
 
-double greater_distance(vetGroup* grupos, matrizAdj* mAdj){
+double max_distance(vetGroup* grupos, matrizAdj* mAdj){
 	double distancia = 0.0;
 	int tam = grupos->getQnt();
 	group* grupo = NULL;
@@ -916,7 +900,6 @@ double greater_distance(vetGroup* grupos, matrizAdj* mAdj){
 			}
 		}
 	}
-	
 	
 	return distancia;
 }
@@ -1046,5 +1029,3 @@ void mount_groups(vertices* vertices_grafo, vetGroup* grupos, listasAdj* lAdj, i
 	
 	attain_upper_limit(vertices_grafo, grupos, lAdj, qntGrupos);
 }
-
-

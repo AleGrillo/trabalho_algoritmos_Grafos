@@ -61,9 +61,6 @@ class matrizAdj
 	int getTam();
 	double getDistancia(int verticeA, int verticeB);
 	void print();
-	bool search(int linha, int coluna);
-	void remove(int verticeA, int verticeB);
-	void removeVertice(int verticeA);
 };
 
 ///////////////////////////// Classe Vertice ///////////////////////////////
@@ -86,7 +83,6 @@ class verticeDeAdj
 	verticeDeAdj(int id, double distancia);
 	int getId();
 	double getDistancia();
-	verticeDeAdj *getProximo();
 };
 
 ////////////////////////////  Classe Lista  ////////////////////////////////
@@ -134,7 +130,6 @@ class listasAdj
 	verticeDeAdj* getFirst(int pos);
 	inline int getQnt();
 	void print();
-	void printPos(int pos);
 };
 
 //////////////////////  Classe vertices do Grafo  ///////////////////////////
@@ -143,7 +138,8 @@ class vertices
   private:
 	noh **vetor;
 	int qntVertices;
-	int tamanho;
+	int tamanho; //Tamanho total do vetor com os vértices, pode ser reduzido
+				 //a medida que um vértice é apagado do vetor
 	int pos; //Ultima posição inserida no vetor
 	void expandVetor();
 	void create(int qntVertices);
@@ -152,19 +148,21 @@ class vertices
 	vertices(int qntVertices);
 	vertices();
 	~vertices();
-	int insertVertice(dado peso);
 	int insertVertice(dado peso, int id); //Para inserir no grupo de alunos
+	int insertVertice(dado peso);
 	void remove(int pos);
 	void print();
-	void printPos(int pos);
 	int getQntVertices();
 	int getTam();
-	dado getVertice(int pos);
-	int* getIds();
-	inline bool isEmpty();
+	dado getVertice(int pos); //Petorna o peso de um vértice da posição passada
+	int* getIds();//Retorna somente os id's dos vértices
+	inline bool isEmpty();//Se o tamanho é igual a 0 significa que todos os vértices foram apagados
 };
 
-///////////////////////////  Classe Group   ////////////////////////////
+
+///////////////////////////  Classe Group  //////////////////////////////////
+// Estrutura de Dados: Vetor com os alunos presentes no grafo              //
+/////////////////////////////////////////////////////////////////////////////
 
 class group{
 	private:
@@ -173,12 +171,10 @@ class group{
 		int L; //Limitante inferior
 		int U; //Limitante superior
 		int peso_total;
-		double distancia_total;
 	public:
 		group(int L, int U);
 		~group();
 		void insertAluno(dado peso, int id);
-		void setDistancia(double distancia);
 		int getQntAlunos();
 		vertices* getGroup();
 		void print();
@@ -193,48 +189,24 @@ class group{
 class vetGroup{
 	private:
 		group** grupos;
-		int tamanho;
-		int qntGrupos;
+		int tamanho;//Tamanho total do vetor de grupos, pode ser reduzido a medida que mudamos um grupo
+					//para a ultima posição
+		int qntGrupos;//A quantidade total de grupos
 	public:
 		vetGroup(int qntGrupos);
 		~vetGroup();
 		void insertGroup(int pos, int L, int U);
 		void insertIn(int pos, dado peso, int id);
-		group* removeGroup(int pos);
+		group* removeGroup(int pos);//Apenas troca o grupo com a ultima posição e reduz o tamanho do mesmo
 		int getTam();
 		int getQnt();
-		int* getIds(int pos);
-		int getPeso(int pos);
-		group* getGroup(int pos);
+		int* getIds(int pos);//Retorna todos os id's dos vértices do grupo
+		int getPeso(int pos);//Retorna o peso total de um grupo
+		group* getGroup(int pos);//Retorna o grupo de uma posição
 		void print();
 		int getL(int pos);
 		int getU(int pos);
-		void reset();
-};
-
-//////////////////////////////  Classe Grafo  //////////////////////////
-
-class grafo
-{
-  private:
-	vertices *verticesDoGrafo;
-	listasAdj *lAdj;
-	matrizAdj *mAdj;
-	int qualEstrutura; //Vem do main contendo a opção de estrutura de
-					   //dados escolhida pelo usuario para armazenar os
-					   //vertices e as arestas.
-	void inserctIn(int idA, int idB, double distancia); //Insere na estrutura de dados
-												//escolhida com grafos ponderados
-  public:
-	grafo();
-	~grafo();
-	void insertAresta(dado dadosNohA, dado dadosNohB, double distancia);	 //Para grafos ponderados
-	void removeVertice(int pos);
-	int getQntVertices();
-	listasAdj *getLAdj();
-	matrizAdj *getMAdj();
-	void printVertices();
-	void printGrafo();
+		void reset();//Reseta o tamanho do grupo, fazendo-o ter o tamanho da quantidade total
 };
 
 #endif
