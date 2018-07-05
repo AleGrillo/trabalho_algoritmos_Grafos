@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include "TP2.h"
-#include "TP2.cpp" // Para rodar no Geany, basta retirar o comentario
+// #include "TP2.cpp" // Para rodar no Geany, basta retirar o comentario
 
 using namespace std;
 

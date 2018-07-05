@@ -218,4 +218,21 @@ public:
 	void reset(); //Reseta o tamanho do grupo, fazendo-o ter o tamanho da quantidade total
 };
 
+void read(fstream &arquivo, vetGroup *&grupos, vertices *&vertices_grafo, listasAdj *&lAdj, matrizAdj *&mAdj, int &qntVertices, int &qntGrupos);
+void quickSort(int *vetorId, int *vetor, int qnt, int esq, int dir);
+int *vetorContador(listasAdj *lAdj, int qnt);
+double max_distance(vetGroup *grupos, matrizAdj *mAdj);
+void initializeGroups(vetGroup *grupos, listasAdj *lAdj, vertices *vert, int *vetorID, int qntGrupos);
+void insert_to_group(vetGroup *grupos, vertices *vertices_grafo, listasAdj *lAdj, int pos, dado peso, int insert);
+int searchMaxInsercion(vetGroup *grupos, listasAdj *lAdj, int qntGrupos, int &max_insercion);
+void attain_upper_limit(vertices *vertices_grafo, vetGroup *grupos, listasAdj *lAdj, int qntGrupos);
+void mount_groups(vertices *vertices_grafo, vetGroup *grupos, listasAdj *lAdj, int qntGrupos);
+void insert_to_Group(vetGroup *grupos, vertices *vertices_grafo, matrizAdj *mAdj, int pos, dado peso, int insert);
+double compute_total_distance(int verticeA, matrizAdj *mAdj, int *ids, int tam);
+int searchMaxDistance(group *grupo, vertices *vertices_grafo, matrizAdj *mAdj, double &distancia);
+void attain_upper_limit(vertices *vertices_grafo, vetGroup *grupos, matrizAdj *mAdj);
+void mount_groups(vertices *vertices_grafo, vetGroup *grupos, matrizAdj *mAdj);
+double compute_max_distance(vetGroup *grupos);
+
+
 #endif
