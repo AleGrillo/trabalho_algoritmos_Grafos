@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-	fstream arquivo("P10.txt");
+	fstream arquivo("P1.txt");
 
 	if (arquivo)
 	{

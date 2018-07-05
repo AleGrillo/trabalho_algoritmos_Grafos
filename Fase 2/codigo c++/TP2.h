@@ -234,5 +234,4 @@ void attain_upper_limit(vertices *vertices_grafo, vetGroup *grupos, matrizAdj *m
 void mount_groups(vertices *vertices_grafo, vetGroup *grupos, matrizAdj *mAdj);
 double compute_max_distance(vetGroup *grupos);
 
-
 #endif
