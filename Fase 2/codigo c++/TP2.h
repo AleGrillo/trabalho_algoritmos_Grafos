@@ -22,8 +22,6 @@
 #ifndef TP2H
 #define TP2H 1
 
-//~ #include <iostream>
-
 using namespace std;
 
 typedef int dado;
@@ -33,11 +31,12 @@ class noh
 {
 	friend class vertices;
 	friend void montarGrupos();
-  private:
-	int id;			   //id que guarda a posição no vetor com vertices no grafo
-	dado peso;	 //Para vertices com peso
 
-  public:
+private:
+	int id;		 //id que guarda a posição no vetor com vertices no grafo
+	dado peso; //Para vertices com peso
+
+public:
 	noh(int id, dado peso);
 };
 
@@ -46,14 +45,15 @@ class noh
 ////////////////////////////////////////////////////////////////////////////
 class matrizAdj
 {
-  private:
+private:
 	double **matriz;
 	int tamanhoMat;
 	void expand(int t);
 	void deleteMat();
 	void create(int tamanhoMat);
 	void remove(int verticeA, int verticeB);
-  public:
+
+public:
 	matrizAdj();
 	matrizAdj(int tamanhoMat);
 	~matrizAdj();
@@ -72,15 +72,16 @@ class matrizAdj
 ////////////////////////////////////////////////////////////////////////////
 class verticeDeAdj
 {
-	friend class lista;		//lista individual de cada vertice
+	friend class lista;			//lista individual de cada vertice
 	friend class listasAdj; //Todas as listas de adjacencias dos vertices do grafo
 	friend void searchMaxInsercion();
-  private:
+
+private:
 	int id;
 	double distancia; //Caso o grafo seja ponderado
 	verticeDeAdj *proximo;
 
-  public:
+public:
 	verticeDeAdj(int id, double distancia);
 	int getId();
 	double getDistancia();
@@ -91,11 +92,12 @@ class verticeDeAdj
 ////////////////////////////////////////////////////////////////////////////
 class lista
 {
-  private:
+private:
 	verticeDeAdj *primeiro;
 	verticeDeAdj *ultimo;
 	int tamanhoLista;
-  public:
+
+public:
 	lista();
 	~lista();
 	void insert(int id, double distancia);
@@ -105,7 +107,7 @@ class lista
 	bool deleteList();
 	void print();
 	int getTam();
-	verticeDeAdj* getFirst();
+	verticeDeAdj *getFirst();
 };
 
 ////////////////////  Classe Listas de Adjacencia  //////////////////////////
@@ -114,21 +116,21 @@ class lista
 /////////////////////////////////////////////////////////////////////////////
 class listasAdj
 {
-  private:
+private:
 	lista **listas;
 	int qntListas;
 	void create(int qntListas);
 	void deleteListas();
 	void expandListas(int qntExpand);
 
-  public:
+public:
 	listasAdj();
 	listasAdj(int qntListas);
 	~listasAdj();
 	void insertIn(int posVertice, int verticeInserir, double distancia);
 	bool removeIn(int posVertice, int idRemover);
 	void removeVertice(int idRemover); //Remove o vertice das listas dos outros vertices
-	verticeDeAdj* getFirst(int pos);
+	verticeDeAdj *getFirst(int pos);
 	inline int getQnt();
 	void print();
 };
@@ -136,16 +138,17 @@ class listasAdj
 //////////////////////  Classe vertices do Grafo  ///////////////////////////
 class vertices
 {
-  private:
+private:
 	noh **vetor;
 	int qntVertices;
 	int tamanho; //Tamanho total do vetor com os vértices, pode ser reduzido
-				 //a medida que um vértice é apagado do vetor
-	int pos; //Ultima posição inserida no vetor
+							 //a medida que um vértice é apagado do vetor
+	int pos;		 //Ultima posição inserida no vetor
 	void expandVetor();
 	void create(int qntVertices);
 	void deleteVetor();
-  public:
+
+public:
 	vertices(int qntVertices);
 	vertices();
 	~vertices();
@@ -156,61 +159,63 @@ class vertices
 	int getQntVertices();
 	int getTam();
 	dado getVertice(int pos); //Petorna o peso de um vértice da posição passada
-	int* getIds();//Retorna somente os id's dos vértices
-	inline bool isEmpty();//Se o tamanho é igual a 0 significa que todos os vértices foram apagados
+	int *getIds();						//Retorna somente os id's dos vértices
+	inline bool isEmpty();		//Se o tamanho é igual a 0 significa que todos os vértices foram apagados
 };
-
 
 ///////////////////////////  Classe Group  //////////////////////////////////
 // Estrutura de Dados: Vetor com os alunos presentes no grafo              //
 /////////////////////////////////////////////////////////////////////////////
 
-class group{
-	private:
-		vertices *alunos;
-		int qntAlunos;
-		int L; //Limitante inferior
-		int U; //Limitante superior
-		int peso_total;
-		double distancia_total;
-	public:
-		group(int L, int U);
-		~group();
-		void insertAluno(dado peso, int id);
-		int getQntAlunos();
-		vertices* getGroup();
-		void print();
-		int* getIds();
-		int getPeso();
-		int getL();
-		int getU();
-		void setDistancia(double distancia);
-		double getDistancia();
+class group
+{
+private:
+	vertices *alunos;
+	int qntAlunos;
+	int L; //Limitante inferior
+	int U; //Limitante superior
+	int peso_total;
+	double distancia_total;
+
+public:
+	group(int L, int U);
+	~group();
+	void insertAluno(dado peso, int id);
+	int getQntAlunos();
+	vertices *getGroup();
+	void print();
+	int *getIds();
+	int getPeso();
+	int getL();
+	int getU();
+	void setDistancia(double distancia);
+	double getDistancia();
 };
 
 /////////////////////////  Classe Vetor de Grupos //////////////////////
 
-class vetGroup{
-	private:
-		group** grupos;
-		int tamanho;//Tamanho total do vetor de grupos, pode ser reduzido a medida que mudamos um grupo
-					//para a ultima posição
-		int qntGrupos;//A quantidade total de grupos
-	public:
-		vetGroup(int qntGrupos);
-		~vetGroup();
-		void insertGroup(int pos, int L, int U);
-		void insertIn(int pos, dado peso, int id);
-		group* removeGroup(int pos);//Apenas troca o grupo com a ultima posição e reduz o tamanho do mesmo
-		int getTam();
-		int getQnt();
-		int* getIds(int pos);//Retorna todos os id's dos vértices do grupo
-		int getPeso(int pos);//Retorna o peso total de um grupo
-		group* getGroup(int pos);//Retorna o grupo de uma posição
-		void print();
-		int getL(int pos);
-		int getU(int pos);
-		void reset();//Reseta o tamanho do grupo, fazendo-o ter o tamanho da quantidade total
+class vetGroup
+{
+private:
+	group **grupos;
+	int tamanho;	 //Tamanho total do vetor de grupos, pode ser reduzido a medida que mudamos um grupo
+								 //para a ultima posição
+	int qntGrupos; //A quantidade total de grupos
+public:
+	vetGroup(int qntGrupos);
+	~vetGroup();
+	void insertGroup(int pos, int L, int U);
+	void insertIn(int pos, dado peso, int id);
+	group *removeGroup(int pos); //Apenas troca o grupo com a ultima posição e reduz o tamanho do mesmo
+	int getTam();
+	int getQnt();
+	int *getIds(int pos);			//Retorna todos os id's dos vértices do grupo
+	int getPeso(int pos);			//Retorna o peso total de um grupo
+	group *getGroup(int pos); //Retorna o grupo de uma posição
+	void print();
+	int getL(int pos);
+	int getU(int pos);
+	void reset(); //Reseta o tamanho do grupo, fazendo-o ter o tamanho da quantidade total
 };
 
 #endif
