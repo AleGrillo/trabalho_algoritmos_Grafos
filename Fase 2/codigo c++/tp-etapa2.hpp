@@ -52,7 +52,7 @@ class matrizAdj
 	void expand(int t);
 	void deleteMat();
 	void create(int tamanhoMat);
-
+	void remove(int verticeA, int verticeB);
   public:
 	matrizAdj();
 	matrizAdj(int tamanhoMat);
@@ -61,6 +61,7 @@ class matrizAdj
 	int getTam();
 	double getDistancia(int verticeA, int verticeB);
 	void print();
+	void removeVertice(int vertice);
 };
 
 ///////////////////////////// Classe Vertice ///////////////////////////////
@@ -171,6 +172,7 @@ class group{
 		int L; //Limitante inferior
 		int U; //Limitante superior
 		int peso_total;
+		double distancia_total;
 	public:
 		group(int L, int U);
 		~group();
@@ -182,6 +184,8 @@ class group{
 		int getPeso();
 		int getL();
 		int getU();
+		void setDistancia(double distancia);
+		double getDistancia();
 };
 
 /////////////////////////  Classe Vetor de Grupos //////////////////////

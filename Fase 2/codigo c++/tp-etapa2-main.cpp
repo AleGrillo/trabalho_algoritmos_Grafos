@@ -8,20 +8,32 @@ using namespace std;
 
 int main()
 {
-	fstream arquivo("P2.txt");
+	fstream arquivo("P10.txt");
 	
 	if(arquivo){
 		vetGroup* grupos = NULL;
 		vertices* vertices_grafo = NULL;
 		listasAdj* lAdj = NULL;
 		matrizAdj* mAdj = NULL;
+		double distancia;
 		int* vetorId = NULL;
 		int qntVertices, qntGrupos;
 		read(arquivo, grupos, vertices_grafo, lAdj, mAdj, qntVertices, qntGrupos);
 		vetorId = vetorContador(lAdj, qntVertices);
 		initializeGroups(grupos, lAdj, vertices_grafo, vetorId, qntGrupos);
-		mount_groups(vertices_grafo, grupos, lAdj, qntGrupos);
-		double distancia = max_distance(grupos, mAdj);
+		/*Solução 1
+		//~ mount_groups(vertices_grafo, grupos, lAdj, qntGrupos);
+		//~ distancia = max_distance(grupos, mAdj);
+		//~ cout << distancia << endl;
+		*/
+		
+		//~ /*Solução 2
+		mount_groups(vertices_grafo, grupos, mAdj);
+		max_distance(grupos, mAdj);
+		//~ */
+		
+		distancia = compute_max_distance(grupos);
+		//~ grupos->print();
 		cout << distancia << endl;
 		delete grupos;
 		delete vertices_grafo;
