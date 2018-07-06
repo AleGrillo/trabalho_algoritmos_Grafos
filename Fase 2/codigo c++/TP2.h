@@ -158,8 +158,8 @@ public:
 	void print();
 	int getQntVertices();
 	int getTam();
-	dado getVertice(int pos); //Petorna o peso de um vértice da posição passada
-	int *getIds();						//Retorna somente os id's dos vértices
+	dado getPesoVertice(int pos); //Petorna o peso de um vértice da posição passada
+	int *getIds();				 //Retorna somente os id's dos vértices
 	inline bool isEmpty();		//Se o tamanho é igual a 0 significa que todos os vértices foram apagados
 };
 
@@ -174,49 +174,52 @@ private:
 	int qntAlunos;
 	int L; //Limitante inferior
 	int U; //Limitante superior
-	int peso_total;
-	double distancia_total;
+	int peso_total;//Somatório dos pesos dos vértices do grupo
+	double distancia_total;//Só será utilizada na Solução 2
 
 public:
 	group(int L, int U);
 	~group();
 	void insertAluno(dado peso, int id);
-	int getQntAlunos();
-	vertices *getGroup();
+	int getQntAlunos();//Retorna a quantidade de alunos presente no Grupo
 	void print();
-	int *getIds();
-	int getPeso();
+	int *getIds();//Retorna todos os ids do grupo
+	int getPeso();//Retorna o peso total do grupo
 	int getL();
 	int getU();
-	void setDistancia(double distancia);
-	double getDistancia();
+	void setDistancia(double distancia);//Acrescenta na distancia total do grupo
+	double getDistancia();//Retorna a distancia total do grupo
 };
 
-/////////////////////////  Classe Vetor de Grupos //////////////////////
+///////////////////////////  Classe vetGroup  ////////////////////////////////
+// Classe utilizada para armazenar todos os possíveis Grupos criados       //
+/////////////////////////////////////////////////////////////////////////////
 
 class vetGroup
 {
 private:
 	group **grupos;
 	int tamanho;	 //Tamanho total do vetor de grupos, pode ser reduzido a medida que mudamos um grupo
-								 //para a ultima posição
-	int qntGrupos; //A quantidade total de grupos
+					//para a ultima posição
+	int qntGrupos; //A quantidade de grupos disponiveis para inserção
 public:
 	vetGroup(int qntGrupos);
 	~vetGroup();
-	void insertGroup(int pos, int L, int U);
-	void insertIn(int pos, dado peso, int id);
-	group *removeGroup(int pos); //Apenas troca o grupo com a ultima posição e reduz o tamanho do mesmo
-	int getTam();
-	int getQnt();
-	int *getIds(int pos);			//Retorna todos os id's dos vértices do grupo
-	int getPeso(int pos);			//Retorna o peso total de um grupo
+	void insertGroup(int pos, int L, int U);//Insere no grupo da posição 'pos' os limitantes 
+	void insertIn(int pos, dado peso, int id);//Insere no grupo da posição 'pos' um vértice e seu peso
+	bool removeGroup(int pos); //Apenas troca o grupo com a ultima posição e reduz o tamanho do mesmo
+	int getTam();//Retorna o tamanho
+	int getQnt();//Retorna a quantidade total de grupos
+	int *getIds(int pos);//Retorna todos os id's dos vértices do grupo
+	int getPeso(int pos);//Retorna o peso total de um grupo
 	group *getGroup(int pos); //Retorna o grupo de uma posição
 	void print();
 	int getL(int pos);
 	int getU(int pos);
 	void reset(); //Reseta o tamanho do grupo, fazendo-o ter o tamanho da quantidade total
 };
+
+///////////////////////// Funções auxiliares /////////////////////////////
 
 void read(fstream &arquivo, vetGroup *&grupos, vertices *&vertices_grafo, listasAdj *&lAdj, matrizAdj *&mAdj, int &qntVertices, int &qntGrupos);
 void quickSort(int *vetorId, int *vetor, int qnt, int esq, int dir);

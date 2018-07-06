@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include "TP2.h"
-// #include "TP2.cpp" // Para rodar no Geany, basta retirar o comentario
+#include "TP2.cpp" // Para rodar no Geany, basta retirar o comentario
 
 using namespace std;
 
@@ -31,11 +31,9 @@ int main()
 		//~ /*Solução 2
 		mount_groups(vertices_grafo, grupos, mAdj);
 		max_distance(grupos, mAdj);
-		//~ */
-
 		distancia = compute_max_distance(grupos);
-		//~ grupos->print();
 		cout << distancia << endl;
+		//~ */
 		delete grupos;
 		delete vertices_grafo;
 		delete lAdj;
