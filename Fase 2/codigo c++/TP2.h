@@ -222,7 +222,6 @@ public:
 
 ///////////////////////// Funções auxiliares /////////////////////////////
 
-void read(fstream &arquivo, vetGroup *&grupos, vertices *&vertices_grafo, listasAdj *&lAdj, matrizAdj *&mAdj, int &qntVertices, int &qntGrupos);
 void quickSort(int *vetorId, int *vetor, int qnt, int esq, int dir);
 int *vetorContador(listasAdj *lAdj, int qnt);
 double max_distance(vetGroup *grupos, matrizAdj *mAdj);
@@ -240,5 +239,9 @@ double compute_max_distance(vetGroup *grupos);
 
 ////////////////////////// Funções do Menu ////////////////////////////////
 
+void read(fstream &arquivo, vetGroup *&grupos, vertices *&vertices_grafo, listasAdj *&lAdj, matrizAdj *&mAdj, int &qntVertices, int &qntGrupos);
+void solution_1(fstream &arquivo);
+void solution_2(fstream &arquivo);
+int getComando();
 
 #endif

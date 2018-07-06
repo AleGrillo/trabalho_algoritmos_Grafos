@@ -912,52 +912,6 @@ void vetGroup::print()
 }
 
 ////////////////////////////////////////////////////////////////////////
-///////////////////////////Funções basicas//////////////////////////////
-
-void read(fstream &arquivo, vetGroup *&grupos, vertices *&vertices_grafo, listasAdj *&lAdj, matrizAdj *&mAdj,
-					int &qntVertices, int &qntGrupos)
-{
-	//Um método para ler do arquivo de texto passado no main
-	int L, U;
-	dado peso;
-	int u, v;
-	double distancia;
-	arquivo >> qntVertices;
-	arquivo >> qntGrupos;
-	grupos = new vetGroup(qntGrupos);
-
-	for (int i = 0; i < qntGrupos; i++)
-	{
-		arquivo >> L;
-		arquivo >> U;
-		grupos->insertGroup(i, L, U);
-	}
-
-	vertices_grafo = new vertices(qntVertices);
-
-	for (int i = 0; i < qntVertices; i++)
-	{
-		arquivo >> peso;
-		vertices_grafo->insertVertice(peso);
-	}
-
-	lAdj = new listasAdj(qntVertices);
-	mAdj = new matrizAdj(qntVertices);
-
-	while (arquivo.good())
-	{
-		arquivo >> u;
-		arquivo >> v;
-		arquivo >> distancia;
-		lAdj->insertIn(u, v, distancia);
-		mAdj->insert(u, v, distancia);
-		lAdj->insertIn(v, u, distancia);
-		mAdj->insert(v, u, distancia);
-	}
-	arquivo.close();
-}
-
-////////////////////////////////////////////////////////////////////////
 /////////////////////////Funções auxiliares/////////////////////////////
 
 double max_distance(vetGroup *grupos, matrizAdj *mAdj)
@@ -1444,3 +1398,98 @@ double compute_max_distance(vetGroup *grupos)
 
 //////////////////////////// Funções do Menu //////////////////////////////
 
+void read(fstream &arquivo, vetGroup *&grupos, vertices *&vertices_grafo, listasAdj *&lAdj, matrizAdj *&mAdj,
+					int &qntVertices, int &qntGrupos)
+{
+	//Um método para ler do arquivo de texto passado no main
+	int L, U;
+	dado peso;
+	int u, v;
+	double distancia;
+	arquivo >> qntVertices;
+	arquivo >> qntGrupos;
+	grupos = new vetGroup(qntGrupos);
+
+	for (int i = 0; i < qntGrupos; i++)
+	{
+		arquivo >> L;
+		arquivo >> U;
+		grupos->insertGroup(i, L, U);
+	}
+
+	vertices_grafo = new vertices(qntVertices);
+
+	for (int i = 0; i < qntVertices; i++)
+	{
+		arquivo >> peso;
+		vertices_grafo->insertVertice(peso);
+	}
+
+	lAdj = new listasAdj(qntVertices);
+	mAdj = new matrizAdj(qntVertices);
+
+	while (arquivo.good())
+	{
+		arquivo >> u;
+		arquivo >> v;
+		arquivo >> distancia;
+		lAdj->insertIn(u, v, distancia);
+		mAdj->insert(u, v, distancia);
+		lAdj->insertIn(v, u, distancia);
+		mAdj->insert(v, u, distancia);
+	}
+}
+
+void solution_1(fstream &arquivo){
+	vetGroup *grupos = NULL;
+	vertices *vertices_grafo = NULL;
+	listasAdj *lAdj = NULL;
+	matrizAdj *mAdj = NULL;
+	int *vetorId = NULL;
+	int qntVertices, qntGrupos;
+	read(arquivo, grupos, vertices_grafo, lAdj, mAdj, qntVertices, qntGrupos);
+	
+	vetorId = vetorContador(lAdj, qntVertices);//Vetor com os vértices que aparecem mais vezes como maior distancia
+	initializeGroups(grupos, lAdj, vertices_grafo, vetorId, qntGrupos);//Inicializa os grupos com cada um desses vértices
+	mount_groups(vertices_grafo, grupos, lAdj, qntGrupos);
+	cout << "Solucao 1\n" << max_distance(grupos, mAdj) << "\n";
+	
+	delete grupos;
+	delete vertices_grafo;
+	delete lAdj;
+	delete mAdj;
+	delete[] vetorId;
+}
+
+void solution_2(fstream &arquivo){
+	vetGroup *grupos = NULL;
+	vertices *vertices_grafo = NULL;
+	listasAdj *lAdj = NULL;
+	matrizAdj *mAdj = NULL;
+	int *vetorId = NULL;
+	int qntVertices, qntGrupos;
+	read(arquivo, grupos, vertices_grafo, lAdj, mAdj, qntVertices, qntGrupos);
+	vetorId = vetorContador(lAdj, qntVertices);
+	initializeGroups(grupos, lAdj, vertices_grafo, vetorId, qntGrupos);
+	mount_groups(vertices_grafo, grupos, mAdj);
+	max_distance(grupos, mAdj);
+	
+	cout << "Solucao 2\n" << compute_max_distance(grupos) << "\n";
+	
+	delete grupos;
+	delete vertices_grafo;
+	delete lAdj;
+	delete mAdj;
+	delete[] vetorId;
+}
+
+int getComando(){
+	int comando;
+	cout << "As solucoes para o problema sao tratadas de formas independentes \n portanto escolha qual solucao quer"
+			"utilizar, ou se deseja visualizar as duas\n\n";
+	cout << "Duas solucoes							>> 0\n";
+	cout << "Solucao 1							>> 1\n";
+	cout << "Solucao 2							>> 2\n";
+	cin >> comando;
+	return comando;
+}
