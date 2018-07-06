@@ -16,7 +16,6 @@ int main()
 		vertices *vertices_grafo = NULL;
 		listasAdj *lAdj = NULL;
 		matrizAdj *mAdj = NULL;
-		double distancia;
 		int *vetorId = NULL;
 		int qntVertices, qntGrupos;
 		read(arquivo, grupos, vertices_grafo, lAdj, mAdj, qntVertices, qntGrupos);
@@ -24,15 +23,13 @@ int main()
 		initializeGroups(grupos, lAdj, vertices_grafo, vetorId, qntGrupos);
 		/*Solução 1
 		//~ mount_groups(vertices_grafo, grupos, lAdj, qntGrupos);
-		//~ distancia = max_distance(grupos, mAdj);
-		//~ cout << distancia << endl;
+		//~ cout << "Solucao 1\n" << max_distance(grupos, mAdj) << "\n";
 		*/
 
 		//~ /*Solução 2
 		mount_groups(vertices_grafo, grupos, mAdj);
 		max_distance(grupos, mAdj);
-		distancia = compute_max_distance(grupos);
-		cout << distancia << endl;
+		cout << "Solucao 2\n" << compute_max_distance(grupos) << "\n";
 		//~ */
 		delete grupos;
 		delete vertices_grafo;

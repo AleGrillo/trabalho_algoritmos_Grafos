@@ -161,6 +161,7 @@ public:
 	dado getPesoVertice(int pos); //Petorna o peso de um vértice da posição passada
 	int *getIds();				 //Retorna somente os id's dos vértices
 	inline bool isEmpty();		//Se o tamanho é igual a 0 significa que todos os vértices foram apagados
+	vertices* getCopy();
 };
 
 ///////////////////////////  Classe Group  //////////////////////////////////
@@ -236,5 +237,8 @@ int searchMaxDistance(group *grupo, vertices *vertices_grafo, matrizAdj *mAdj, d
 void attain_upper_limit(vertices *vertices_grafo, vetGroup *grupos, matrizAdj *mAdj);
 void mount_groups(vertices *vertices_grafo, vetGroup *grupos, matrizAdj *mAdj);
 double compute_max_distance(vetGroup *grupos);
+
+////////////////////////// Funções do Menu ////////////////////////////////
+
 
 #endif
